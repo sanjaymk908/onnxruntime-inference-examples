@@ -85,7 +85,7 @@ class SpeechRecognizer {
           
           // Update input and output names based on your model inspection
           let lengthShape: [NSNumber] = [1]  // Shape definition for length tensor
-          let int64Value = inputData.count
+          let int64Value = inputDataCount
           let lengthData = NSMutableData(bytes: withUnsafeBytes(of: int64Value) { ptr in
               ptr.baseAddress! // Force unwrapping here (be cautious)
               // Use ptr to access the byte representation of int64Value
@@ -107,15 +107,21 @@ class SpeechRecognizer {
           guard let logits = outputs["logits"], let embs = outputs["embs"] else {
               throw SpeechRecognizerError.Error("Failed to get model output.")
           }
-          
           let logitsData = try logits.tensorData() as Data
-          let result = logitsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
+          let _ = logitsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
               let floatBuffer = buffer.bindMemory(to: Float.self)
-              return postprocess(modelOutput: floatBuffer)
+              print("logits size: \(floatBuffer.count)")
+              return ""
           }
           
-          print("result: '\(result)'")
-          return result
+          let embsData = try embs.tensorData() as Data
+          let _ = embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
+              let floatBuffer = buffer.bindMemory(to: Float.self)
+              print("embs size: \(floatBuffer.count)")
+              return ""
+          }
+          
+          return "Do not use for speech recognition"
       }
   }
 }
