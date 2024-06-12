@@ -3,11 +3,24 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2E9C81B228F7678E00F46565 /* wav2vec2-base-960h.ort in Resources */ = {isa = PBXBuildFile; fileRef = 2E9C81B128F7678E00F46565 /* wav2vec2-base-960h.ort */; };
+		C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135633F2C18F1D700FF9A99 /* ort_env.mm */; };
+		C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563402C18F1D700FF9A99 /* ort_value.mm */; };
+		C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563412C18F1D700FF9A99 /* error_utils.mm */; };
+		C135635B2C18F1DA00FF9A99 /* cxx_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563442C18F1D800FF9A99 /* cxx_utils.mm */; };
+		C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135634F2C18F1D800FF9A99 /* ort_enums.mm */; };
+		C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563512C18F1D900FF9A99 /* ort_session.mm */; };
+		C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */; };
+		C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */; };
+		C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */; };
+		C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13AACDE2C17F683000C3411 /* CoreVideo.framework */; };
+		C161D97F2C19ECE900F60151 /* onnxruntime.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */; };
+		C161D9802C19ECE900F60151 /* onnxruntime.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
+		C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */; };
 		EFE237D926855E4600234E2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D826855E4600234E2C /* ContentView.swift */; };
 		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
@@ -27,8 +40,57 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C1F2C81A2C1788A2001AE4F8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C161D9802C19ECE900F60151 /* onnxruntime.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		2E9C81B128F7678E00F46565 /* wav2vec2-base-960h.ort */ = {isa = PBXFileReference; lastKnownFileType = file; name = "wav2vec2-base-960h.ort"; path = "model/wav2vec2-base-960h.ort"; sourceTree = "<group>"; };
+		C135633F2C18F1D700FF9A99 /* ort_env.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_env.mm; sourceTree = "<group>"; };
+		C13563402C18F1D700FF9A99 /* ort_value.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_value.mm; sourceTree = "<group>"; };
+		C13563412C18F1D700FF9A99 /* error_utils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = error_utils.mm; sourceTree = "<group>"; };
+		C13563422C18F1D700FF9A99 /* cxx_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cxx_utils.h; sourceTree = "<group>"; };
+		C13563432C18F1D800FF9A99 /* ort_value_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_value_internal.h; sourceTree = "<group>"; };
+		C13563442C18F1D800FF9A99 /* cxx_utils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cxx_utils.mm; sourceTree = "<group>"; };
+		C13563452C18F1D800FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
+		C13563462C18F1D800FF9A99 /* ort_coreml_execution_provider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_coreml_execution_provider.h; sourceTree = "<group>"; };
+		C13563472C18F1D800FF9A99 /* ort_custom_op_registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_custom_op_registration.h; sourceTree = "<group>"; };
+		C13563482C18F1D800FF9A99 /* ort_enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_enums.h; sourceTree = "<group>"; };
+		C13563492C18F1D800FF9A99 /* ort_env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_env.h; sourceTree = "<group>"; };
+		C135634A2C18F1D800FF9A99 /* ort_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_session.h; sourceTree = "<group>"; };
+		C135634B2C18F1D800FF9A99 /* ort_value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_value.h; sourceTree = "<group>"; };
+		C135634C2C18F1D800FF9A99 /* ort_xnnpack_execution_provider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_xnnpack_execution_provider.h; sourceTree = "<group>"; };
+		C135634E2C18F1D800FF9A99 /* error_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error_utils.h; sourceTree = "<group>"; };
+		C135634F2C18F1D800FF9A99 /* ort_enums.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_enums.mm; sourceTree = "<group>"; };
+		C13563502C18F1D800FF9A99 /* ort_env_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_env_internal.h; sourceTree = "<group>"; };
+		C13563512C18F1D900FF9A99 /* ort_session.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_session.mm; sourceTree = "<group>"; };
+		C13563522C18F1D900FF9A99 /* cxx_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cxx_api.h; sourceTree = "<group>"; };
+		C13563532C18F1D900FF9A99 /* ort_session_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_session_internal.h; sourceTree = "<group>"; };
+		C13563542C18F1D900FF9A99 /* ort_enums_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_enums_internal.h; sourceTree = "<group>"; };
+		C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_xnnpack_execution_provider.mm; sourceTree = "<group>"; };
+		C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = assert_arc_enabled.mm; sourceTree = "<group>"; };
+		C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_coreml_execution_provider.mm; sourceTree = "<group>"; };
+		C13563632C18F1EB00FF9A99 /* ort_xnnpack_execution_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_xnnpack_execution_provider.h; sourceTree = "<group>"; };
+		C13563642C18F1EC00FF9A99 /* ort_custom_op_registration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_custom_op_registration.h; sourceTree = "<group>"; };
+		C13563652C18F1EC00FF9A99 /* ort_session.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_session.h; sourceTree = "<group>"; };
+		C13563662C18F1ED00FF9A99 /* ort_enums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_enums.h; sourceTree = "<group>"; };
+		C13563672C18F1ED00FF9A99 /* ort_value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_value.h; sourceTree = "<group>"; };
+		C13563682C18F1EE00FF9A99 /* ort_coreml_execution_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_coreml_execution_provider.h; sourceTree = "<group>"; };
+		C13563692C18F1EF00FF9A99 /* ort_env.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_env.h; sourceTree = "<group>"; };
+		C135636A2C18F1F000FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
+		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = onnxruntime.xcframework; sourceTree = "<group>"; };
+		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
+		C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.ort; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* SpeechRecognition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeechRecognition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionApp.swift; sourceTree = "<group>"; };
 		EFE237D826855E4600234E2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +110,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */,
+				C161D97F2C19ECE900F60151 /* onnxruntime.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +132,80 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C135634D2C18F1D800FF9A99 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C13563452C18F1D800FF9A99 /* onnxruntime.h */,
+				C13563462C18F1D800FF9A99 /* ort_coreml_execution_provider.h */,
+				C13563472C18F1D800FF9A99 /* ort_custom_op_registration.h */,
+				C13563482C18F1D800FF9A99 /* ort_enums.h */,
+				C13563492C18F1D800FF9A99 /* ort_env.h */,
+				C135634A2C18F1D800FF9A99 /* ort_session.h */,
+				C135634B2C18F1D800FF9A99 /* ort_value.h */,
+				C135634C2C18F1D800FF9A99 /* ort_xnnpack_execution_provider.h */,
+			);
+			name = include;
+			path = "../../../../../../Pods/onnxruntime-objc/objectivec/include";
+			sourceTree = "<group>";
+		};
+		C13563612C18F1EA00FF9A99 /* onnxruntime-objc */ = {
+			isa = PBXGroup;
+			children = (
+				C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */,
+				C13563522C18F1D900FF9A99 /* cxx_api.h */,
+				C13563422C18F1D700FF9A99 /* cxx_utils.h */,
+				C13563442C18F1D800FF9A99 /* cxx_utils.mm */,
+				C135634E2C18F1D800FF9A99 /* error_utils.h */,
+				C13563412C18F1D700FF9A99 /* error_utils.mm */,
+				C13563622C18F1EB00FF9A99 /* include */,
+				C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */,
+				C13563542C18F1D900FF9A99 /* ort_enums_internal.h */,
+				C135634F2C18F1D800FF9A99 /* ort_enums.mm */,
+				C13563502C18F1D800FF9A99 /* ort_env_internal.h */,
+				C135633F2C18F1D700FF9A99 /* ort_env.mm */,
+				C13563532C18F1D900FF9A99 /* ort_session_internal.h */,
+				C13563512C18F1D900FF9A99 /* ort_session.mm */,
+				C13563432C18F1D800FF9A99 /* ort_value_internal.h */,
+				C13563402C18F1D700FF9A99 /* ort_value.mm */,
+				C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */,
+			);
+			path = "onnxruntime-objc";
+			sourceTree = "<group>";
+		};
+		C13563622C18F1EB00FF9A99 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C135636A2C18F1F000FF9A99 /* onnxruntime.h */,
+				C13563682C18F1EE00FF9A99 /* ort_coreml_execution_provider.h */,
+				C13563642C18F1EC00FF9A99 /* ort_custom_op_registration.h */,
+				C13563662C18F1ED00FF9A99 /* ort_enums.h */,
+				C13563692C18F1EF00FF9A99 /* ort_env.h */,
+				C13563652C18F1EC00FF9A99 /* ort_session.h */,
+				C13563672C18F1ED00FF9A99 /* ort_value.h */,
+				C13563632C18F1EB00FF9A99 /* ort_xnnpack_execution_provider.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		C1F2C80D2C17872C001AE4F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */,
+				C13AACDE2C17F683000C3411 /* CoreVideo.framework */,
+				C1F2C8132C17875D001AE4F8 /* ios-arm64_x86_64-simulator */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C1F2C8132C17875D001AE4F8 /* ios-arm64_x86_64-simulator */ = {
+			isa = PBXGroup;
+			children = (
+				C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */,
+			);
+			name = "ios-arm64_x86_64-simulator";
+			path = "../../../../../Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator";
+			sourceTree = "<group>";
+		};
 		EFE237CA26855E4600234E2C = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +213,7 @@
 				EFE237E726855E4B00234E2C /* SpeechRecognitionTests */,
 				EFE237D426855E4600234E2C /* Products */,
 				BE5303DF73A9410AA3E0E0EA /* Pods */,
+				C1F2C80D2C17872C001AE4F8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,7 +229,9 @@
 		EFE237D526855E4600234E2C /* SpeechRecognition */ = {
 			isa = PBXGroup;
 			children = (
-				2E9C81B128F7678E00F46565 /* wav2vec2-base-960h.ort */,
+				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
+				C135634D2C18F1D800FF9A99 /* include */,
+				C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */,
 				EFE2380126855FB900234E2C /* AudioRecorder.swift */,
 				EFE2380426855FD700234E2C /* SpeechRecognizer.swift */,
 				EFE2380326855FC800234E2C /* SpeechRecognition-Bridging-Header.h */,
@@ -130,6 +271,7 @@
 				EFE237CF26855E4600234E2C /* Sources */,
 				EFE237D026855E4600234E2C /* Frameworks */,
 				EFE237D126855E4600234E2C /* Resources */,
+				C1F2C81A2C1788A2001AE4F8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -201,8 +343,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
+				C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
-				2E9C81B228F7678E00F46565 /* wav2vec2-base-960h.ort in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,9 +364,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE2380226855FB900234E2C /* AudioRecorder.swift in Sources */,
+				C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */,
 				EFE2380526855FD700234E2C /* SpeechRecognizer.swift in Sources */,
+				C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */,
+				C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */,
+				C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */,
+				C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */,
+				C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */,
+				C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */,
+				C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */,
 				EFE237D926855E4600234E2C /* ContentView.swift in Sources */,
 				EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */,
+				C135635B2C18F1DA00FF9A99 /* cxx_utils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +449,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -352,6 +505,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -367,20 +521,47 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SpeechRecognition/Preview Content\"";
+				DEVELOPMENT_TEAM = 54DW66TJXC;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+				);
 				INFOPLIST_FILE = SpeechRecognition/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-stdlib=libc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.onnxruntime.SpeechRecognition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "SpeechRecognition/SpeechRecognition-Bridging-Header.h";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
 			};
 			name = Debug;
 		};
@@ -389,20 +570,48 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SpeechRecognition/Preview Content\"";
+				DEVELOPMENT_TEAM = 54DW66TJXC;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/**",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**";
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+				);
 				INFOPLIST_FILE = SpeechRecognition/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-stdlib=libc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.onnxruntime.SpeechRecognition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "SpeechRecognition/SpeechRecognition-Bridging-Header.h";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
 			};
 			name = Release;
 		};
@@ -412,6 +621,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 54DW66TJXC;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = SpeechRecognitionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -433,6 +647,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 54DW66TJXC;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = SpeechRecognitionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreGraphics
+import UIKit
 
 
 let factor:CGFloat = 6.0
@@ -29,7 +30,7 @@ struct DrawingPad: View {
         ctx.translateBy(x: 0, y: 28)
         ctx.scaleBy(x: 1, y: -1)
         
-        ctx.setStrokeColor(NSColor.black.cgColor)
+        ctx.setStrokeColor(UIColor.black.cgColor)
         for drawing in self.drawings {
             if drawing.points.count < 2 {
                 continue
