@@ -20,7 +20,7 @@ class SpeechRecognizer {
   }
 
   init() throws {
-    ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.warning)
+    ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
     guard let modelPath = Bundle.main.path(forResource: "titanet_small", ofType: "ort") else {
       throw SpeechRecognizerError.Error("Failed to find model file.")
     }
@@ -65,33 +65,57 @@ class SpeechRecognizer {
   }
 
   func evaluate(inputData: Data) -> Result<String, Error> {
-    return Result<String, Error> { () -> String in
-      let inputShape: [NSNumber] = [1, inputData.count / MemoryLayout<Float>.stride as NSNumber]
-      let input = try ORTValue(
-        tensorData: NSMutableData(data: inputData),
-        elementType: ORTTensorElementDataType.float,
-        shape: inputShape)
+      return Result<String, Error> { () -> String in
+          let inputDataCount = inputData.count
+          let feature_dim = 1  // This should be your expected feature dimension per time step
+          let time_steps = 80 // was inputDataCount / MemoryLayout<Float>.stride
 
-      let startTime = DispatchTime.now()
-      let outputs = try ortSession.run(
-        withInputs: ["input": input],
-        outputNames: ["output"],
-        runOptions: nil)
-      let endTime = DispatchTime.now()
-      print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
+          // The batch size can be set to 1 if you're running a single sequence inference
+          let inputShape: [NSNumber] = [1, 
+                                        NSNumber(value: time_steps),
+                                        NSNumber(value: feature_dim)]
 
-      guard let output = outputs["output"] else {
-        throw SpeechRecognizerError.Error("Failed to get model output.")
+          let input = try ORTValue(
+              tensorData: NSMutableData(data: inputData),
+              elementType: ORTTensorElementDataType.float,
+              shape: inputShape
+          )
+          
+          let startTime = DispatchTime.now()
+          
+          // Update input and output names based on your model inspection
+          let lengthShape: [NSNumber] = [1]  // Shape definition for length tensor
+          let int64Value = inputData.count
+          let lengthData = NSMutableData(bytes: withUnsafeBytes(of: int64Value) { ptr in
+              ptr.baseAddress! // Force unwrapping here (be cautious)
+              // Use ptr to access the byte representation of int64Value
+          }, length: MemoryLayout<Int64>.size)
+          let lengthValue = try ORTValue(tensorData: lengthData, elementType: ORTTensorElementDataType.int64, shape: lengthShape)
+          let inputs: [String: ORTValue] = [
+            "audio_signal": input,
+            "length": lengthValue,
+          ]
+          let outputs = try ortSession.run(
+            withInputs: inputs,
+            outputNames: ["logits", "embs"],
+            runOptions: nil
+          )
+          
+          let endTime = DispatchTime.now()
+          print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
+          
+          guard let logits = outputs["logits"], let embs = outputs["embs"] else {
+              throw SpeechRecognizerError.Error("Failed to get model output.")
+          }
+          
+          let logitsData = try logits.tensorData() as Data
+          let result = logitsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
+              let floatBuffer = buffer.bindMemory(to: Float.self)
+              return postprocess(modelOutput: floatBuffer)
+          }
+          
+          print("result: '\(result)'")
+          return result
       }
-
-      let outputData = try output.tensorData() as Data
-      let result = outputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
-        let floatBuffer = buffer.bindMemory(to: Float.self)
-        return postprocess(modelOutput: floatBuffer)
-      }
-
-      print("result: '\(result)'")
-      return result
-    }
   }
 }
