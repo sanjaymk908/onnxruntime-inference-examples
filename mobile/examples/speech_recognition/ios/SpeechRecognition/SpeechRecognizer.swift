@@ -14,6 +14,7 @@ private let kLabels = [
 class SpeechRecognizer {
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
+  private let matcher: SimilarityMatcher
 
   enum SpeechRecognizerError: Error {
     case Error(_ message: String)
@@ -25,6 +26,7 @@ class SpeechRecognizer {
       throw SpeechRecognizerError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
+    matcher = SimilarityMatcher()
   }
 
   private func postprocess(modelOutput: UnsafeBufferPointer<Float>) -> String {
@@ -115,13 +117,27 @@ class SpeechRecognizer {
           }
           
           let embsData = try embs.tensorData() as Data
+          var isBaselineVec = true
           let _ = embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
               let floatBuffer = buffer.bindMemory(to: Float.self)
               print("embs size: \(floatBuffer.count)")
+              let floatArray = Array(floatBuffer)
+              if !matcher.doesBaselineVecExist() {
+                  matcher.storeBaselineVec(floatArray)
+              } else {
+                  matcher.storeTestVec(floatArray)
+                  isBaselineVec = false
+              }
               return ""
           }
           
-          return "Do not use for speech recognition"
+          if isBaselineVec {
+              return "Stored Baseline audio for Voice Matching"
+          } else {
+              let isMatch = matcher.cosineMatch()
+              let result = isMatch ? "Did match baseline" : "Did not match baseline"
+              return "Used current recording for Voice Match: " + result
+          }
       }
   }
 }

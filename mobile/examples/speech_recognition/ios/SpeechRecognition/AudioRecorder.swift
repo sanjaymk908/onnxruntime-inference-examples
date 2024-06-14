@@ -5,7 +5,7 @@ import AVFoundation
 import Foundation
 
 private let kSampleRate: Int = 16000
-private let kRecordingDuration: TimeInterval = 10
+private let kRecordingDuration: TimeInterval = 6
 
 class AudioRecorder {
   typealias RecordingBufferAndData = (buffer: AVAudioBuffer, data: Data)
