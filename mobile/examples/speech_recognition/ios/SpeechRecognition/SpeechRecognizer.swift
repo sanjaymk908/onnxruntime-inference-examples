@@ -65,79 +65,104 @@ class SpeechRecognizer {
 
     return resultLabelIndices.map(labelIndexToOutput).joined()
   }
+    
+    func createORTValueFromAudio(inputData: Data, sampleRate: Int, expectedLength: Int, group: Int) throws -> ORTValue {
+        // Ensure the input data is in Float32 format
+        let floatArray: [Float] = inputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Float] in
+            let floatBuffer = buffer.bindMemory(to: Float.self)
+            return Array(floatBuffer)
+        }
+
+        // Check if the length is correct and pad/trim as necessary
+        let sequenceLength = expectedLength
+        // Make sure the input length is compatible with the group's requirement
+        guard floatArray.count == sequenceLength * group else {
+            throw NSError(domain: "AudioProcessing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Audio length mismatch. Expected \(sequenceLength * group), but got \(floatArray.count)."])
+        }
+
+        // Create the input shape
+        let inputShape: [NSNumber] = [1, NSNumber(value: group), NSNumber(value: sequenceLength)]
+
+        // Convert the Float array to NSMutableData
+        let dataSize = floatArray.count * MemoryLayout<Float>.stride
+        let mutableData = NSMutableData(bytes: floatArray, length: dataSize)
+
+        // Create the ORTValue tensor
+        let inputTensor = try ORTValue(
+            tensorData: mutableData,
+            elementType: ORTTensorElementDataType.float,
+            shape: inputShape
+        )
+
+        return inputTensor
+    }
 
   func evaluate(inputData: Data) -> Result<String, Error> {
-      return Result<String, Error> { () -> String in
-          let inputDataCount = inputData.count
-          let feature_dim = 1  // This should be your expected feature dimension per time step
-          let time_steps = 80 // was inputDataCount / MemoryLayout<Float>.stride
+        return Result<String, Error> { () -> String in
+            let startTime = DispatchTime.now()
+            // Step 1: Create ORTValue for input data
+            let expectedLength = 1200 // 1200 * 80 == 96000 samples of input
+            let group = 80 // Number of groups for convolution
+            let inputTensor = try createORTValueFromAudio(inputData: inputData, sampleRate: 16000, expectedLength: expectedLength, group: group)
 
-          // The batch size can be set to 1 if you're running a single sequence inference
-          let inputShape: [NSNumber] = [1, 
-                                        NSNumber(value: time_steps),
-                                        NSNumber(value: feature_dim)]
+            // Step 2: Create ORTValue for audio length
+            let lengthShape: [NSNumber] = [1]
+            let audioLength = inputData.count
+            let audioLengthData = NSMutableData(bytes: withUnsafeBytes(of: audioLength) { ptr in
+                return ptr.baseAddress!
+            }, length: MemoryLayout<Int64>.size)
+            let lengthValue = try ORTValue(tensorData: audioLengthData, elementType: ORTTensorElementDataType.int64, shape: lengthShape)
 
-          let input = try ORTValue(
-              tensorData: NSMutableData(data: inputData),
-              elementType: ORTTensorElementDataType.float,
-              shape: inputShape
-          )
-          
-          let startTime = DispatchTime.now()
-          
-          // Update input and output names based on your model inspection
-          let lengthShape: [NSNumber] = [1]  // Shape definition for length tensor
-          let int64Value = inputDataCount
-          let lengthData = NSMutableData(bytes: withUnsafeBytes(of: int64Value) { ptr in
-              ptr.baseAddress! // Force unwrapping here (be cautious)
-              // Use ptr to access the byte representation of int64Value
-          }, length: MemoryLayout<Int64>.size)
-          let lengthValue = try ORTValue(tensorData: lengthData, elementType: ORTTensorElementDataType.int64, shape: lengthShape)
-          let inputs: [String: ORTValue] = [
-            "audio_signal": input,
-            "length": lengthValue,
-          ]
-          let outputs = try ortSession.run(
-            withInputs: inputs,
-            outputNames: ["logits", "embs"],
-            runOptions: nil
-          )
-          
-          let endTime = DispatchTime.now()
-          print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
-          
-          guard let logits = outputs["logits"], let embs = outputs["embs"] else {
-              throw SpeechRecognizerError.Error("Failed to get model output.")
-          }
-          let logitsData = try logits.tensorData() as Data
-          let _ = logitsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
-              let floatBuffer = buffer.bindMemory(to: Float.self)
-              print("logits size: \(floatBuffer.count)")
-              return ""
-          }
-          
-          let embsData = try embs.tensorData() as Data
-          var isBaselineVec = true
-          let _ = embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
-              let floatBuffer = buffer.bindMemory(to: Float.self)
-              print("embs size: \(floatBuffer.count)")
-              let floatArray = Array(floatBuffer)
-              if !matcher.doesBaselineVecExist() {
-                  matcher.storeBaselineVec(floatArray)
-              } else {
-                  matcher.storeTestVec(floatArray)
-                  isBaselineVec = false
-              }
-              return ""
-          }
-          
-          if isBaselineVec {
-              return "Stored Baseline audio for Voice Matching"
-          } else {
-              let isMatch = matcher.cosineMatch()
-              let result = isMatch ? "Did match baseline" : "Did not match baseline"
-              return "Used current recording for Voice Match: " + result
-          }
-      }
+            // Step 3: Prepare inputs and run session
+            let inputs: [String: ORTValue] = [
+                "audio_signal": inputTensor,
+                "length": lengthValue,
+            ]
+            let outputs = try ortSession.run(
+                withInputs: inputs,
+                outputNames: ["logits", "embs"],
+                runOptions: nil
+            )
+
+            let endTime = DispatchTime.now()
+            print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
+
+            guard let _ = outputs["logits"], let embs = outputs["embs"] else {
+                throw SpeechRecognizerError.Error("Failed to get model output.")
+            }
+
+            let embsData = try embs.tensorData() as Data
+            var isBaselineVec = true
+            let result = embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
+                let floatBuffer = buffer.bindMemory(to: Float.self)
+                print("embs size: \(floatBuffer.count)")
+                let floatArray = Array(floatBuffer)
+                if !matcher.doesBaselineVecExist() {
+                    matcher.storeBaselineVec(floatArray)
+                    return ""
+                } else {
+                    isBaselineVec = false
+                    matcher.storeTestVec(floatArray)
+                    let isMatch = matcher.cosineMatch()
+                    matcher.clearAllInputs()
+                    let matchResult = isMatch ? "Did match baseline" : "Did not match baseline"
+                    return "Used current recording for Voice Match: " + matchResult
+                }
+            }
+
+            if isBaselineVec {
+                return "Stored Baseline audio for Voice Matching"
+            } else {
+                return result
+            }
+        }
   }
+
+  // Placeholder function to convert raw audio data to float array
+  func convertToFloatArray(audioData: Data) throws -> [Float] {
+    // Implement the conversion logic or use a library
+    // Return the processed data
+    return []
+  }
+
 }
