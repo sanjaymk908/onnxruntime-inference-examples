@@ -21,6 +21,7 @@
 		C161D9802C19ECE900F60151 /* onnxruntime.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D9822C1B881800F60151 /* titanet_small.with_runtime_opt.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9812C1B881800F60151 /* titanet_small.with_runtime_opt.ort */; };
 		C161D9842C1C917E00F60151 /* SimilarityMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */; };
+		C161D9862C20BB0E00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9852C20BB0E00F60151 /* titanet_large.ort */; };
 		C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */; };
@@ -93,6 +94,7 @@
 		C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = onnxruntime.xcframework; sourceTree = "<group>"; };
 		C161D9812C1B881800F60151 /* titanet_small.with_runtime_opt.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.with_runtime_opt.ort; sourceTree = "<group>"; };
 		C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarityMatcher.swift; sourceTree = "<group>"; };
+		C161D9852C20BB0E00F60151 /* titanet_large.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.ort; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.ort; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* SpeechRecognition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeechRecognition.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +141,7 @@
 		C135634D2C18F1D800FF9A99 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				C161D9852C20BB0E00F60151 /* titanet_large.ort */,
 				C13563452C18F1D800FF9A99 /* onnxruntime.h */,
 				C13563462C18F1D800FF9A99 /* ort_coreml_execution_provider.h */,
 				C13563472C18F1D800FF9A99 /* ort_custom_op_registration.h */,
@@ -350,6 +353,7 @@
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				C161D9822C1B881800F60151 /* titanet_small.with_runtime_opt.ort in Resources */,
+				C161D9862C20BB0E00F60151 /* titanet_large.ort in Resources */,
 				C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
 			);
