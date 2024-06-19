@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,11 +17,11 @@
 		C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */; };
 		C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */; };
 		C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13AACDE2C17F683000C3411 /* CoreVideo.framework */; };
-		C161D97F2C19ECE900F60151 /* onnxruntime.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */; };
-		C161D9802C19ECE900F60151 /* onnxruntime.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D9822C1B881800F60151 /* titanet_small.with_runtime_opt.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9812C1B881800F60151 /* titanet_small.with_runtime_opt.ort */; };
 		C161D9842C1C917E00F60151 /* SimilarityMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */; };
 		C161D9862C20BB0E00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9852C20BB0E00F60151 /* titanet_large.ort */; };
+		C161D9882C2211AC00F60151 /* onnxruntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; };
+		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */; };
@@ -50,7 +50,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C161D9802C19ECE900F60151 /* onnxruntime.xcframework in Embed Frameworks */,
+				C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,19 +91,19 @@
 		C13563692C18F1EF00FF9A99 /* ort_env.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_env.h; sourceTree = "<group>"; };
 		C135636A2C18F1F000FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
 		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = onnxruntime.xcframework; sourceTree = "<group>"; };
 		C161D9812C1B881800F60151 /* titanet_small.with_runtime_opt.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.with_runtime_opt.ort; sourceTree = "<group>"; };
 		C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarityMatcher.swift; sourceTree = "<group>"; };
 		C161D9852C20BB0E00F60151 /* titanet_large.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.ort; sourceTree = "<group>"; };
+		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.ort; sourceTree = "<group>"; };
-		EFE237D326855E4600234E2C /* SpeechRecognition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeechRecognition.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE237D326855E4600234E2C /* SpeakerID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakerID.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionApp.swift; sourceTree = "<group>"; };
 		EFE237D826855E4600234E2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EFE237DA26855E4B00234E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EFE237DF26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EFE237E426855E4B00234E2C /* SpeechRecognitionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeechRecognitionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ai.framer.yella.MatcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237E826855E4B00234E2C /* SpeechRecognitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionTests.swift; sourceTree = "<group>"; };
 		EFE237EA26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EFE2380126855FB900234E2C /* AudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C161D9882C2211AC00F60151 /* onnxruntime.framework in Frameworks */,
 				C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */,
-				C161D97F2C19ECE900F60151 /* onnxruntime.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,7 +197,7 @@
 		C1F2C80D2C17872C001AE4F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C161D97D2C19EB8600F60151 /* onnxruntime.xcframework */,
+				C161D9872C2211AC00F60151 /* onnxruntime.framework */,
 				C13AACDE2C17F683000C3411 /* CoreVideo.framework */,
 				C1F2C8132C17875D001AE4F8 /* ios-arm64_x86_64-simulator */,
 			);
@@ -227,8 +227,8 @@
 		EFE237D426855E4600234E2C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EFE237D326855E4600234E2C /* SpeechRecognition.app */,
-				EFE237E426855E4B00234E2C /* SpeechRecognitionTests.xctest */,
+				EFE237D326855E4600234E2C /* SpeakerID.app */,
+				EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -288,7 +288,7 @@
 			);
 			name = SpeechRecognition;
 			productName = SpeechRecognition;
-			productReference = EFE237D326855E4600234E2C /* SpeechRecognition.app */;
+			productReference = EFE237D326855E4600234E2C /* SpeakerID.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EFE237E326855E4B00234E2C /* SpeechRecognitionTests */ = {
@@ -306,7 +306,7 @@
 			);
 			name = SpeechRecognitionTests;
 			productName = SpeechRecognitionTests;
-			productReference = EFE237E426855E4B00234E2C /* SpeechRecognitionTests.xctest */;
+			productReference = EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -536,7 +536,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SpeechRecognition/Preview Content\"";
-				DEVELOPMENT_TEAM = 54DW66TJXC;
+				DEVELOPMENT_TEAM = 33BJ727SMS;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -560,8 +560,8 @@
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onnxruntime.SpeechRecognition;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
+				PRODUCT_NAME = SpeakerID;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -585,7 +585,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SpeechRecognition/Preview Content\"";
-				DEVELOPMENT_TEAM = 54DW66TJXC;
+				DEVELOPMENT_TEAM = 33BJ727SMS;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -610,8 +610,8 @@
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onnxruntime.SpeechRecognition;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
+				PRODUCT_NAME = SpeakerID;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -645,8 +645,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onnxruntime.SpeechRecognitionTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.framer.yella.MatcherTests;
+				PRODUCT_NAME = ai.framer.yella.MatcherTests;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpeechRecognition.app/SpeechRecognition";
@@ -671,8 +671,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.onnxruntime.SpeechRecognitionTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.framer.yella.MatcherTests;
+				PRODUCT_NAME = ai.framer.yella.MatcherTests;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpeechRecognition.app/SpeechRecognition";

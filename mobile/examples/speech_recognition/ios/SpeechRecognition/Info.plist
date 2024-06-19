@@ -47,6 +47,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Audio is recorded for speech recognition.</string>
+	<string>Audio is recorded for speaker matching.</string>
 </dict>
 </plist>
