@@ -3,14 +3,6 @@
 
 import Foundation
 
-// these labels correspond to the model's output values
-// the labels and postprocessing logic were copied and adapted from:
-// https://github.com/pytorch/ios-demo-app/blob/f2b9aa196821c136d3299b99c5dd592de1fa1776/SpeechRecognition/create_wav2vec2.py#L10
-private let kLabels = [
-  "<s>", "<pad>", "</s>", "<unk>", "|", "E", "T", "A", "O", "N", "I", "H", "S", "R", "D", "L", "U", "M", "W", "C", "F",
-  "G", "Y", "P", "B", "V", "K", "'", "X", "J", "Q", "Z",
-]
-
 class SpeechRecognizer {
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
@@ -28,74 +20,37 @@ class SpeechRecognizer {
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
     matcher = SimilarityMatcher()
   }
-
-  private func postprocess(modelOutput: UnsafeBufferPointer<Float>) -> String {
-    func maxIndex<S>(_ values: S) -> Int? where S: Sequence, S.Element == Float {
-      var max: (idx: Int, value: Float)?
-      for (idx, value) in values.enumerated() {
-        if max == nil || value > max!.value {
-          max = (idx, value)
-        }
-      }
-      return max?.idx
-    }
-
-    func labelIndexToOutput(_ index: Int) -> String {
-      if index == 4 {
-        return " "
-      } else if index > 4 && index < kLabels.count {
-        return kLabels[index]
-      }
-      return ""
-    }
-
-    precondition(modelOutput.count % kLabels.count == 0)
-    let n = modelOutput.count / kLabels.count
-    var resultLabelIndices: [Int] = []
-
-    for i in 0..<n {
-      let labelValues = modelOutput[i * kLabels.count..<(i + 1) * kLabels.count]
-      if let labelIndex = maxIndex(labelValues) {
-        // append without consecutive duplicates
-        if labelIndex != resultLabelIndices.last {
-          resultLabelIndices.append(labelIndex)
-        }
-      }
-    }
-
-    return resultLabelIndices.map(labelIndexToOutput).joined()
-  }
     
-    func createORTValueFromAudio(inputData: Data, sampleRate: Int, expectedLength: Int, group: Int) throws -> ORTValue {
-        // Ensure the input data is in Float32 format
-        let floatArray: [Float] = inputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Float] in
-            let floatBuffer = buffer.bindMemory(to: Float.self)
-            return Array(floatBuffer)
-        }
-
-        // Check if the length is correct and pad/trim as necessary
-        let sequenceLength = expectedLength
-        // Make sure the input length is compatible with the group's requirement
-        guard floatArray.count == sequenceLength * group else {
-            throw NSError(domain: "AudioProcessing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Audio length mismatch. Expected \(sequenceLength * group), but got \(floatArray.count)."])
-        }
-
-        // Create the input shape
-        let inputShape: [NSNumber] = [1, NSNumber(value: group), NSNumber(value: sequenceLength)]
-
-        // Convert the Float array to NSMutableData
-        let dataSize = floatArray.count * MemoryLayout<Float>.stride
-        let mutableData = NSMutableData(bytes: floatArray, length: dataSize)
-
-        // Create the ORTValue tensor
-        let inputTensor = try ORTValue(
-            tensorData: mutableData,
-            elementType: ORTTensorElementDataType.float,
-            shape: inputShape
-        )
-
-        return inputTensor
+  func createORTValueFromAudio(inputData: Data, sampleRate: Int, expectedLength: Int, group: Int) throws -> ORTValue {
+    // Ensure the input data is in Float32 format
+    let floatArray: [Float] = inputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Float] in
+        let floatBuffer = buffer.bindMemory(to: Float.self)
+        return Array(floatBuffer)
     }
+
+    // Check if the length is correct and pad/trim as necessary
+    let sequenceLength = expectedLength
+    // Make sure the input length is compatible with the group's requirement
+    guard floatArray.count == sequenceLength * group else {
+        throw NSError(domain: "AudioProcessing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Audio length mismatch. Expected \(sequenceLength * group), but got \(floatArray.count)."])
+    }
+
+    // Create the input shape
+    let inputShape: [NSNumber] = [1, NSNumber(value: group), NSNumber(value: sequenceLength)]
+
+    // Convert the Float array to NSMutableData
+    let dataSize = floatArray.count * MemoryLayout<Float>.stride
+    let mutableData = NSMutableData(bytes: floatArray, length: dataSize)
+
+    // Create the ORTValue tensor
+    let inputTensor = try ORTValue(
+        tensorData: mutableData,
+        elementType: ORTTensorElementDataType.float,
+        shape: inputShape
+    )
+
+    return inputTensor
+  }
 
   func evaluate(inputData: Data) -> Result<String, Error> {
         return Result<String, Error> { () -> String in
@@ -156,13 +111,6 @@ class SpeechRecognizer {
                 return result
             }
         }
-  }
-
-  // Placeholder function to convert raw audio data to float array
-  func convertToFloatArray(audioData: Data) throws -> [Float] {
-    // Implement the conversion logic or use a library
-    // Return the processed data
-    return []
   }
 
 }
