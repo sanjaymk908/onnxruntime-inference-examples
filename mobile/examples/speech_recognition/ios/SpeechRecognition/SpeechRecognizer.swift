@@ -3,25 +3,29 @@
 
 import Foundation
 
-class SpeechRecognizer {
+class SpeechRecognizer: Evaluator {
+  typealias InputType = Data
+    
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
   private let matcher: SimilarityMatcher
+  private let cloneDetector: CloneInference
 
   enum SpeechRecognizerError: Error {
     case Error(_ message: String)
   }
 
-  init() throws {
+  required init() throws {
     ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "titanet_small", ofType: "ort") else {
+    guard let modelPath = Bundle.main.path(forResource: "titanet_large", ofType: "ort") else {
       throw SpeechRecognizerError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
     matcher = SimilarityMatcher()
+    cloneDetector = try CloneInference()
   }
     
-  func createORTValueFromAudio(inputData: Data, sampleRate: Int, expectedLength: Int, group: Int) throws -> ORTValue {
+  private func createORTValueFromAudio(inputData: Data, sampleRate: Int, expectedLength: Int, group: Int) throws -> ORTValue {
     // Ensure the input data is in Float32 format
     let floatArray: [Float] = inputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Float] in
         let floatBuffer = buffer.bindMemory(to: Float.self)
@@ -88,10 +92,12 @@ class SpeechRecognizer {
 
             let embsData = try embs.tensorData() as Data
             var isBaselineVec = true
+            var clonedTestResult: Result<String, any Error> = .success("Default Value")
             let result = embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> String in
                 let floatBuffer = buffer.bindMemory(to: Float.self)
                 print("embs size: \(floatBuffer.count)")
                 let floatArray = Array(floatBuffer)
+                clonedTestResult = cloneDetector.evaluate(inputData: floatArray)
                 if !matcher.doesBaselineVecExist() {
                     matcher.storeBaselineVec(floatArray)
                     return ""
@@ -106,9 +112,19 @@ class SpeechRecognizer {
             }
 
             if isBaselineVec {
-                return "Stored Baseline audio for Voice Matching"
+                switch clonedTestResult {
+                case .success(let value):
+                    return "Stored Baseline audio for Voice Matching \n" + value
+                default:
+                    return "Stored Baseline audio for Voice Matching \n"
+                }
             } else {
-                return result
+                switch clonedTestResult {
+                case .success(let value):
+                    return result + "\n" + value
+                default:
+                    return result
+                }
             }
         }
   }
