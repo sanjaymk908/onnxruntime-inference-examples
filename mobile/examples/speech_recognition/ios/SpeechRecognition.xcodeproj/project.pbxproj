@@ -18,7 +18,6 @@
 		C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */; };
 		C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13AACDE2C17F683000C3411 /* CoreVideo.framework */; };
 		C161D9842C1C917E00F60151 /* SimilarityMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */; };
-		C161D9862C20BB0E00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9852C20BB0E00F60151 /* titanet_large.ort */; };
 		C161D9882C2211AC00F60151 /* onnxruntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; };
 		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
@@ -27,8 +26,8 @@
 		C161D9922C2D5A8200F60151 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */; };
 		C161D9972C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */; };
 		C161D9982C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */; };
-		C161D99A2C2D67E800F60151 /* titanet_large.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C161D9992C2D67E800F60151 /* titanet_large.onnx */; };
-		C161D99B2C2D67E900F60151 /* titanet_large.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C161D9992C2D67E800F60151 /* titanet_large.onnx */; };
+		C161D99D2C2D6B5C00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D99C2C2D6B5C00F60151 /* titanet_large.ort */; };
+		C161D99E2C2D6B5C00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D99C2C2D6B5C00F60151 /* titanet_large.ort */; };
 		C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
 		EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */; };
@@ -104,7 +103,7 @@
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceProtocol.swift; sourceTree = "<group>"; };
 		C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "8KHz_logreg_96Percent-model.ort"; sourceTree = "<group>"; };
-		C161D9992C2D67E800F60151 /* titanet_large.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.onnx; sourceTree = "<group>"; };
+		C161D99C2C2D6B5C00F60151 /* titanet_large.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.ort; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.ort; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* SpeakerID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakerID.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,7 +248,7 @@
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
 				C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */,
-				C161D9992C2D67E800F60151 /* titanet_large.onnx */,
+				C161D99C2C2D6B5C00F60151 /* titanet_large.ort */,
 				C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */,
 				EFE2380126855FB900234E2C /* AudioRecorder.swift */,
 				C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */,
@@ -365,11 +364,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
-				C161D9862C20BB0E00F60151 /* titanet_large.ort in Resources */,
 				C161D9972C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */,
 				C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */,
-				C161D99A2C2D67E800F60151 /* titanet_large.onnx in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
+				C161D99D2C2D6B5C00F60151 /* titanet_large.ort in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,8 +376,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */,
-				C161D99B2C2D67E900F60151 /* titanet_large.onnx in Resources */,
 				C161D9982C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */,
+				C161D99E2C2D6B5C00F60151 /* titanet_large.ort in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -60,7 +60,7 @@ class SpeechRecognizer: Evaluator {
         return Result<String, Error> { () -> String in
             let startTime = DispatchTime.now()
             // Step 1: Create ORTValue for input data
-            let expectedLength = 1200 // 1200 * 80 == 96000 samples of input
+            let expectedLength = 1000 // 1000 * 80 == 80000 samples of input
             let group = 80 // Number of groups for convolution
             let inputTensor = try createORTValueFromAudio(inputData: inputData, sampleRate: 16000, expectedLength: expectedLength, group: group)
 
@@ -97,7 +97,8 @@ class SpeechRecognizer: Evaluator {
                 let floatBuffer = buffer.bindMemory(to: Float.self)
                 print("embs size: \(floatBuffer.count)")
                 let floatArray = Array(floatBuffer)
-                clonedTestResult = cloneDetector.evaluate(inputData: floatArray)
+                let doubleArray = floatArray.map { Double($0) }
+                clonedTestResult = cloneDetector.evaluate(inputData: doubleArray)
                 if !matcher.doesBaselineVecExist() {
                     matcher.storeBaselineVec(floatArray)
                     return ""

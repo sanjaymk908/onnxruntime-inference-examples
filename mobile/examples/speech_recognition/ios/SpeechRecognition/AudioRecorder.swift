@@ -5,7 +5,7 @@ import AVFoundation
 import Foundation
 
 private let kSampleRate: Int = 16000
-private let kRecordingDuration: TimeInterval = 6
+private let kRecordingDuration: TimeInterval = 5 // sync up w/ SpeechRecognizer metadata
 
 class AudioRecorder {
   typealias RecordingBufferAndData = (buffer: AVAudioBuffer, data: Data)
