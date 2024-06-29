@@ -105,11 +105,14 @@ class AudioRecorder {
           throw AudioRecorderError.Error(message: "Failed to get float channel data.")
         }
 
-        let recordingData = Data(
-          bytesNoCopy: recordingFloatChannelData[0],
-          count: Int(recordingBuffer.frameLength) * MemoryLayout<Float>.size,
-          deallocator: .none)
-
+          // Convert float channel data to Double
+         let frameLength = Int(recordingBuffer.frameLength)
+         let dataSize = frameLength * MemoryLayout<Double>.size
+         let recordingDoubleChannelData = UnsafeBufferPointer(start: recordingFloatChannelData[0], count: frameLength)
+                      .map { Double($0) }
+         // Create recordingData from Double channel data
+         let recordingData = Data(bytes: recordingDoubleChannelData, count: dataSize)
+                  
         return (recordingBuffer, recordingData)
       }
 

@@ -27,8 +27,8 @@ class SpeechRecognizer: Evaluator {
     
   private func createORTValueFromAudio(inputData: Data, sampleRate: Int, expectedLength: Int, group: Int) throws -> ORTValue {
     // Ensure the input data is in Float32 format
-    let floatArray: [Float] = inputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Float] in
-        let floatBuffer = buffer.bindMemory(to: Float.self)
+    let floatArray: [Double] = inputData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Double] in
+        let floatBuffer = buffer.bindMemory(to: Double.self)
         return Array(floatBuffer)
     }
 
