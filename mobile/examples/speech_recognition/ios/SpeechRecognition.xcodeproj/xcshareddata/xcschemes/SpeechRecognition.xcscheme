@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EFE237D226855E4600234E2C"
-               BuildableName = "SpeechRecognition.app"
+               BuildableName = "SpeakerID.app"
                BlueprintName = "SpeechRecognition"
                ReferencedContainer = "container:SpeechRecognition.xcodeproj">
             </BuildableReference>
@@ -35,7 +35,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EFE237E326855E4B00234E2C"
-               BuildableName = "SpeechRecognitionTests.xctest"
+               BuildableName = "ai.framer.yella.MatcherTests.xctest"
                BlueprintName = "SpeechRecognitionTests"
                ReferencedContainer = "container:SpeechRecognition.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EFE237D226855E4600234E2C"
-            BuildableName = "SpeechRecognition.app"
+            BuildableName = "SpeakerID.app"
             BlueprintName = "SpeechRecognition"
             ReferencedContainer = "container:SpeechRecognition.xcodeproj">
          </BuildableReference>
@@ -74,7 +74,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EFE237D226855E4600234E2C"
-            BuildableName = "SpeechRecognition.app"
+            BuildableName = "SpeakerID.app"
             BlueprintName = "SpeechRecognition"
             ReferencedContainer = "container:SpeechRecognition.xcodeproj">
          </BuildableReference>

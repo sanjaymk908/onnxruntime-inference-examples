@@ -37,7 +37,7 @@ struct ContentView: View {
 
   var body: some View {
     VStack {
-      Text("Press \"Record\", say something, and get recognized!")
+      Text("Press \"Record\", which initiates a 5 sec recording from your Mic, and wait for your results!")
         .padding()
 
       Button("Record") {
