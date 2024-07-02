@@ -28,8 +28,8 @@
 		C161D9982C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */; };
 		C161D99D2C2D6B5C00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D99C2C2D6B5C00F60151 /* titanet_large.ort */; };
 		C161D99E2C2D6B5C00F60151 /* titanet_large.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D99C2C2D6B5C00F60151 /* titanet_large.ort */; };
-		C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
-		C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */ = {isa = PBXBuildFile; fileRef = C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */; };
+		C1D5A7FC2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */; };
+		C1D5A7FD2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */; };
 		EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */; };
 		EFE237D926855E4600234E2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D826855E4600234E2C /* ContentView.swift */; };
 		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
@@ -98,14 +98,13 @@
 		C135636A2C18F1F000FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
 		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarityMatcher.swift; sourceTree = "<group>"; };
-		C161D9852C20BB0E00F60151 /* titanet_large.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.ort; sourceTree = "<group>"; };
 		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceProtocol.swift; sourceTree = "<group>"; };
 		C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "8KHz_logreg_96Percent-model.ort"; sourceTree = "<group>"; };
 		C161D99C2C2D6B5C00F60151 /* titanet_large.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.ort; sourceTree = "<group>"; };
+		C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.quant.onnx; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
-		C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_small.ort; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* SpeakerID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakerID.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionApp.swift; sourceTree = "<group>"; };
 		EFE237D826855E4600234E2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -150,7 +149,6 @@
 		C135634D2C18F1D800FF9A99 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				C161D9852C20BB0E00F60151 /* titanet_large.ort */,
 				C13563452C18F1D800FF9A99 /* onnxruntime.h */,
 				C13563462C18F1D800FF9A99 /* ort_coreml_execution_provider.h */,
 				C13563472C18F1D800FF9A99 /* ort_custom_op_registration.h */,
@@ -247,9 +245,9 @@
 			children = (
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
-				C1F2C8142C1787EE001AE4F8 /* titanet_small.ort */,
 				C161D99C2C2D6B5C00F60151 /* titanet_large.ort */,
 				C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */,
+				C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */,
 				EFE2380126855FB900234E2C /* AudioRecorder.swift */,
 				C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */,
 				EFE2380426855FD700234E2C /* SpeechRecognizer.swift */,
@@ -365,9 +363,9 @@
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				C161D9972C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */,
-				C1F2C8152C1787EE001AE4F8 /* titanet_small.ort in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
 				C161D99D2C2D6B5C00F60151 /* titanet_large.ort in Resources */,
+				C1D5A7FC2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,9 +373,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1F2C8162C1787EE001AE4F8 /* titanet_small.ort in Resources */,
 				C161D9982C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */,
 				C161D99E2C2D6B5C00F60151 /* titanet_large.ort in Resources */,
+				C1D5A7FD2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
