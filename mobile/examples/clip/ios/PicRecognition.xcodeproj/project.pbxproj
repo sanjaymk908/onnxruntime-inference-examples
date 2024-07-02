@@ -1,0 +1,725 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135633F2C18F1D700FF9A99 /* ort_env.mm */; };
+		C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563402C18F1D700FF9A99 /* ort_value.mm */; };
+		C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563412C18F1D700FF9A99 /* error_utils.mm */; };
+		C135635B2C18F1DA00FF9A99 /* cxx_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563442C18F1D800FF9A99 /* cxx_utils.mm */; };
+		C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135634F2C18F1D800FF9A99 /* ort_enums.mm */; };
+		C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563512C18F1D900FF9A99 /* ort_session.mm */; };
+		C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */; };
+		C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */; };
+		C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */; };
+		C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13AACDE2C17F683000C3411 /* CoreVideo.framework */; };
+		C161D9882C2211AC00F60151 /* onnxruntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; };
+		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
+		C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
+		C161D9912C2D5A8200F60151 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */; };
+		C161D9922C2D5A8200F60151 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */; };
+		C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
+		C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
+		C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
+		C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
+		C19DC9402C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */; };
+		C19DC9412C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */; };
+		C19DC9432C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */; };
+		C19DC9442C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */; };
+		EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* PicRecognitionApp.swift */; };
+		EFE237D926855E4600234E2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D826855E4600234E2C /* ContentView.swift */; };
+		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
+		EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */; };
+		EFE237E926855E4B00234E2C /* SpeechRecognitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237E826855E4B00234E2C /* SpeechRecognitionTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EFE237E526855E4B00234E2C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EFE237CB26855E4600234E2C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EFE237D226855E4600234E2C;
+			remoteInfo = SpeechRecognition;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C1F2C81A2C1788A2001AE4F8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C135633F2C18F1D700FF9A99 /* ort_env.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_env.mm; sourceTree = "<group>"; };
+		C13563402C18F1D700FF9A99 /* ort_value.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_value.mm; sourceTree = "<group>"; };
+		C13563412C18F1D700FF9A99 /* error_utils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = error_utils.mm; sourceTree = "<group>"; };
+		C13563422C18F1D700FF9A99 /* cxx_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cxx_utils.h; sourceTree = "<group>"; };
+		C13563432C18F1D800FF9A99 /* ort_value_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_value_internal.h; sourceTree = "<group>"; };
+		C13563442C18F1D800FF9A99 /* cxx_utils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cxx_utils.mm; sourceTree = "<group>"; };
+		C13563452C18F1D800FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
+		C13563462C18F1D800FF9A99 /* ort_coreml_execution_provider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_coreml_execution_provider.h; sourceTree = "<group>"; };
+		C13563472C18F1D800FF9A99 /* ort_custom_op_registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_custom_op_registration.h; sourceTree = "<group>"; };
+		C13563482C18F1D800FF9A99 /* ort_enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_enums.h; sourceTree = "<group>"; };
+		C13563492C18F1D800FF9A99 /* ort_env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_env.h; sourceTree = "<group>"; };
+		C135634A2C18F1D800FF9A99 /* ort_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_session.h; sourceTree = "<group>"; };
+		C135634B2C18F1D800FF9A99 /* ort_value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_value.h; sourceTree = "<group>"; };
+		C135634C2C18F1D800FF9A99 /* ort_xnnpack_execution_provider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_xnnpack_execution_provider.h; sourceTree = "<group>"; };
+		C135634E2C18F1D800FF9A99 /* error_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error_utils.h; sourceTree = "<group>"; };
+		C135634F2C18F1D800FF9A99 /* ort_enums.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_enums.mm; sourceTree = "<group>"; };
+		C13563502C18F1D800FF9A99 /* ort_env_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_env_internal.h; sourceTree = "<group>"; };
+		C13563512C18F1D900FF9A99 /* ort_session.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_session.mm; sourceTree = "<group>"; };
+		C13563522C18F1D900FF9A99 /* cxx_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cxx_api.h; sourceTree = "<group>"; };
+		C13563532C18F1D900FF9A99 /* ort_session_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_session_internal.h; sourceTree = "<group>"; };
+		C13563542C18F1D900FF9A99 /* ort_enums_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ort_enums_internal.h; sourceTree = "<group>"; };
+		C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_xnnpack_execution_provider.mm; sourceTree = "<group>"; };
+		C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = assert_arc_enabled.mm; sourceTree = "<group>"; };
+		C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ort_coreml_execution_provider.mm; sourceTree = "<group>"; };
+		C13563632C18F1EB00FF9A99 /* ort_xnnpack_execution_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_xnnpack_execution_provider.h; sourceTree = "<group>"; };
+		C13563642C18F1EC00FF9A99 /* ort_custom_op_registration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_custom_op_registration.h; sourceTree = "<group>"; };
+		C13563652C18F1EC00FF9A99 /* ort_session.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_session.h; sourceTree = "<group>"; };
+		C13563662C18F1ED00FF9A99 /* ort_enums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_enums.h; sourceTree = "<group>"; };
+		C13563672C18F1ED00FF9A99 /* ort_value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_value.h; sourceTree = "<group>"; };
+		C13563682C18F1EE00FF9A99 /* ort_coreml_execution_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_coreml_execution_provider.h; sourceTree = "<group>"; };
+		C13563692C18F1EF00FF9A99 /* ort_env.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_env.h; sourceTree = "<group>"; };
+		C135636A2C18F1F000FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
+		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
+		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
+		C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceProtocol.swift; sourceTree = "<group>"; };
+		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
+		C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognizer.swift; sourceTree = "<group>"; };
+		C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.quant.onnx; sourceTree = "<group>"; };
+		C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "140kPlusCelebA-model.ort"; sourceTree = "<group>"; };
+		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
+		EFE237D326855E4600234E2C /* PicID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicID.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE237D626855E4600234E2C /* PicRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognitionApp.swift; sourceTree = "<group>"; };
+		EFE237D826855E4600234E2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EFE237DA26855E4B00234E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EFE237DF26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ai.framer.yella.MatcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE237E826855E4B00234E2C /* SpeechRecognitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionTests.swift; sourceTree = "<group>"; };
+		EFE237EA26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFE2380326855FC800234E2C /* PicRecognition-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PicRecognition-Bridging-Header.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EFE237D026855E4600234E2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C161D9882C2211AC00F60151 /* onnxruntime.framework in Frameworks */,
+				C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFE237E126855E4B00234E2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE5303DF73A9410AA3E0E0EA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C135634D2C18F1D800FF9A99 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C13563452C18F1D800FF9A99 /* onnxruntime.h */,
+				C13563462C18F1D800FF9A99 /* ort_coreml_execution_provider.h */,
+				C13563472C18F1D800FF9A99 /* ort_custom_op_registration.h */,
+				C13563482C18F1D800FF9A99 /* ort_enums.h */,
+				C13563492C18F1D800FF9A99 /* ort_env.h */,
+				C135634A2C18F1D800FF9A99 /* ort_session.h */,
+				C135634B2C18F1D800FF9A99 /* ort_value.h */,
+				C135634C2C18F1D800FF9A99 /* ort_xnnpack_execution_provider.h */,
+			);
+			name = include;
+			path = "../../../../../../Pods/onnxruntime-objc/objectivec/include";
+			sourceTree = "<group>";
+		};
+		C13563612C18F1EA00FF9A99 /* onnxruntime-objc */ = {
+			isa = PBXGroup;
+			children = (
+				C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */,
+				C13563522C18F1D900FF9A99 /* cxx_api.h */,
+				C13563422C18F1D700FF9A99 /* cxx_utils.h */,
+				C13563442C18F1D800FF9A99 /* cxx_utils.mm */,
+				C135634E2C18F1D800FF9A99 /* error_utils.h */,
+				C13563412C18F1D700FF9A99 /* error_utils.mm */,
+				C13563622C18F1EB00FF9A99 /* include */,
+				C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */,
+				C13563542C18F1D900FF9A99 /* ort_enums_internal.h */,
+				C135634F2C18F1D800FF9A99 /* ort_enums.mm */,
+				C13563502C18F1D800FF9A99 /* ort_env_internal.h */,
+				C135633F2C18F1D700FF9A99 /* ort_env.mm */,
+				C13563532C18F1D900FF9A99 /* ort_session_internal.h */,
+				C13563512C18F1D900FF9A99 /* ort_session.mm */,
+				C13563432C18F1D800FF9A99 /* ort_value_internal.h */,
+				C13563402C18F1D700FF9A99 /* ort_value.mm */,
+				C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */,
+			);
+			path = "onnxruntime-objc";
+			sourceTree = "<group>";
+		};
+		C13563622C18F1EB00FF9A99 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C135636A2C18F1F000FF9A99 /* onnxruntime.h */,
+				C13563682C18F1EE00FF9A99 /* ort_coreml_execution_provider.h */,
+				C13563642C18F1EC00FF9A99 /* ort_custom_op_registration.h */,
+				C13563662C18F1ED00FF9A99 /* ort_enums.h */,
+				C13563692C18F1EF00FF9A99 /* ort_env.h */,
+				C13563652C18F1EC00FF9A99 /* ort_session.h */,
+				C13563672C18F1ED00FF9A99 /* ort_value.h */,
+				C13563632C18F1EB00FF9A99 /* ort_xnnpack_execution_provider.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		C1F2C80D2C17872C001AE4F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C161D9872C2211AC00F60151 /* onnxruntime.framework */,
+				C13AACDE2C17F683000C3411 /* CoreVideo.framework */,
+				C1F2C8132C17875D001AE4F8 /* ios-arm64_x86_64-simulator */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C1F2C8132C17875D001AE4F8 /* ios-arm64_x86_64-simulator */ = {
+			isa = PBXGroup;
+			children = (
+				C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */,
+			);
+			name = "ios-arm64_x86_64-simulator";
+			path = "../../../../../Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator";
+			sourceTree = "<group>";
+		};
+		EFE237CA26855E4600234E2C = {
+			isa = PBXGroup;
+			children = (
+				EFE237D526855E4600234E2C /* PicRecognition */,
+				EFE237E726855E4B00234E2C /* SpeechRecognitionTests */,
+				EFE237D426855E4600234E2C /* Products */,
+				BE5303DF73A9410AA3E0E0EA /* Pods */,
+				C1F2C80D2C17872C001AE4F8 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		EFE237D426855E4600234E2C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EFE237D326855E4600234E2C /* PicID.app */,
+				EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EFE237D526855E4600234E2C /* PicRecognition */ = {
+			isa = PBXGroup;
+			children = (
+				C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */,
+				C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */,
+				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
+				C135634D2C18F1D800FF9A99 /* include */,
+				EFE2380326855FC800234E2C /* PicRecognition-Bridging-Header.h */,
+				EFE237D626855E4600234E2C /* PicRecognitionApp.swift */,
+				EFE237D826855E4600234E2C /* ContentView.swift */,
+				EFE237DA26855E4B00234E2C /* Assets.xcassets */,
+				EFE237DF26855E4B00234E2C /* Info.plist */,
+				EFE237DC26855E4B00234E2C /* Preview Content */,
+				C161D98D2C2D52FD00F60151 /* CloneInference.swift */,
+				C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */,
+				C19DC9392C33D9F9008023F3 /* PicCapture.swift */,
+				C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */,
+			);
+			path = PicRecognition;
+			sourceTree = "<group>";
+		};
+		EFE237DC26855E4B00234E2C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EFE237E726855E4B00234E2C /* SpeechRecognitionTests */ = {
+			isa = PBXGroup;
+			children = (
+				EFE237E826855E4B00234E2C /* SpeechRecognitionTests.swift */,
+				EFE237EA26855E4B00234E2C /* Info.plist */,
+			);
+			path = SpeechRecognitionTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EFE237D226855E4600234E2C /* PicRecognition */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFE237F826855E4B00234E2C /* Build configuration list for PBXNativeTarget "PicRecognition" */;
+			buildPhases = (
+				EFE237CF26855E4600234E2C /* Sources */,
+				EFE237D026855E4600234E2C /* Frameworks */,
+				EFE237D126855E4600234E2C /* Resources */,
+				C1F2C81A2C1788A2001AE4F8 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PicRecognition;
+			productName = SpeechRecognition;
+			productReference = EFE237D326855E4600234E2C /* PicID.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EFE237E326855E4B00234E2C /* PicRecognitionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFE237FB26855E4B00234E2C /* Build configuration list for PBXNativeTarget "PicRecognitionTests" */;
+			buildPhases = (
+				EFE237E026855E4B00234E2C /* Sources */,
+				EFE237E126855E4B00234E2C /* Frameworks */,
+				EFE237E226855E4B00234E2C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EFE237E626855E4B00234E2C /* PBXTargetDependency */,
+			);
+			name = PicRecognitionTests;
+			productName = SpeechRecognitionTests;
+			productReference = EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EFE237CB26855E4600234E2C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					EFE237D226855E4600234E2C = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
+					EFE237E326855E4B00234E2C = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = EFE237D226855E4600234E2C;
+					};
+				};
+			};
+			buildConfigurationList = EFE237CE26855E4600234E2C /* Build configuration list for PBXProject "PicRecognition" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EFE237CA26855E4600234E2C;
+			productRefGroup = EFE237D426855E4600234E2C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EFE237D226855E4600234E2C /* PicRecognition */,
+				EFE237E326855E4B00234E2C /* PicRecognitionTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EFE237D126855E4600234E2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
+				C19DC9432C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */,
+				C19DC9402C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */,
+				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFE237E226855E4B00234E2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C19DC9412C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */,
+				C19DC9442C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EFE237CF26855E4600234E2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */,
+				C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */,
+				C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
+				C161D9912C2D5A8200F60151 /* InferenceProtocol.swift in Sources */,
+				C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */,
+				C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */,
+				C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */,
+				C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */,
+				C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */,
+				C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */,
+				C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */,
+				C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */,
+				EFE237D926855E4600234E2C /* ContentView.swift in Sources */,
+				EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */,
+				C135635B2C18F1DA00FF9A99 /* cxx_utils.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFE237E026855E4B00234E2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFE237E926855E4B00234E2C /* SpeechRecognitionTests.swift in Sources */,
+				C161D9922C2D5A8200F60151 /* InferenceProtocol.swift in Sources */,
+				C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
+				C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */,
+				C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EFE237E626855E4B00234E2C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EFE237D226855E4600234E2C /* PicRecognition */;
+			targetProxy = EFE237E526855E4B00234E2C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EFE237F626855E4B00234E2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EFE237F726855E4B00234E2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EFE237F926855E4B00234E2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"PicRecognition/Preview Content\"";
+				DEVELOPMENT_TEAM = 33BJ727SMS;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+				);
+				INFOPLIST_FILE = PicRecognition/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-stdlib=libc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
+				PRODUCT_NAME = PicID;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "PicRecognition/PicRecognition-Bridging-Header.h";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
+			};
+			name = Debug;
+		};
+		EFE237FA26855E4B00234E2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"PicRecognition/Preview Content\"";
+				DEVELOPMENT_TEAM = 33BJ727SMS;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/**",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**";
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+				);
+				INFOPLIST_FILE = PicRecognition/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-stdlib=libc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
+				PRODUCT_NAME = PicID;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "PicRecognition/PicRecognition-Bridging-Header.h";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
+				USE_HEADERMAP = YES;
+			};
+			name = Release;
+		};
+		EFE237FC26855E4B00234E2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 54DW66TJXC;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = SpeechRecognitionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.framer.yella.MatcherTests;
+				PRODUCT_NAME = ai.framer.yella.MatcherTests;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PicRecognition.app/PicRecognition";
+			};
+			name = Debug;
+		};
+		EFE237FD26855E4B00234E2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 54DW66TJXC;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = SpeechRecognitionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.framer.yella.MatcherTests;
+				PRODUCT_NAME = ai.framer.yella.MatcherTests;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PicRecognition.app/PicRecognition";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EFE237CE26855E4600234E2C /* Build configuration list for PBXProject "PicRecognition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFE237F626855E4B00234E2C /* Debug */,
+				EFE237F726855E4B00234E2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EFE237F826855E4B00234E2C /* Build configuration list for PBXNativeTarget "PicRecognition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFE237F926855E4B00234E2C /* Debug */,
+				EFE237FA26855E4B00234E2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EFE237FB26855E4B00234E2C /* Build configuration list for PBXNativeTarget "PicRecognitionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFE237FC26855E4B00234E2C /* Debug */,
+				EFE237FD26855E4B00234E2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EFE237CB26855E4600234E2C /* Project object */;
+}

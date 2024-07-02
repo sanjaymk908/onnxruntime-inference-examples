@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "self:/Users/sanjaymk/Desktop/ec2/yella/onnx/onnxruntime-inference-examples/mobile/examples/clip/ios/PicRecognition.xcodeproj">
+   </FileRef>
+</Workspace>
