@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 
 class PicCapture: NSObject {
-    typealias PictureData = Data
+    typealias PictureData = (Data, AVCapturePhoto)
     typealias PictureDataCallback = (Result<PictureData, Error>) -> Void
 
     private let captureSession = AVCaptureSession()
@@ -55,7 +55,7 @@ extension PicCapture: AVCapturePhotoCaptureDelegate {
             let resizedImage = UIImage(data: imageData)?.resized(to: CGSize(width: 224, height: 224))
             
             if let resizedImageData = resizedImage?.jpegData(compressionQuality: 1.0) {
-                pictureDataCallback?(.success(resizedImageData))
+                pictureDataCallback?(.success((resizedImageData, photo)))
             } else {
                 pictureDataCallback?(.failure(PicCaptureError.failedToEncodeImage))
             }

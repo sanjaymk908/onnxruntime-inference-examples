@@ -570,7 +570,7 @@
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.picmatcher;
 				PRODUCT_NAME = PicID;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -620,7 +620,7 @@
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.picmatcher;
 				PRODUCT_NAME = PicID;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
