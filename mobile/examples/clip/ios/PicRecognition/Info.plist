@@ -46,7 +46,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Audio is recorded for speaker matching.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The rear facing camera is used to take pics for detection</string>
 </dict>
 </plist>

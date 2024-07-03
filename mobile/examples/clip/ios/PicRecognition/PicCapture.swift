@@ -24,11 +24,13 @@ class PicCapture: NSObject {
 
     func captureImage(completion: @escaping PictureDataCallback) {
         pictureDataCallback = completion
+        // Ensure the capture session is running
+        if !captureSession.isRunning {
+            captureSession.startRunning()
+        }
         
         let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
         imageOutput.capturePhoto(with: settings, delegate: self)
-        
-        captureSession.startRunning()
     }
 
     private func setupCaptureSession() {
@@ -38,9 +40,11 @@ class PicCapture: NSObject {
 
         do {
             let input = try AVCaptureDeviceInput(device: device)
+            captureSession.beginConfiguration()
             captureSession.addInput(input)
-
             captureSession.addOutput(imageOutput)
+            captureSession.commitConfiguration()
+            captureSession.startRunning()
         } catch {
             print("Error setting up capture session: \(error)")
         }
@@ -52,18 +56,20 @@ extension PicCapture: AVCapturePhotoCaptureDelegate {
         if let error = error {
             pictureDataCallback?(.failure(error))
         } else if let imageData = photo.fileDataRepresentation() {
-            let resizedImage = UIImage(data: imageData)?.resized(to: CGSize(width: 224, height: 224))
+            var resizedImageData: Data?
             
-            if let resizedImageData = resizedImage?.jpegData(compressionQuality: 1.0) {
-                pictureDataCallback?(.success((resizedImageData, photo)))
-            } else {
-                pictureDataCallback?(.failure(PicCaptureError.failedToEncodeImage))
+            if let resizedImage = UIImage(data: imageData)?.resized(to: CGSize(width: 224, height: 224)) {
+                resizedImageData = resizedImage.jpegData(compressionQuality: 1.0)
             }
+            
+            pictureDataCallback?(.success((resizedImageData ?? imageData, photo)))
         } else {
             pictureDataCallback?(.failure(PicCaptureError.failedToCapture))
         }
         
-        captureSession.stopRunning()
+        DispatchQueue.main.async {
+            self.captureSession.stopRunning()
+        }
     }
 }
 
