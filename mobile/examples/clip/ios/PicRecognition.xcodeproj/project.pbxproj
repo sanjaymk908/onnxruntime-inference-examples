@@ -21,8 +21,6 @@
 		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
 		C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
-		C161D9912C2D5A8200F60151 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */; };
-		C161D9922C2D5A8200F60151 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */; };
 		C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
@@ -99,7 +97,6 @@
 		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
-		C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceProtocol.swift; sourceTree = "<group>"; };
 		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
 		C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognizer.swift; sourceTree = "<group>"; };
 		C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.quant.onnx; sourceTree = "<group>"; };
@@ -255,7 +252,6 @@
 				EFE237DF26855E4B00234E2C /* Info.plist */,
 				EFE237DC26855E4B00234E2C /* Preview Content */,
 				C161D98D2C2D52FD00F60151 /* CloneInference.swift */,
-				C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */,
 				C19DC9392C33D9F9008023F3 /* PicCapture.swift */,
 				C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */,
 			);
@@ -386,7 +382,6 @@
 				C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */,
 				C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */,
 				C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
-				C161D9912C2D5A8200F60151 /* InferenceProtocol.swift in Sources */,
 				C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */,
 				C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */,
 				C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */,
@@ -406,7 +401,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE237E926855E4B00234E2C /* SpeechRecognitionTests.swift in Sources */,
-				C161D9922C2D5A8200F60151 /* InferenceProtocol.swift in Sources */,
 				C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
 				C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */,
 				C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */,

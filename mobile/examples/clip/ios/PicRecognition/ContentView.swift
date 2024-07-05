@@ -30,17 +30,17 @@ struct ContentView: View {
     private func capturePhotoAndRecognize() {
         picCapture.captureImage { result in
             switch result {
-            case .success((let data, let photo)):
+            case .success((let bitmap, let photo)):
                 self.viewModel.capturedPhoto = photo
-                self.recognizeImage(with: data)
+                self.recognizeImage(with: bitmap)
             case .failure(let error):
                 self.handleError(error)
             }
         }
     }
 
-    private func recognizeImage(with data: Data) {
-        let result = picRecognizer?.evaluate(inputData: data)
+    private func recognizeImage(with bitmap: CIImage) {
+        let result = picRecognizer?.evaluate(bitmap: bitmap)
         switch result {
         case .some(.success(let cloneCheckResult)):
             self.handleRecognitionSuccess(cloneCheckResult)

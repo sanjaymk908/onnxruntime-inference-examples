@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CloneInference: Evaluator {
+class CloneInference {
   typealias InputType = [Double]
     
   private let ortEnv: ORTEnv

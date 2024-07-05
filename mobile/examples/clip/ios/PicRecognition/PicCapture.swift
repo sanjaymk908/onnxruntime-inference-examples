@@ -5,11 +5,12 @@
 //  Created by Sanjay Krishnamurthy on 7/2/24.
 //
 
+import CoreImage
 import UIKit
 import AVFoundation
 
 class PicCapture: NSObject {
-    typealias PictureData = (Data, AVCapturePhoto)
+    typealias PictureData = (CIImage, AVCapturePhoto)
     typealias PictureDataCallback = (Result<PictureData, Error>) -> Void
 
     private let captureSession = AVCaptureSession()
@@ -52,23 +53,77 @@ class PicCapture: NSObject {
 }
 
 extension PicCapture: AVCapturePhotoCaptureDelegate {
+    private func createImageData(from urlString: String, completion: @escaping (Data?) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let url = URL(string: urlString) else {
+                completion(nil)
+                return
+            }
+            do {
+                let imageData = try Data(contentsOf: url)
+                completion(imageData)
+            } catch {
+                print("Error loading image from URL: \(error)")
+                completion(nil)
+            }
+        }
+    }
+    
+    private func processImage(imageData: Data) -> CIImage? {
+        guard let image = UIImage(data: imageData) else {
+            return nil
+        }
+        
+        // Convert UIImage to CIImage
+        guard var ciImage = CIImage(image: image) else {
+            return nil
+        }
+        
+        let targetSize = CGSize(width: 224, height: 224)
+        
+        // Calculate scale factor to resize image to 224x224
+        let scaleX = targetSize.width / ciImage.extent.size.width
+        let scaleY = targetSize.height / ciImage.extent.size.height
+        
+        // Apply scaling using CIFilter
+        ciImage = ciImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
+        
+        return ciImage
+    }
+
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error {
             pictureDataCallback?(.failure(error))
-        } else if let imageData = photo.fileDataRepresentation() {
-            var resizedImageData: Data?
-            
-            if let resizedImage = UIImage(data: imageData)?.resized(to: CGSize(width: 224, height: 224)) {
-                resizedImageData = resizedImage.jpegData(compressionQuality: 1.0)
-            }
-            
-            pictureDataCallback?(.success((resizedImageData ?? imageData, photo)))
+        // Use below for camera pics
+        //} else if let imageData = photo.fileDataRepresentation() {
+        //    processImageData(imageData: imageData, photo: photo)
         } else {
-            pictureDataCallback?(.failure(PicCaptureError.failedToCapture))
+            createImageData(from: "https://yella.co.in/infer/cvd-samples/pics/zuck_real.png") { imageData in
+                if let imageData = imageData {
+                    self.processImageData(imageData: imageData, photo: photo)
+                } else {
+                    self.pictureDataCallback?(.failure(PicCaptureError.failedToCapture))
+                }
+            }
         }
         
         DispatchQueue.main.async {
             self.captureSession.stopRunning()
+        }
+    }
+    
+    private func processImageData(imageData: Data, photo: AVCapturePhoto) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let ciImage = self.processImage(imageData: imageData) {
+                DispatchQueue.main.async {
+                    self.pictureDataCallback?(.success((ciImage, photo)))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.pictureDataCallback?(.failure(PicCaptureError.failedToCapture))
+                }
+            }
         }
     }
 }
