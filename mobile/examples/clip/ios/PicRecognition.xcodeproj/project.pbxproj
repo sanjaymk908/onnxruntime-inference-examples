@@ -34,6 +34,8 @@
 		C19DC9492C3A64F8008023F3 /* PicUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9472C3A64F8008023F3 /* PicUpload.swift */; };
 		C19DC94B2C3A69E4008023F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC94A2C3A69E4008023F3 /* ContentView.swift */; };
 		C19DC94C2C3A69E4008023F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC94A2C3A69E4008023F3 /* ContentView.swift */; };
+		C19DC94E2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */; };
+		C19DC94F2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */; };
 		EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* PicRecognitionApp.swift */; };
 		EFE237D926855E4600234E2C /* ContentViewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D826855E4600234E2C /* ContentViewCapture.swift */; };
 		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
@@ -108,6 +110,7 @@
 		C19DC9452C35463C008023F3 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		C19DC9472C3A64F8008023F3 /* PicUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicUpload.swift; sourceTree = "<group>"; };
 		C19DC94A2C3A69E4008023F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.onnx; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* PicID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicID.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* PicRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognitionApp.swift; sourceTree = "<group>"; };
@@ -248,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */,
+				C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */,
 				C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
@@ -365,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
+				C19DC94E2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */,
 				C19DC9432C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */,
 				C19DC9402C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
@@ -376,6 +381,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C19DC9412C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */,
+				C19DC94F2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */,
 				C19DC9442C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
