@@ -1,19 +1,20 @@
-import SwiftUI
-import AVFoundation
+//
+//  ContentView.swift
+//  PicRecognition
+//
+//  Created by Sanjay Krishnamurthy on 7/7/24.
+//
 
-// Define a custom error type
-enum RecognitionError: Error {
-    case custom(message: String)
-}
+import SwiftUI
 
 class ContentViewModel: ObservableObject {
-    @Published var capturedPhoto: AVCapturePhoto?
+    @Published var capturedPhoto: UIImage?
     @Published var recognitionResult: String = ""
 }
 
 struct ContentView: View {
     @StateObject private var viewModel = ContentViewModel()
-    private let picCapture = PicCapture()
+    private let picUpload = PicUpload()
     private var picRecognizer: PicRecognizer?
 
     @State private var readyToRecord: Bool = true
@@ -27,11 +28,11 @@ struct ContentView: View {
         }
     }
 
-    private func capturePhotoAndRecognize() {
-        picCapture.captureImage { result in
+    private func selectImageAndRecognize() {
+        picUpload.selectImage { result in
             switch result {
-            case .success((let bitmap, let photo)):
-                self.viewModel.capturedPhoto = photo
+            case .success((let bitmap, let image)):
+                self.viewModel.capturedPhoto = image
                 self.recognizeImage(with: bitmap)
             case .failure(let error):
                 self.handleError(error)
@@ -67,34 +68,54 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            if let photo = viewModel.capturedPhoto, let image = UIImage(data: photo.fileDataRepresentation()!) {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .edgesIgnoringSafeArea(.all)
-            }
+            // Black area covering the entire background
+            Color.black
+                .edgesIgnoringSafeArea(.all)
 
             VStack {
-                Text("Click the button to capture a photo from your rear-facing camera and wait for the results!")
-                    .padding()
+                // Reduced black space at the top
+                Spacer()
+                    .frame(height: UIScreen.main.bounds.height * 0.05)
 
-                Button("Click") {
-                    readyToRecord = false
-                    capturePhotoAndRecognize()
-                }
-                .padding()
-                .disabled(!readyToRecord)
+                // Centering the rounded rectangle with the image and button inside
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(red: 0.9, green: 0.9, blue: 0.9))
+                    .frame(width: UIScreen.main.bounds.width * 0.85, height: UIScreen.main.bounds.height * 0.6)
+                    .shadow(radius: 10)
+                    .overlay(
+                        VStack {
+                            Spacer()
 
+                            if let photo = viewModel.capturedPhoto {
+                                Image(uiImage: photo)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: UIScreen.main.bounds.width * 0.75, height: UIScreen.main.bounds.height * 0.4)
+                            }
+
+                            Spacer()
+
+                            Button("Select Image") {
+                                readyToRecord = false
+                                selectImageAndRecognize()
+                            }
+                            .padding()
+                            .disabled(!readyToRecord)
+                        }
+                        .padding()
+                    )
+
+                // Reduced black space at the bottom
+                Spacer()
+                    .frame(height: UIScreen.main.bounds.height * 0.05)
+                
+                // Recognition result text at the bottom
                 Text("\(viewModel.recognitionResult)")
                     .foregroundColor(viewModel.recognitionResult.isEmpty ? .white : .red)
                     .padding()
             }
         }
     }
-}
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+
 }
