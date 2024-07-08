@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import AVFoundation
 import SwiftUI
 
 struct ContentView: View {
@@ -9,12 +10,17 @@ struct ContentView: View {
 
   @State private var message: String = ""
   @State private var successful: Bool = true
-
   @State private var readyToRecord: Bool = true
+  @State private var audioData: Data? = nil
+  @State private var audioBuffer: AVAudioPCMBuffer? = nil
+  @State private var playerNode: AVAudioPlayerNode? = nil
+  @State private var engine: AVAudioEngine? = nil
 
   private func recordAndRecognize() {
     audioRecorder.record { recordResult in
       let recognizeResult = recordResult.flatMap { recordingBufferAndData in
+        self.audioData = recordingBufferAndData.data
+        self.audioBuffer = recordingBufferAndData.buffer as? AVAudioPCMBuffer
         return speechRecognizer.evaluate(inputData: recordingBufferAndData.data)
       }
       endRecordAndRecognize(recognizeResult)
@@ -34,24 +40,161 @@ struct ContentView: View {
       readyToRecord = true
     }
   }
-
-  var body: some View {
-    VStack {
-      Text("Press \"Record\", which initiates a 5 sec recording from your Mic, and wait for your results!")
-        .padding()
-
-      Button("Record") {
-        readyToRecord = false
-        recordAndRecognize()
-      }
-      .padding()
-      .disabled(!readyToRecord)
-
-      Text("\(message)")
-        .foregroundColor(successful ? .none : .red)
-        .padding()
+    
+  private func playAudio(buffer: AVAudioPCMBuffer) {
+    engine = AVAudioEngine()
+    playerNode = AVAudioPlayerNode()
+    guard let engine = engine, let playerNode = playerNode else {
+        print("Failed to initialize AVAudioEngine or AVAudioPlayerNode.")
+        return
+    }
+    engine.attach(playerNode)
+    engine.connect(playerNode, to: engine.mainMixerNode, format: buffer.format)
+    let session = AVAudioSession.sharedInstance()
+    do {
+        try session.setCategory(.playback, mode: .default, options: [])
+            try session.setActive(true)
+            print("Audio session configured for playback.")
+    } catch {
+        print("Error setting up audio session: \(error)")
+        return
+    }
+    do {
+        try engine.start()
+        print("Audio engine started successfully.")
+    } catch {
+        print("Error starting engine: \(error.localizedDescription)")
+        return
+    }
+    playerNode.scheduleBuffer(buffer, at: nil, options: []) {
+        print("Playback finished.")
+        self.cleanupAudio()
+    }
+    playerNode.play()
+    print("Playing audio...")
+    let playbackDuration = Double(buffer.frameLength) / buffer.format.sampleRate
+    DispatchQueue.main.asyncAfter(deadline: .now() + playbackDuration) {
+        print("Playback should be completed by now.")
     }
   }
+
+  private func cleanupAudio() {
+    // Clean up resources
+    engine?.stop()
+    engine = nil
+    playerNode = nil
+    let session = AVAudioSession.sharedInstance()
+    do {
+        try session.setActive(false)
+        print("Audio session deactivated.")
+    } catch {
+        print("Error deactivating audio session: \(error)")
+    }
+  }
+
+  var body: some View {
+        ZStack {
+            // Black area covering the entire background
+            Color.black
+                .edgesIgnoringSafeArea(.all)
+
+            VStack {
+                // Reduced black space at the top
+                Spacer()
+                    .frame(height: UIScreen.main.bounds.height * 0.05)
+
+                // Centering the rounded rectangle with the content inside
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(red: 0.9, green: 0.9, blue: 0.9))
+                    .frame(width: UIScreen.main.bounds.width * 0.85, height: UIScreen.main.bounds.height * 0.6)
+                    .shadow(radius: 10)
+                    .overlay(
+                        VStack {
+                            Text("Press \"Record\", which initiates a 5 sec recording from your Mic, and wait for your results!")
+                                .foregroundColor(.black) // Darker text color for better visibility
+                                .padding()
+
+                            Button("Record") {
+                                readyToRecord = false
+                                recordAndRecognize()
+                            }
+                            .buttonStyle(RecordButtonStyle(isEnabled: readyToRecord))
+                            .padding()
+
+                            if let audioData = audioData {
+                                HStack {
+                                    Button(action: {
+                                        playAudio(buffer: audioBuffer!)
+                                    }) {
+                                        Image(systemName: "play.circle.fill")
+                                            .resizable()
+                                            .frame(width: 50, height: 50)
+                                            .foregroundColor(.blue)
+                                    }
+                                    if let audioBuffer = audioBuffer {
+                                        WaveformView(audioBuffer: audioBuffer)
+                                            .frame(height: 50)
+                                    }
+                                }
+                                .padding()
+                            }
+
+                            Text("\(message)")
+                                .foregroundColor(successful ? .green : .red) // Use black color for success
+                                .padding()
+                        }
+                        .padding()
+                    )
+
+                // Reduced black space at the bottom
+                Spacer()
+                    .frame(height: UIScreen.main.bounds.height * 0.05)
+            }
+        }
+    }
+}
+
+struct RecordButtonStyle: ButtonStyle {
+    var isEnabled: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(isEnabled ? Color.blue : Color.gray)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .opacity(configuration.isPressed ? 0.5 : 1.0)
+    }
+}
+
+struct WaveformView: View {
+    var audioBuffer: AVAudioPCMBuffer
+
+    var body: some View {
+        GeometryReader { geometry in
+            Path { path in
+                let width = geometry.size.width
+                let height = geometry.size.height
+                let midY = height / 2
+
+                let audioData = audioBuffer.floatChannelData![0]
+                let frameLength = Int(audioBuffer.frameLength)
+
+                for x in 0..<Int(width) {
+                    let sampleIndex = Int(CGFloat(x) / width * CGFloat(frameLength))
+                    let sample = audioData[sampleIndex]
+                    let y = CGFloat(sample) * midY + midY
+
+                    if x == 0 {
+                        path.move(to: CGPoint(x: CGFloat(x), y: y))
+                    } else {
+                        path.addLine(to: CGPoint(x: CGFloat(x), y: y))
+                    }
+                }
+            }
+            .stroke(Color.blue, lineWidth: 2)
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

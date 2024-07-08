@@ -24,7 +24,8 @@ class AudioRecorder {
           throw AudioRecorderError.Error(message: "Recording permission denied.")
         }
 
-        try session.setCategory(.record)
+        try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+        try session.setMode(.videoRecording)
         try session.setActive(true)
 
         let tempDir = FileManager.default.temporaryDirectory
@@ -112,8 +113,8 @@ class AudioRecorder {
                       .map { Double($0) }
          // Create recordingData from Double channel data
          let recordingData = Data(bytes: recordingDoubleChannelData, count: dataSize)
-                  
-        return (recordingBuffer, recordingData)
+              
+         return (recordingBuffer, recordingData)
       }
 
       callback(recordResult)
