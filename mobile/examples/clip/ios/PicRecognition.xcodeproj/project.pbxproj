@@ -25,8 +25,6 @@
 		C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
 		C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
-		C19DC9402C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */; };
-		C19DC9412C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */; };
 		C19DC9432C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */; };
 		C19DC9442C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */; };
 		C19DC9462C35463C008023F3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C19DC9452C35463C008023F3 /* Metal.framework */; };
@@ -105,14 +103,13 @@
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
 		C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognizer.swift; sourceTree = "<group>"; };
-		C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.quant.onnx; sourceTree = "<group>"; };
 		C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "140kPlusCelebA-model.ort"; sourceTree = "<group>"; };
 		C19DC9452C35463C008023F3 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		C19DC9472C3A64F8008023F3 /* PicUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicUpload.swift; sourceTree = "<group>"; };
 		C19DC94A2C3A69E4008023F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.onnx; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
-		EFE237D326855E4600234E2C /* PicID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicID.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE237D326855E4600234E2C /* Cloned PicID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloned PicID.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* PicRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognitionApp.swift; sourceTree = "<group>"; };
 		EFE237D826855E4600234E2C /* ContentViewCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewCapture.swift; sourceTree = "<group>"; };
 		EFE237DA26855E4B00234E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -241,7 +238,7 @@
 		EFE237D426855E4600234E2C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EFE237D326855E4600234E2C /* PicID.app */,
+				EFE237D326855E4600234E2C /* Cloned PicID.app */,
 				EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */,
 			);
 			name = Products;
@@ -250,7 +247,6 @@
 		EFE237D526855E4600234E2C /* PicRecognition */ = {
 			isa = PBXGroup;
 			children = (
-				C19DC93F2C33E2D2008023F3 /* clip_image_encoder.quant.onnx */,
 				C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */,
 				C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
@@ -305,7 +301,7 @@
 			);
 			name = PicRecognition;
 			productName = SpeechRecognition;
-			productReference = EFE237D326855E4600234E2C /* PicID.app */;
+			productReference = EFE237D326855E4600234E2C /* Cloned PicID.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EFE237E326855E4B00234E2C /* PicRecognitionTests */ = {
@@ -371,7 +367,6 @@
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				C19DC94E2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */,
 				C19DC9432C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */,
-				C19DC9402C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,7 +375,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C19DC9412C33E2D3008023F3 /* clip_image_encoder.quant.onnx in Resources */,
 				C19DC94F2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */,
 				C19DC9442C33E2F1008023F3 /* 140kPlusCelebA-model.ort in Resources */,
 			);
@@ -587,7 +581,7 @@
 					"-stdlib=libc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yella.picmatcher;
-				PRODUCT_NAME = PicID;
+				PRODUCT_NAME = "Cloned PicID";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -637,7 +631,7 @@
 					"-stdlib=libc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yella.picmatcher;
-				PRODUCT_NAME = PicID;
+				PRODUCT_NAME = "Cloned PicID";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
