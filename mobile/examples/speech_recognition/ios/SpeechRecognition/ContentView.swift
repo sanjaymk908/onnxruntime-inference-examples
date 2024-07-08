@@ -179,11 +179,12 @@ struct WaveformView: View {
 
                 let audioData = audioBuffer.floatChannelData![0]
                 let frameLength = Int(audioBuffer.frameLength)
+                let scalingFactor: CGFloat = 8.0 // Increase this value to make the waveform taller
 
                 for x in 0..<Int(width) {
                     let sampleIndex = Int(CGFloat(x) / width * CGFloat(frameLength))
                     let sample = audioData[sampleIndex]
-                    let y = CGFloat(sample) * midY + midY
+                    let y = CGFloat(sample) * midY * scalingFactor + midY
 
                     if x == 0 {
                         path.move(to: CGPoint(x: CGFloat(x), y: y))
@@ -192,7 +193,7 @@ struct WaveformView: View {
                     }
                 }
             }
-            .stroke(Color.blue, lineWidth: 2)
+            .stroke(Color.blue, lineWidth: 3) // Increase lineWidth for bolder lines
         }
     }
 }
