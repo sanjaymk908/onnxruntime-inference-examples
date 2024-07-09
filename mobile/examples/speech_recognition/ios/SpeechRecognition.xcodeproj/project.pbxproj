@@ -26,8 +26,8 @@
 		C161D9922C2D5A8200F60151 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */; };
 		C161D9972C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */; };
 		C161D9982C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */; };
-		C1D5A7FC2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */; };
-		C1D5A7FD2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */; };
+		C19DC9512C3CE955008023F3 /* titanet_large.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC9502C3CE955008023F3 /* titanet_large.onnx */; };
+		C19DC9522C3CE955008023F3 /* titanet_large.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC9502C3CE955008023F3 /* titanet_large.onnx */; };
 		EFE237D726855E4600234E2C /* SpeechRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */; };
 		EFE237D926855E4600234E2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D826855E4600234E2C /* ContentView.swift */; };
 		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
@@ -100,7 +100,7 @@
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C161D9902C2D5A8200F60151 /* InferenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceProtocol.swift; sourceTree = "<group>"; };
 		C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "8KHz_logreg_96Percent-model.ort"; sourceTree = "<group>"; };
-		C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.quant.onnx; sourceTree = "<group>"; };
+		C19DC9502C3CE955008023F3 /* titanet_large.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.onnx; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* SpeakerID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakerID.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionApp.swift; sourceTree = "<group>"; };
@@ -243,7 +243,7 @@
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
 				C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */,
-				C1D5A7FB2C33A85A007EC825 /* titanet_large.quant.onnx */,
+				C19DC9502C3CE955008023F3 /* titanet_large.onnx */,
 				EFE2380126855FB900234E2C /* AudioRecorder.swift */,
 				C161D9832C1C917E00F60151 /* SimilarityMatcher.swift */,
 				EFE2380426855FD700234E2C /* SpeechRecognizer.swift */,
@@ -359,8 +359,8 @@
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				C161D9972C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */,
+				C19DC9512C3CE955008023F3 /* titanet_large.onnx in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
-				C1D5A7FC2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,8 +368,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C19DC9522C3CE955008023F3 /* titanet_large.onnx in Resources */,
 				C161D9982C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort in Resources */,
-				C1D5A7FD2C33A85B007EC825 /* titanet_large.quant.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

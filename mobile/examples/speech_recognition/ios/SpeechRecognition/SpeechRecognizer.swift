@@ -17,7 +17,7 @@ class SpeechRecognizer: Evaluator {
   required init() throws {
     let startTime = DispatchTime.now()
     ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "titanet_large.quant", ofType: "onnx") else {
+    guard let modelPath = Bundle.main.path(forResource: "titanet_large", ofType: "onnx") else {
       throw SpeechRecognizerError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)

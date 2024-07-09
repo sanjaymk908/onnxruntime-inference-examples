@@ -15,6 +15,7 @@ struct ContentView: View {
   @State private var audioBuffer: AVAudioPCMBuffer? = nil
   @State private var playerNode: AVAudioPlayerNode? = nil
   @State private var engine: AVAudioEngine? = nil
+  @State private var isPlaying: Bool = false
 
   private func recordAndRecognize() {
     audioRecorder.record { recordResult in
@@ -69,13 +70,28 @@ struct ContentView: View {
     playerNode.scheduleBuffer(buffer, at: nil, options: []) {
         print("Playback finished.")
         self.cleanupAudio()
+        self.isPlaying = false
     }
     playerNode.play()
+    isPlaying = true
     print("Playing audio...")
-    let playbackDuration = Double(buffer.frameLength) / buffer.format.sampleRate
+    var playbackDuration = Double(buffer.frameLength) / buffer.format.sampleRate
+    playbackDuration += 3  // prevent pre-emptive stops
     DispatchQueue.main.asyncAfter(deadline: .now() + playbackDuration) {
         print("Playback should be completed by now.")
     }
+  }
+    
+  private func togglePlayPause() {
+     if isPlaying {
+          playerNode?.pause()
+          isPlaying = false
+          print("Audio paused.")
+      } else {
+          playerNode?.play()
+          isPlaying = true
+          print("Audio resumed.")
+      }
   }
 
   private func cleanupAudio() {
@@ -121,20 +137,21 @@ struct ContentView: View {
                             .buttonStyle(RecordButtonStyle(isEnabled: readyToRecord))
                             .padding()
 
-                            if let audioData = audioData {
+                            if let audioBuffer = audioBuffer {
                                 HStack {
                                     Button(action: {
-                                        playAudio(buffer: audioBuffer!)
+                                        togglePlayPause()
+                                        if playerNode == nil {
+                                            playAudio(buffer: audioBuffer)
+                                        }
                                     }) {
-                                        Image(systemName: "play.circle.fill")
+                                        Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill")
                                             .resizable()
                                             .frame(width: 50, height: 50)
                                             .foregroundColor(.blue)
                                     }
-                                    if let audioBuffer = audioBuffer {
-                                        WaveformView(audioBuffer: audioBuffer)
-                                            .frame(height: 50)
-                                    }
+                                    WaveformView(audioBuffer: audioBuffer)
+                                        .frame(height: 50)
                                 }
                                 .padding()
                             }
