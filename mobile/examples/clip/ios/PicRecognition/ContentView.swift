@@ -17,8 +17,6 @@ struct ContentView: View {
     private let picUpload = PicUpload()
     private var picRecognizer: PicRecognizer?
 
-    @State private var readyToRecord: Bool = true
-
     init() {
         do {
             picRecognizer = try PicRecognizer()
@@ -55,14 +53,14 @@ struct ContentView: View {
     private func handleRecognitionSuccess(_ cloneCheckResult: String) {
         DispatchQueue.main.async {
             self.viewModel.recognitionResult = cloneCheckResult
-            self.readyToRecord = true
         }
     }
 
     private func handleError(_ error: Error) {
         DispatchQueue.main.async {
-            self.viewModel.recognitionResult = "Error: \(error)"
-            self.readyToRecord = true
+            if (error as! PicUploadError != PicUploadError.noPicSelected) {
+                self.viewModel.recognitionResult = "Error: \(error)"
+            }
         }
     }
 
@@ -96,11 +94,9 @@ struct ContentView: View {
                             Spacer()
 
                             Button("Select Image") {
-                                readyToRecord = false
                                 selectImageAndRecognize()
                             }
                             .padding()
-                            .disabled(!readyToRecord)
                         }
                         .padding()
                     )
@@ -116,6 +112,4 @@ struct ContentView: View {
             }
         }
     }
-
-
 }

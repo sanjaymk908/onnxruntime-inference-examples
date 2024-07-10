@@ -25,7 +25,7 @@ class PicUpload: NSObject {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = false
-        
+
         DispatchQueue.main.async {
             let rootViewController = UIApplication.shared.windows.first?.rootViewController
             rootViewController?.present(self.imagePicker, animated: true, completion: nil)
@@ -50,6 +50,12 @@ class PicUpload: NSObject {
 
         return scaledCIImage
     }
+
+    func handleDismissal() {
+        DispatchQueue.main.async {
+            self.pictureDataCallback?(.failure(PicUploadError.noPicSelected))
+        }
+    }
 }
 
 extension PicUpload: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -71,7 +77,9 @@ extension PicUpload: UIImagePickerControllerDelegate, UINavigationControllerDele
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         DispatchQueue.main.async {
-            picker.dismiss(animated: true, completion: nil)
+            picker.dismiss(animated: true) {
+                self.pictureDataCallback?(.failure(PicUploadError.noPicSelected))
+            }
         }
     }
 }
@@ -79,4 +87,5 @@ extension PicUpload: UIImagePickerControllerDelegate, UINavigationControllerDele
 enum PicUploadError: Error {
     case failedToCapture
     case failedToEncodeImage
+    case noPicSelected
 }
