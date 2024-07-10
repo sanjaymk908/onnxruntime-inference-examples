@@ -10,59 +10,40 @@ import SwiftUI
 class ContentViewModel: ObservableObject {
     @Published var capturedPhoto: UIImage?
     @Published var recognitionResult: String = ""
+    @Published var isProcessing: Bool = false
+    @Published var picRecognizer: PicRecognizer?
+
+    init() {
+        setupPicRecognizer()
+    }
+
+    private func setupPicRecognizer() {
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            do {
+                self.picRecognizer = try PicRecognizer()
+                semaphore.signal()
+            } catch {
+                // Handle the initialization error here
+                print("Failed to initialize PicRecognizer: \(error)")
+                semaphore.signal()
+            }
+        }
+
+        // Show a ProgressView while waiting for the semaphore
+        DispatchQueue.main.async {
+            self.isProcessing = true
+        }
+        _ = semaphore.wait(timeout: .distantFuture)
+        DispatchQueue.main.async {
+            self.isProcessing = false
+        }
+    }
 }
 
 struct ContentView: View {
     @StateObject private var viewModel = ContentViewModel()
     private let picUpload = PicUpload()
-    private var picRecognizer: PicRecognizer?
-
-    init() {
-        do {
-            picRecognizer = try PicRecognizer()
-        } catch {
-            // Handle the initialization error here
-            print("Failed to initialize PicRecognizer: \(error)")
-        }
-    }
-
-    private func selectImageAndRecognize() {
-        picUpload.selectImage { result in
-            switch result {
-            case .success((let bitmap, let image)):
-                self.viewModel.capturedPhoto = image
-                self.recognizeImage(with: bitmap)
-            case .failure(let error):
-                self.handleError(error)
-            }
-        }
-    }
-
-    private func recognizeImage(with bitmap: CIImage) {
-        let result = picRecognizer?.evaluate(bitmap: bitmap)
-        switch result {
-        case .some(.success(let cloneCheckResult)):
-            self.handleRecognitionSuccess(cloneCheckResult)
-        case .some(.failure(let error)):
-            self.handleError(error)
-        case .none:
-            self.handleError(RecognitionError.custom(message: "PicRecognizer is not initialized"))
-        }
-    }
-
-    private func handleRecognitionSuccess(_ cloneCheckResult: String) {
-        DispatchQueue.main.async {
-            self.viewModel.recognitionResult = cloneCheckResult
-        }
-    }
-
-    private func handleError(_ error: Error) {
-        DispatchQueue.main.async {
-            if (error as! PicUploadError != PicUploadError.noPicSelected) {
-                self.viewModel.recognitionResult = "Error: \(error)"
-            }
-        }
-    }
 
     var body: some View {
         ZStack {
@@ -109,6 +90,54 @@ struct ContentView: View {
                 Text("\(viewModel.recognitionResult)")
                     .foregroundColor(viewModel.recognitionResult.isEmpty ? .white : .red)
                     .padding()
+            }
+
+            // Show a ProgressView while processing
+            if viewModel.isProcessing {
+                ProgressView()
+                    .scaleEffect(2)
+                    .padding()
+            }
+        }
+    }
+
+    private func selectImageAndRecognize() {
+        picUpload.selectImage { result in
+            switch result {
+            case .success((let bitmap, let image)):
+                self.viewModel.capturedPhoto = image
+                self.recognizeImage(with: bitmap)
+            case .failure(let error):
+                self.handleError(error)
+            }
+        }
+    }
+
+    private func recognizeImage(with bitmap: CIImage) {
+        guard let picRecognizer = viewModel.picRecognizer else {
+            handleError(RecognitionError.custom(message: "PicRecognizer is not initialized"))
+            return
+        }
+
+        let result = picRecognizer.evaluate(bitmap: bitmap)
+        switch result {
+        case .success(let cloneCheckResult):
+            self.handleRecognitionSuccess(cloneCheckResult)
+        case .failure(let error):
+            self.handleError(error)
+        }
+    }
+
+    private func handleRecognitionSuccess(_ cloneCheckResult: String) {
+        DispatchQueue.main.async {
+            self.viewModel.recognitionResult = cloneCheckResult
+        }
+    }
+
+    private func handleError(_ error: Error) {
+        DispatchQueue.main.async {
+            if (error as! PicUploadError != PicUploadError.noPicSelected) {
+                self.viewModel.recognitionResult = "Error: \(error)"
             }
         }
     }
