@@ -125,8 +125,11 @@ struct ContentView: View {
                 self.viewModel.capturedPhoto = image
                 self.viewModel.selectImageAndRecognize(with: bitmap)
             case .failure(let error):
-                self.viewModel.recognitionResult = "Error: \(error)"
+                if (error as! PicUploadError) != PicUploadError.noPicSelected {
+                    self.viewModel.recognitionResult = "Error: \(error)"
+                }
             }
         }
     }
+    
 }
