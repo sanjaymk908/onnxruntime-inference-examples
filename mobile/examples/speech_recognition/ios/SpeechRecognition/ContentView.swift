@@ -5,110 +5,117 @@ import AVFoundation
 import SwiftUI
 
 struct ContentView: View {
-  private let audioRecorder = AudioRecorder()
-  private let speechRecognizer = try! SpeechRecognizer()
+    private let audioRecorder = AudioRecorder()
+    private let speechRecognizer = try! SpeechRecognizer()
 
-  @State private var message: String = ""
-  @State private var successful: Bool = true
-  @State private var readyToRecord: Bool = true
-  @State private var audioData: Data? = nil
-  @State private var audioBuffer: AVAudioPCMBuffer? = nil
-  @State private var playerNode: AVAudioPlayerNode? = nil
-  @State private var engine: AVAudioEngine? = nil
-  @State private var isPlaying: Bool = false
+    @State private var message: String = ""
+    @State private var successful: Bool = true
+    @State private var readyToRecord: Bool = true
+    @State private var audioData: Data? = nil
+    @State private var audioBuffer: AVAudioPCMBuffer? = nil
+    @State private var playerNode: AVAudioPlayerNode? = nil
+    @State private var engine: AVAudioEngine? = nil
+    @State private var isPlaying: Bool = false
+    @State private var recordingProgress: Double = 0.0
 
-  private func recordAndRecognize() {
-    audioRecorder.record { recordResult in
-      let recognizeResult = recordResult.flatMap { recordingBufferAndData in
-        self.audioData = recordingBufferAndData.data
-        self.audioBuffer = recordingBufferAndData.buffer as? AVAudioPCMBuffer
-        return speechRecognizer.evaluate(inputData: recordingBufferAndData.data)
-      }
-      endRecordAndRecognize(recognizeResult)
-    }
-  }
+    private func recordAndRecognize() {
+        audioRecorder.record { recordResult in
+            let recognizeResult = recordResult.flatMap { recordingBufferAndData in
+                self.audioData = recordingBufferAndData.data
+                self.audioBuffer = recordingBufferAndData.buffer as? AVAudioPCMBuffer
+                return speechRecognizer.evaluate(inputData: recordingBufferAndData.data)
+            }
+            endRecordAndRecognize(recognizeResult)
+        }
 
-  private func endRecordAndRecognize(_ result: Result<String, Error>) {
-    DispatchQueue.main.async {
-      switch result {
-      case .success(let transcription):
-        message = transcription
-        successful = true
-      case .failure(let error):
-        message = "Error: \(error)"
-        successful = false
-      }
-      readyToRecord = true
+        // Update the recordingProgress state variable
+        withAnimation(.linear(duration: 5.0)) {
+            self.recordingProgress = 1.0
+        }
     }
-  }
-    
-  private func playAudio(buffer: AVAudioPCMBuffer) {
-    engine = AVAudioEngine()
-    playerNode = AVAudioPlayerNode()
-    guard let engine = engine, let playerNode = playerNode else {
-        print("Failed to initialize AVAudioEngine or AVAudioPlayerNode.")
-        return
+
+    private func endRecordAndRecognize(_ result: Result<String, Error>) {
+        DispatchQueue.main.async {
+            switch result {
+            case .success(let transcription):
+                message = transcription
+                successful = true
+            case .failure(let error):
+                message = "Error: \(error)"
+                successful = false
+            }
+            readyToRecord = true
+            self.recordingProgress = 0.0 // Reset the recordingProgress
+        }
     }
-    engine.attach(playerNode)
-    engine.connect(playerNode, to: engine.mainMixerNode, format: buffer.format)
-    let session = AVAudioSession.sharedInstance()
-    do {
-        try session.setCategory(.playback, mode: .default, options: [])
+
+    private func playAudio(buffer: AVAudioPCMBuffer) {
+        engine = AVAudioEngine()
+        playerNode = AVAudioPlayerNode()
+        guard let engine = engine, let playerNode = playerNode else {
+            print("Failed to initialize AVAudioEngine or AVAudioPlayerNode.")
+            return
+        }
+        engine.attach(playerNode)
+        engine.connect(playerNode, to: engine.mainMixerNode, format: buffer.format)
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .default, options: [])
             try session.setActive(true)
             print("Audio session configured for playback.")
-    } catch {
-        print("Error setting up audio session: \(error)")
-        return
+        } catch {
+            print("Error setting up audio session: \(error)")
+            return
+        }
+        do {
+            try engine.start()
+            print("Audio engine started successfully.")
+        } catch {
+            print("Error starting engine: \(error.localizedDescription)")
+            return
+        }
+        playerNode.scheduleBuffer(buffer, at: nil, options: []) {
+            print("Playback finished.")
+            self.cleanupAudio()
+            self.isPlaying = false
+        }
+        playerNode.play()
+        isPlaying = true
+        print("Playing audio...")
+        var playbackDuration = Double(buffer.frameLength) / buffer.format.sampleRate
+        playbackDuration += 3  // prevent pre-emptive stops
+        DispatchQueue.main.asyncAfter(deadline: .now() + playbackDuration) {
+            print("Playback should be completed by now.")
+        }
     }
-    do {
-        try engine.start()
-        print("Audio engine started successfully.")
-    } catch {
-        print("Error starting engine: \(error.localizedDescription)")
-        return
-    }
-    playerNode.scheduleBuffer(buffer, at: nil, options: []) {
-        print("Playback finished.")
-        self.cleanupAudio()
-        self.isPlaying = false
-    }
-    playerNode.play()
-    isPlaying = true
-    print("Playing audio...")
-    var playbackDuration = Double(buffer.frameLength) / buffer.format.sampleRate
-    playbackDuration += 3  // prevent pre-emptive stops
-    DispatchQueue.main.asyncAfter(deadline: .now() + playbackDuration) {
-        print("Playback should be completed by now.")
-    }
-  }
-    
-  private func togglePlayPause() {
-     if isPlaying {
-          playerNode?.pause()
-          isPlaying = false
-          print("Audio paused.")
-      } else {
-          playerNode?.play()
-          isPlaying = true
-          print("Audio resumed.")
-      }
-  }
 
-  private func cleanupAudio() {
-    // Clean up resources
-    engine?.stop()
-    engine = nil
-    playerNode = nil
-    let session = AVAudioSession.sharedInstance()
-    do {
-        try session.setActive(false)
-        print("Audio session deactivated.")
-    } catch {
-        print("Error deactivating audio session: \(error)")
+    private func togglePlayPause() {
+        if isPlaying {
+            playerNode?.pause()
+            isPlaying = false
+            print("Audio paused.")
+        } else {
+            playerNode?.play()
+            isPlaying = true
+            print("Audio resumed.")
+        }
     }
-  }
 
-  var body: some View {
+    private func cleanupAudio() {
+        // Clean up resources
+        engine?.stop()
+        engine = nil
+        playerNode = nil
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setActive(false)
+            print("Audio session deactivated.")
+        } catch {
+            print("Error deactivating audio session: \(error)")
+        }
+    }
+
+    var body: some View {
         ZStack {
             // Black area covering the entire background
             Color.black
@@ -126,7 +133,7 @@ struct ContentView: View {
                     .shadow(radius: 10)
                     .overlay(
                         VStack {
-                            Text("Press \"Record\", which initiates a 5 sec recording from your Mic, and wait for your results!")
+                            Text("Record 5 secs of audio to flag as real or cloned")
                                 .foregroundColor(.black) // Darker text color for better visibility
                                 .padding()
 
@@ -134,7 +141,7 @@ struct ContentView: View {
                                 readyToRecord = false
                                 recordAndRecognize()
                             }
-                            .buttonStyle(RecordButtonStyle(isEnabled: readyToRecord))
+                            .buttonStyle(RecordButtonStyle(isEnabled: readyToRecord, recordingProgress: $recordingProgress))
                             .padding()
 
                             if let audioBuffer = audioBuffer {
@@ -173,14 +180,28 @@ struct ContentView: View {
 
 struct RecordButtonStyle: ButtonStyle {
     var isEnabled: Bool
+    @Binding var recordingProgress: Double
 
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding()
-            .background(isEnabled ? Color.blue : Color.gray)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .opacity(configuration.isPressed ? 0.5 : 1.0)
+        ZStack {
+            // Outer grey circle
+            Circle()
+                .fill(Color(white: 0.9, opacity: 1.0))
+                .frame(width: 80, height: 80)
+            
+            // Circular progress indicator
+            Circle()
+                .trim(from: 0.0, to: CGFloat(recordingProgress))
+                .stroke(Color(white: 0.6, opacity: 1.0), lineWidth: 8)
+                .rotationEffect(Angle(degrees: -90))
+                .frame(width: 70, height: 70)
+            
+            // Label text
+            configuration.label
+                .font(.title2)
+                .foregroundColor(configuration.isPressed ? Color.blue.opacity(0.5) : Color.blue)
+        }
+        .opacity(isEnabled ? 1.0 : 0.5)
     }
 }
 
@@ -216,7 +237,8 @@ struct WaveformView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-  static var previews: some View {
-    ContentView()
-  }
+    static var previews: some View {
+        ContentView()
+    }
 }
+
