@@ -3,7 +3,7 @@
 
 import Foundation
 
-class SpeechRecognizer: Evaluator {
+class SpeechRecognizer: Evaluator, ObservableObject {
   typealias InputType = Data
     
   private let ortEnv: ORTEnv

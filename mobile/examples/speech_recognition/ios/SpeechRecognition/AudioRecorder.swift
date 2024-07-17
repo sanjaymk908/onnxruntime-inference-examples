@@ -132,3 +132,7 @@ class AudioRecorder {
     }
   }
 }
+
+enum AudioRecorderError: Error {
+  case speechRecognizerNotInitialized
+}

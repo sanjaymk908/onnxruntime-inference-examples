@@ -1,95 +1,164 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import AVFoundation
 import SwiftUI
+import AVFoundation
 
-struct ContentView: View {
+
+class ContentViewModel: ObservableObject {
     private let audioRecorder = AudioRecorder()
-    private let speechRecognizer = try! SpeechRecognizer()
+    @Published var message: String = ""
+    @Published var successful: Bool = true
+    @Published var audioBuffer: AVAudioPCMBuffer? = nil
+    @Published var playerNode: AVAudioPlayerNode? = nil
+    @Published var engine: AVAudioEngine? = nil
+    @Published var isPlaying: Bool = false
+    @Published var recordingProgress: Double = 0.0
+    @Published var isInitializing: Bool = true
+    @Published var speechRecognizer: SpeechRecognizer? = nil
+    @Published var isRecording: Bool = false // Added isRecording state
+    private var recordStartTime: Date?
+    private let recordingDuration = 5.0
 
-    @State private var message: String = ""
-    @State private var successful: Bool = true
-    @State private var readyToRecord: Bool = true
-    @State private var audioData: Data? = nil
-    @State private var audioBuffer: AVAudioPCMBuffer? = nil
-    @State private var playerNode: AVAudioPlayerNode? = nil
-    @State private var engine: AVAudioEngine? = nil
-    @State private var isPlaying: Bool = false
-    @State private var recordingProgress: Double = 0.0
+    init() {
+        setupSpeechRecognizer()
+    }
 
-    private func recordAndRecognize() {
-        audioRecorder.record { recordResult in
-            let recognizeResult = recordResult.flatMap { recordingBufferAndData in
-                self.audioData = recordingBufferAndData.data
-                self.audioBuffer = recordingBufferAndData.buffer as? AVAudioPCMBuffer
-                return speechRecognizer.evaluate(inputData: recordingBufferAndData.data)
+    private func setupSpeechRecognizer() {
+        isInitializing = true // Update the state variable
+
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return } // Check for valid self
+
+            do {
+                let recognizer = try SpeechRecognizer()
+                DispatchQueue.main.async {
+                    self.speechRecognizer = recognizer // Assign to viewModel
+                    self.isInitializing = false // Update state
+                }
+            } catch {
+                print("Failed to initialize SpeechRecognizer: \(error)")
+                DispatchQueue.main.async {
+                    self.isInitializing = false // Update state on error
+                }
             }
-            endRecordAndRecognize(recognizeResult)
+        }
+    }
+
+    func recordAndRecognize() {
+        guard !isRecording else {
+            print("Already recording.")
+            return
         }
 
-        // Update the recordingProgress state variable
-        withAnimation(.linear(duration: 5.0)) {
-            self.recordingProgress = 1.0
+        isRecording = true // Update isRecording state
+        recordingProgress = 0.0 // Reset progress
+        recordStartTime = Date()
+
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+            // Update recordingProgress every 0.1 seconds until recordingDuration seconds
+            DispatchQueue.main.async {
+                self.updateRecordingProgress()
+            }
+
+            if let startTime = self.recordStartTime, Date().timeIntervalSince(startTime) >= self.recordingDuration {
+                timer.invalidate()
+                self.finishRecording()
+            }
         }
+        RunLoop.current.add(timer, forMode: .common)
+        
+        audioRecorder.record { [weak self] recordResult in
+            guard let self = self else { return }
+
+            switch recordResult {
+            case .success(let recordingBufferAndData):
+                self.audioBuffer = recordingBufferAndData.buffer as? AVAudioPCMBuffer
+
+                if let speechRecognizer = self.speechRecognizer {
+                    let recognizeResult = speechRecognizer.evaluate(inputData: recordingBufferAndData.data)
+                    self.endRecordAndRecognize(recognizeResult)
+                } else {
+                    self.endRecordAndRecognize(.failure(AudioRecorderError.speechRecognizerNotInitialized))
+                }
+
+            case .failure(let error):
+                self.endRecordAndRecognize(.failure(error))
+            }
+        }
+    }
+
+    private func updateRecordingProgress() {
+        guard let startTime = recordStartTime else { return }
+        let elapsedTime = Date().timeIntervalSince(startTime)
+        recordingProgress = elapsedTime / recordingDuration // Calculate progress based on elapsed time
     }
 
     private func endRecordAndRecognize(_ result: Result<String, Error>) {
         DispatchQueue.main.async {
             switch result {
             case .success(let transcription):
-                message = transcription
-                successful = true
+                self.message = transcription
+                self.successful = true
             case .failure(let error):
-                message = "Error: \(error)"
-                successful = false
+                self.message = "Error: \(error)"
+                self.successful = false
             }
-            readyToRecord = true
-            self.recordingProgress = 0.0 // Reset the recordingProgress
         }
     }
 
-    private func playAudio(buffer: AVAudioPCMBuffer) {
-        engine = AVAudioEngine()
-        playerNode = AVAudioPlayerNode()
-        guard let engine = engine, let playerNode = playerNode else {
-            print("Failed to initialize AVAudioEngine or AVAudioPlayerNode.")
-            return
-        }
-        engine.attach(playerNode)
-        engine.connect(playerNode, to: engine.mainMixerNode, format: buffer.format)
-        let session = AVAudioSession.sharedInstance()
-        do {
-            try session.setCategory(.playback, mode: .default, options: [])
-            try session.setActive(true)
-            print("Audio session configured for playback.")
-        } catch {
-            print("Error setting up audio session: \(error)")
-            return
-        }
-        do {
-            try engine.start()
-            print("Audio engine started successfully.")
-        } catch {
-            print("Error starting engine: \(error.localizedDescription)")
-            return
-        }
-        playerNode.scheduleBuffer(buffer, at: nil, options: []) {
-            print("Playback finished.")
-            self.cleanupAudio()
-            self.isPlaying = false
-        }
-        playerNode.play()
-        isPlaying = true
-        print("Playing audio...")
-        var playbackDuration = Double(buffer.frameLength) / buffer.format.sampleRate
-        playbackDuration += 3  // prevent pre-emptive stops
-        DispatchQueue.main.asyncAfter(deadline: .now() + playbackDuration) {
-            print("Playback should be completed by now.")
+    private func finishRecording() {
+        // Stop recording logic goes here
+        isRecording = false
+    }
+
+    func playAudio() {
+        // Placeholder for audio playback logic
+        if let audioBuffer = audioBuffer {
+            engine = AVAudioEngine()
+            playerNode = AVAudioPlayerNode()
+
+            guard let engine = engine, let playerNode = playerNode else {
+                print("Failed to initialize AVAudioEngine or AVAudioPlayerNode.")
+                return
+            }
+
+            engine.attach(playerNode)
+            engine.connect(playerNode, to: engine.mainMixerNode, format: audioBuffer.format)
+
+            let session = AVAudioSession.sharedInstance()
+            do {
+                try session.setCategory(.playback, mode: .default, options: [])
+                try session.setActive(true)
+                print("Audio session configured for playback.")
+            } catch {
+                print("Error setting up audio session: \(error)")
+                return
+            }
+
+            do {
+                try engine.start()
+                print("Audio engine started successfully.")
+            } catch {
+                print("Error starting engine: \(error.localizedDescription)")
+                return
+            }
+
+            playerNode.scheduleBuffer(audioBuffer, at: nil, options: []) {
+                print("Playback finished.")
+                DispatchQueue.main.async {
+                    self.cleanupAudio()
+                    self.isPlaying = false
+                }
+            }
+            playerNode.play()
+            isPlaying = true
+            print("Playing audio...")
         }
     }
 
-    private func togglePlayPause() {
+    func togglePlayPause() {
+        // Placeholder for play/pause logic
         if isPlaying {
             playerNode?.pause()
             isPlaying = false
@@ -102,10 +171,11 @@ struct ContentView: View {
     }
 
     private func cleanupAudio() {
-        // Clean up resources
+        // Placeholder for audio cleanup logic
         engine?.stop()
-        engine = nil
+        // CRASH!! engine = nil
         playerNode = nil
+
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setActive(false)
@@ -114,45 +184,48 @@ struct ContentView: View {
             print("Error deactivating audio session: \(error)")
         }
     }
+}
+
+
+struct ContentView: View {
+    @ObservedObject private var viewModel = ContentViewModel()
 
     var body: some View {
         ZStack {
-            // Black area covering the entire background
             Color.black
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                // Reduced black space at the top
                 Spacer()
-                    .frame(height: UIScreen.main.bounds.height * 0.05)
+                    .frame(height: 20)
 
-                // Centering the rounded rectangle with the content inside
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(red: 0.9, green: 0.9, blue: 0.9))
-                    .frame(width: UIScreen.main.bounds.width * 0.85, height: UIScreen.main.bounds.height * 0.6)
+                    .frame(width: 300, height: 400) // Adjusted height to fit all components
                     .shadow(radius: 10)
                     .overlay(
                         VStack {
-                            Text("Record 5 secs of audio to flag as real or cloned")
-                                .foregroundColor(.black) // Darker text color for better visibility
+                            Text("Record 5 seconds of audio to check whether it is real or cloned")
+                                .foregroundColor(.black)
                                 .padding()
 
-                            Button("Record") {
-                                readyToRecord = false
-                                recordAndRecognize()
+                            Button(action: {
+                                viewModel.recordAndRecognize()
+                            }) {
+                                RecordButton(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress)
                             }
-                            .buttonStyle(RecordButtonStyle(isEnabled: readyToRecord, recordingProgress: $recordingProgress))
+                            .buttonStyle(RecordButtonStyle(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress))
                             .padding()
 
-                            if let audioBuffer = audioBuffer {
+                            if let audioBuffer = viewModel.audioBuffer {
                                 HStack {
                                     Button(action: {
-                                        togglePlayPause()
-                                        if playerNode == nil {
-                                            playAudio(buffer: audioBuffer)
+                                        viewModel.togglePlayPause()
+                                        if viewModel.playerNode == nil {
+                                            viewModel.playAudio()
                                         }
                                     }) {
-                                        Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                                        Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                                             .resizable()
                                             .frame(width: 50, height: 50)
                                             .foregroundColor(.blue)
@@ -161,47 +234,88 @@ struct ContentView: View {
                                         .frame(height: 50)
                                 }
                                 .padding()
-                            }
 
-                            Text("\(message)")
-                                .foregroundColor(successful ? .green : .red) // Use black color for success
-                                .padding()
+                                Text("\(viewModel.message)")
+                                    .foregroundColor(viewModel.successful ? .green : .red)
+                                    .padding()
+                            }
                         }
                         .padding()
                     )
 
-                // Reduced black space at the bottom
                 Spacer()
-                    .frame(height: UIScreen.main.bounds.height * 0.05)
+                    .frame(height: 20)
             }
         }
     }
 }
 
+struct RecordButton: View {
+    var isRecording: Bool
+    var progress: Double
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color(white: 0.9, opacity: 1.0)) // Light gray color
+                .frame(width: 80, height: 80)
+
+            Circle()
+                .trim(from: 0.0, to: isRecording ? CGFloat(progress) : 0.0)
+                .stroke(Color.gray, lineWidth: 8) // Gray stroke for countdown
+                .rotationEffect(Angle(degrees: -90))
+                .frame(width: 70, height: 70)
+
+            Text("Record")
+                .font(.title2)
+                .foregroundColor(isRecording ? Color.blue.opacity(0.5) :
+                                    Color.blue)
+        }
+    }
+}
+
 struct RecordButtonStyle: ButtonStyle {
-    var isEnabled: Bool
-    @Binding var recordingProgress: Double
+    var isRecording: Bool
+    var progress: Double // Add progress parameter for countdown animation
 
     func makeBody(configuration: Configuration) -> some View {
         ZStack {
-            // Outer grey circle
             Circle()
                 .fill(Color(white: 0.9, opacity: 1.0))
                 .frame(width: 80, height: 80)
-            
-            // Circular progress indicator
-            Circle()
-                .trim(from: 0.0, to: CGFloat(recordingProgress))
-                .stroke(Color(white: 0.6, opacity: 1.0), lineWidth: 8)
-                .rotationEffect(Angle(degrees: -90))
-                .frame(width: 70, height: 70)
-            
-            // Label text
+
+            if isRecording {
+                Circle()
+                    .trim(from: 0.0, to: CGFloat(progress))
+                    .stroke(Color.gray, lineWidth: 8) // Grey circle for countdown
+                    .rotationEffect(Angle(degrees: -90))
+                    .frame(width: 70, height: 70)
+            }
+
             configuration.label
                 .font(.title2)
-                .foregroundColor(configuration.isPressed ? Color.blue.opacity(0.5) : Color.blue)
+                .foregroundColor(Color.blue.opacity(isRecording ? 0.5 : 1.0)) // Adjust colors based on recording state
         }
-        .opacity(isEnabled ? 1.0 : 0.5)
+        .opacity(configuration.isPressed ? 0.5 : 1.0)
+    }
+}
+
+struct RecordingCircle: View {
+    var progress: Double
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color.gray, lineWidth: 8)
+                .frame(width: 100, height: 100)
+
+            Circle()
+                .trim(from: 0.0, to: CGFloat(progress))
+                .stroke(Color.red, lineWidth: 8)
+                .frame(width: 100, height: 100)
+                .rotationEffect(Angle(degrees: -90))
+        }
+        .animation(.linear(duration: 0.1)) // Ensure animation is smooth
     }
 }
 
@@ -241,4 +355,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
