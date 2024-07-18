@@ -186,7 +186,6 @@ class ContentViewModel: ObservableObject {
     }
 }
 
-
 struct ContentView: View {
     @ObservedObject private var viewModel = ContentViewModel()
 
@@ -201,46 +200,50 @@ struct ContentView: View {
 
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(red: 0.9, green: 0.9, blue: 0.9))
-                    .frame(width: 300, height: 400) // Adjusted height to fit all components
+                    .frame(width: 300, height: 500) // Adjusted height to fit all components
                     .shadow(radius: 10)
                     .overlay(
-                        VStack {
-                            Text("Record 5 seconds of audio to check whether it is real or cloned")
-                                .foregroundColor(.black)
-                                .padding()
-
-                            Button(action: {
-                                viewModel.recordAndRecognize()
-                            }) {
-                                RecordButton(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress)
-                            }
-                            .buttonStyle(RecordButtonStyle(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress))
-                            .padding()
-
-                            if let audioBuffer = viewModel.audioBuffer {
-                                HStack {
-                                    Button(action: {
-                                        viewModel.togglePlayPause()
-                                        if viewModel.playerNode == nil {
-                                            viewModel.playAudio()
-                                        }
-                                    }) {
-                                        Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
-                                            .resizable()
-                                            .frame(width: 50, height: 50)
-                                            .foregroundColor(.blue)
-                                    }
-                                    WaveformView(audioBuffer: audioBuffer)
-                                        .frame(height: 50)
-                                }
-                                .padding()
-
-                                Text("\(viewModel.message)")
-                                    .foregroundColor(viewModel.successful ? .green : .red)
+                        ScrollView {
+                            VStack {
+                                Text("Record 5 seconds of audio to check whether it is real or cloned")
+                                    .foregroundColor(.black)
                                     .padding()
+                                    .multilineTextAlignment(.center)
+                                    .layoutPriority(1) // High priority for text
+
+                                Button(action: {
+                                    viewModel.recordAndRecognize()
+                                }) {
+                                    RecordButton(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress)
+                                }
+                                .buttonStyle(RecordButtonStyle(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress))
+                                .padding()
+
+                                if let audioBuffer = viewModel.audioBuffer {
+                                    HStack {
+                                        Button(action: {
+                                            viewModel.togglePlayPause()
+                                            if viewModel.playerNode == nil {
+                                                viewModel.playAudio()
+                                            }
+                                        }) {
+                                            Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                                                .resizable()
+                                                .frame(width: 50, height: 50)
+                                                .foregroundColor(.blue)
+                                        }
+                                        WaveformView(audioBuffer: audioBuffer)
+                                            .frame(height: 50)
+                                    }
+                                    .padding()
+
+                                    Text("\(viewModel.message)")
+                                        .foregroundColor(viewModel.successful ? .green : .red)
+                                        .padding()
+                                }
                             }
+                            .padding()
                         }
-                        .padding()
                     )
 
                 Spacer()
