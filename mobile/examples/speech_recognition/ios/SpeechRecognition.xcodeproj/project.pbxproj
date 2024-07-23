@@ -102,7 +102,7 @@
 		C161D9962C2D5F0000F60151 /* 8KHz_logreg_96Percent-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "8KHz_logreg_96Percent-model.ort"; sourceTree = "<group>"; };
 		C19DC9502C3CE955008023F3 /* titanet_large.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = titanet_large.onnx; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
-		EFE237D326855E4600234E2C /* SpeakerID.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakerID.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE237D326855E4600234E2C /* TruSpeaker - AI Detector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TruSpeaker - AI Detector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* SpeechRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionApp.swift; sourceTree = "<group>"; };
 		EFE237D826855E4600234E2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EFE237DA26855E4B00234E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -231,7 +231,7 @@
 		EFE237D426855E4600234E2C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EFE237D326855E4600234E2C /* SpeakerID.app */,
+				EFE237D326855E4600234E2C /* TruSpeaker - AI Detector.app */,
 				EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */,
 			);
 			name = Products;
@@ -294,7 +294,7 @@
 			);
 			name = SpeechRecognition;
 			productName = SpeechRecognition;
-			productReference = EFE237D326855E4600234E2C /* SpeakerID.app */;
+			productReference = EFE237D326855E4600234E2C /* TruSpeaker - AI Detector.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EFE237E326855E4B00234E2C /* SpeechRecognitionTests */ = {
@@ -571,7 +571,7 @@
 					"-stdlib=libc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
-				PRODUCT_NAME = SpeakerID;
+				PRODUCT_NAME = "TruSpeaker - AI Detector";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -621,7 +621,7 @@
 					"-stdlib=libc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yella.matcher;
-				PRODUCT_NAME = SpeakerID;
+				PRODUCT_NAME = "TruSpeaker - AI Detector";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

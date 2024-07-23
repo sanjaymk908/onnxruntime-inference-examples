@@ -188,16 +188,31 @@ class ContentViewModel: ObservableObject {
 
 struct ContentView: View {
     @ObservedObject private var viewModel = ContentViewModel()
-
+    private let messages = [
+        "Detect AI Generated Audio",
+        "Advanced ML Models run on your device",
+        "Fast! Runs in under 400 millis",
+        "Tested on most common GenAI tools",
+        "Pretty robust to background music/noise"
+    ]
+    
+    @State private var currentMessageIndex = 0
+    
     var body: some View {
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
-
+            
             VStack {
                 Spacer()
                     .frame(height: 20)
-
+                
+                Text(messages[currentMessageIndex])
+                    .font(.headline)
+                    .foregroundColor(Color.purple)
+                    .bold()
+                    .padding()
+                
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(red: 0.9, green: 0.9, blue: 0.9))
                     .frame(width: 300, height: 500) // Adjusted height to fit all components
@@ -210,15 +225,16 @@ struct ContentView: View {
                                     .padding()
                                     .multilineTextAlignment(.center)
                                     .layoutPriority(1) // High priority for text
-
+                                
                                 Button(action: {
                                     viewModel.recordAndRecognize()
+                                    showNextMessage()
                                 }) {
                                     RecordButton(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress)
                                 }
                                 .buttonStyle(RecordButtonStyle(isRecording: viewModel.isRecording, progress: viewModel.recordingProgress))
                                 .padding()
-
+                                
                                 if let audioBuffer = viewModel.audioBuffer {
                                     HStack {
                                         Button(action: {
@@ -236,7 +252,7 @@ struct ContentView: View {
                                             .frame(height: 50)
                                     }
                                     .padding()
-
+                                    
                                     Text("\(viewModel.message)")
                                         .foregroundColor(viewModel.successful ? .green : .red)
                                         .padding()
@@ -245,11 +261,24 @@ struct ContentView: View {
                             .padding()
                         }
                     )
-
+                
                 Spacer()
                     .frame(height: 20)
             }
         }
+        .onAppear {
+            startMessageRotation()
+        }
+    }
+    
+    private func startMessageRotation() {
+        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
+            showNextMessage()
+        }
+    }
+    
+    private func showNextMessage() {
+        currentMessageIndex = (currentMessageIndex + 1) % messages.count
     }
 }
 
