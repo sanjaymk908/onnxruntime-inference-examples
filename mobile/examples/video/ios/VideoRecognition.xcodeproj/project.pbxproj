@@ -21,6 +21,10 @@
 		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
 		C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
+		C195825F2C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
+		C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
+		C19582622C660AB5004B8934 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
+		C19582632C660AB5004B8934 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
 		C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
@@ -102,6 +106,8 @@
 		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
+		C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
+		C19582612C660AB5004B8934 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
 		C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognizer.swift; sourceTree = "<group>"; };
 		C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "140kPlusCelebA-model.ort"; sourceTree = "<group>"; };
@@ -264,6 +270,8 @@
 				C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */,
 				C19DC9472C3A64F8008023F3 /* PicUpload.swift */,
 				C19DC94A2C3A69E4008023F3 /* ContentView.swift */,
+				C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */,
+				C19582612C660AB5004B8934 /* PermissionManager.swift */,
 			);
 			path = VideoRecognition;
 			sourceTree = "<group>";
@@ -397,7 +405,9 @@
 			files = (
 				C19DC9482C3A64F8008023F3 /* PicUpload.swift in Sources */,
 				C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */,
+				C19582622C660AB5004B8934 /* PermissionManager.swift in Sources */,
 				C19DC94B2C3A69E4008023F3 /* ContentView.swift in Sources */,
+				C195825F2C6609D8004B8934 /* HomeScreenViewController.swift in Sources */,
 				C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */,
 				C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
 				C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */,
@@ -423,6 +433,8 @@
 				C19DC94C2C3A69E4008023F3 /* ContentView.swift in Sources */,
 				C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
 				C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */,
+				C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */,
+				C19582632C660AB5004B8934 /* PermissionManager.swift in Sources */,
 				C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
