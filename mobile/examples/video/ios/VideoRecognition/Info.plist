@@ -47,8 +47,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>The rear facing camera is used to take pics for detection</string>
+	<string>The rear facing camera is used to capture videos for clone detection</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The mic is used video during video capture for clone detection</string>
 </dict>
 </plist>

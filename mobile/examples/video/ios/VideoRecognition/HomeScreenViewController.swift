@@ -5,10 +5,10 @@
 //  Created by Sanjay Krishnamurthy on 8/9/24.
 //
 
+import AVKit
+import AVFoundation
 import Lumina
 import UIKit
-import AVFoundation
-import AVKit
 
 class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFieldDelegate {
 
@@ -24,6 +24,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     override func viewDidLoad() {
         super.viewDidLoad()
         setCancelButton(visible: false)
+        self.captureLivePhotos = false
+        self.recordsVideo = true
+        self.streamFrames = false
         showPromptsForPermissionDeniedCase(true) // do reset location string
     }
     
@@ -233,6 +236,21 @@ extension HomeScreenViewController {
           // Use croppedImage for ML flow
           print("\(croppedImage)")
       }
+  }
+    
+  private func playVideo(from url: URL) {
+      let player = AVPlayer(url: url)
+      let playerViewController = AVPlayerViewController()
+      playerViewController.player = player
+
+      // Present the video player
+      self.present(playerViewController, animated: true) {
+          playerViewController.player?.play()
+      }
+  }
+    
+  func captured(videoAt: URL, from controller: LuminaViewController) {
+      playVideo(from: videoAt)
   }
     
   // Below is src code from apple.com for cropping(). It is VERY non-intuitive because:
