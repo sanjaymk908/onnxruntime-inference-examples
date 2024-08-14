@@ -18,9 +18,26 @@ class VideoProcessor: NSObject {
     private let TIMESLICE: Int = 3
     private let AUDIOSNIPPETLENGTH: Int = 5 // Length of each audio snippet in seconds
     private let kSampleRate: Double = 16000.0 // Example sample rate
+    private var videoFragments: [VideoFragment] = []
     
     init(localURL: URL) {
         self.localURL = localURL
+        super.init()
+        self.convert2Fragments()
+    }
+    
+    private func convert2Fragments() {
+        let picFragments = createStillFrames(from: localURL)
+        let audioFragments = createAudioSnippets(from: localURL)
+        let count = min(picFragments.count, audioFragments.count)
+        var timeSlice: Int = 0
+        
+        for index in 0..<count {
+            let fragment = VideoFragment(timeDelta: timeSlice,
+                                         stillFrame: picFragments[index],
+                                         audioSnippet: audioFragments[index])
+            videoFragments.append(fragment)
+        }
     }
     
     // Slice localURL (mov stored locally) every TIMESLICE seconds to get a stillframe per TIMESLICE
