@@ -19,11 +19,14 @@ class VideoProcessor: NSObject {
     private let AUDIOSNIPPETLENGTH: Int = 5 // Length of each audio snippet in seconds
     private let kSampleRate: Double = 16000.0 // Example sample rate
     private var videoFragments: [VideoFragment] = []
+    private let videoRecognizer: VideoRecognizer
     
-    init(localURL: URL) {
+    init(localURL: URL, videoRecognizer: VideoRecognizer) {
         self.localURL = localURL
+        self.videoRecognizer = videoRecognizer
         super.init()
         self.convert2Fragments()
+        videoRecognizer.drivePicRecognizer(videoFragments)
     }
     
     private func convert2Fragments() {
@@ -37,6 +40,7 @@ class VideoProcessor: NSObject {
                                          stillFrame: picFragments[index],
                                          audioSnippet: audioFragments[index])
             videoFragments.append(fragment)
+            timeSlice += TIMESLICE
         }
     }
     

@@ -29,6 +29,10 @@
 		C19582662C6B572F004B8934 /* VideoFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582642C6B572F004B8934 /* VideoFragment.swift */; };
 		C19582682C6B5AEB004B8934 /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582672C6B5AEB004B8934 /* VideoProcessor.swift */; };
 		C19582692C6B5AEB004B8934 /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582672C6B5AEB004B8934 /* VideoProcessor.swift */; };
+		C195826B2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */; };
+		C195826C2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */; };
+		C195826E2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */; };
+		C195826F2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */; };
 		C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
@@ -114,6 +118,8 @@
 		C19582612C660AB5004B8934 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		C19582642C6B572F004B8934 /* VideoFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFragment.swift; sourceTree = "<group>"; };
 		C19582672C6B5AEB004B8934 /* VideoProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProcessor.swift; sourceTree = "<group>"; };
+		C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRecognizer.swift; sourceTree = "<group>"; };
+		C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeScreenViewController+extensions.swift"; sourceTree = "<group>"; };
 		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
 		C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognizer.swift; sourceTree = "<group>"; };
 		C19DC9422C33E2F1008023F3 /* 140kPlusCelebA-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; path = "140kPlusCelebA-model.ort"; sourceTree = "<group>"; };
@@ -280,6 +286,8 @@
 				C19582612C660AB5004B8934 /* PermissionManager.swift */,
 				C19582642C6B572F004B8934 /* VideoFragment.swift */,
 				C19582672C6B5AEB004B8934 /* VideoProcessor.swift */,
+				C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */,
+				C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */,
 			);
 			path = VideoRecognition;
 			sourceTree = "<group>";
@@ -424,7 +432,9 @@
 				C19582682C6B5AEB004B8934 /* VideoProcessor.swift in Sources */,
 				C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */,
 				C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */,
+				C195826E2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */,
 				C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */,
+				C195826B2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */,
 				C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */,
 				C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */,
 				C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */,
@@ -447,7 +457,9 @@
 				C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */,
 				C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */,
 				C19582632C660AB5004B8934 /* PermissionManager.swift in Sources */,
+				C195826C2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */,
 				C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */,
+				C195826F2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
