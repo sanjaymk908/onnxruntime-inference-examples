@@ -21,6 +21,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         // Add self as LuminaDelegate
         self.delegate = self
         LuminaViewController.loggingLevel = .critical
+        self.setupVideoProcessor()
     }
     
     override func viewDidLoad() {

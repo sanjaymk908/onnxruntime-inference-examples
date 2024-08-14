@@ -37,7 +37,7 @@ class VideoRecognizer {
             switch result {
             case .some(.success(let cloneCheckResult)):
                 fragment.isPicCloned = cloneCheckResult.contains("clone")
-            case .some(.failure(let error)):
+            case .some(.failure):
                 fragment.isPicCloned = false
             case .none:
                 fragment.isPicCloned = false
