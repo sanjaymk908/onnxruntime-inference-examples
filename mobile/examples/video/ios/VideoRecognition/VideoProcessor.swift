@@ -75,7 +75,7 @@ class VideoProcessor: NSObject {
                 let uiImage = UIImage(cgImage: cgImage)
                 
                 // Resize the UIImage to 224x224
-                let resizedUIImage = resizeImage(image: uiImage, targetSize: CGSize(width: 224, height: 224))
+                let resizedUIImage = uiImage.resized(to: CGSize(width: 224, height: 224))
                 
                 // Convert the resized UIImage to CIImage
                 if let ciImage = CIImage(image: resizedUIImage) {

@@ -146,7 +146,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
     }
     
-    private func displayMessage(_ message: String) {
+    func displayMessage(_ message: String) {
         textPrompt = message
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             // Clear prompt after 4 seconds

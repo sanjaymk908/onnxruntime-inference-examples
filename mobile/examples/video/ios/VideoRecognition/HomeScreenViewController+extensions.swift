@@ -10,31 +10,53 @@ import AVFoundation
 import Lumina
 import UIKit
 
-
 extension HomeScreenViewController {
   
-    
   func setupVideoProcessor() {
       videoRecognizer = VideoRecognizer()
   }
   
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {
-      //UIImageWriteToSavedPhotosAlbum(stillImage, nil, nil, nil)
-      // crop input image to constrain it to restaurant name scan area
-      let screenSize: CGRect = self.view.frame
-      let luminaAddedOffsetAtTop = 70.0
-      // this toRect kindof works CGRect(x: 400, y: 200, width: 100, height: 400)
-      let croppedRect = CGRect(x: transparentView.frame.origin.y - luminaAddedOffsetAtTop,
-                               y: transparentView.frame.origin.x,
-                               width: transparentView.frame.width,
-                               height: transparentView.frame.height)
-      if let croppedImage = cropImage(stillImage,
-                                      toRect: croppedRect,
-                                      viewWidth: screenSize.width,
-                                      viewHeight: screenSize.height) {
-          // Use croppedImage for ML flow
-          print("\(croppedImage)")
-      }
+    let screenSize: CGRect = self.view.frame
+    let luminaAddedOffsetAtTop = 70.0
+    // this toRect kindof works CGRect(x: 400, y: 200, width: 100, height: 400)
+    let croppedRect = CGRect(x: transparentView.frame.origin.y - luminaAddedOffsetAtTop,
+                                y: transparentView.frame.origin.x,
+                                width: transparentView.frame.width,
+                                height: transparentView.frame.height)
+    if let croppedImage = cropImage(stillImage,
+                                    toRect: croppedRect,
+                                    viewWidth: screenSize.width,
+                                    viewHeight: screenSize.height) {
+        // Resize it & convert to bitmap
+        // Resize the UIImage to 224x224
+        let resizedUIImage = croppedImage.resized(to: CGSize(width: 224, height: 224))
+            
+        // Convert the resized UIImage to CIImage
+        if let ciImage = CIImage(image: resizedUIImage) {
+            imageRecognize(with: ciImage)
+        }
+    }
+  }
+      
+  private func imageRecognize(with bitmap: CIImage) {
+      let result = videoRecognizer?.picRecognizer?.evaluate(bitmap: bitmap)
+      switch result {
+        case .some(.success(let cloneCheckResult)):
+          DispatchQueue.main.async {
+            self.displayMessage(cloneCheckResult)
+          }
+        case .some(.failure(let error)):
+          DispatchQueue.main.async {
+            let message = "Error: \(error)"
+            self.displayMessage(message)
+          }
+        case .none:
+          DispatchQueue.main.async {
+            let message = "Error: PicRecognizer is not initialized"
+            self.displayMessage(message)
+          }
+        }
   }
     
   private func playVideo(from url: URL) {
@@ -64,7 +86,7 @@ extension HomeScreenViewController {
   //     3. And to make things even more interesting, the static stuff Lumina adds
   //        to the top of its view pushes everything UP by luminaAddedOffsetAtTop.
   //        So, the y origin of the cropRect box has to be reduced by this amount.
-  func cropImage(_ inputImage: UIImage, toRect cropRect: CGRect, viewWidth: CGFloat, viewHeight: CGFloat) -> UIImage? {
+  private func cropImage(_ inputImage: UIImage, toRect cropRect: CGRect, viewWidth: CGFloat, viewHeight: CGFloat) -> UIImage? {
     let imageViewScale = max(inputImage.size.width / viewWidth,
                              inputImage.size.height / viewHeight)
 

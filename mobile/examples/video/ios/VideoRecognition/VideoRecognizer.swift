@@ -9,7 +9,7 @@ import Foundation
 
 class VideoRecognizer {
     
-    private var picRecognizer: PicRecognizer?
+    var picRecognizer: PicRecognizer?
     
     init() {
         setupPicRecognizer()
