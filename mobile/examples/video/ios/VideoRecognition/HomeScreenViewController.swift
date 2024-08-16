@@ -16,6 +16,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     var videoProcessor: VideoProcessor?
     var videoRecognizer: VideoRecognizer?
     
+    let ISCLONEDMESSAGE = "Video has cloned fragments"
+    let ISREALMESSAGE = "Video has no cloned fragments"
+    
     override init() {
         super.init()
         // Add self as LuminaDelegate
@@ -30,6 +33,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         self.captureLivePhotos = false
         self.recordsVideo = true
         self.streamFrames = false
+        self.streamingModels = []
         showPromptsForPermissionDeniedCase(true) // do reset location string
     }
     

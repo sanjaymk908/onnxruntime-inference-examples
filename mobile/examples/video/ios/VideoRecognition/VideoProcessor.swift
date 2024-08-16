@@ -29,6 +29,18 @@ class VideoProcessor: NSObject {
         videoRecognizer.drivePicRecognizer(videoFragments)
     }
     
+    public func isCloned() -> Bool {
+        for fragment in videoFragments {
+            if fragment.isPicCloned || fragment.isAudioCloned {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    // MARK :- private methods
+    
     private func convert2Fragments() {
         let picFragments = createStillFrames(from: localURL)
         let audioFragments = createAudioSnippets(from: localURL)
@@ -140,14 +152,6 @@ class VideoProcessor: NSObject {
             return []
         }
 
-        let assetReader: AVAssetReader
-        do {
-            assetReader = try AVAssetReader(asset: asset)
-        } catch {
-            print("Error initializing AVAssetReader: \(error)")
-            return []
-        }
-
         let outputSettings: [String: Any] = [
             AVFormatIDKey: kAudioFormatLinearPCM,
             AVSampleRateKey: kSampleRate,
@@ -156,9 +160,6 @@ class VideoProcessor: NSObject {
             AVLinearPCMIsBigEndianKey: false,
             AVLinearPCMIsFloatKey: false
         ]
-
-        let trackOutput = AVAssetReaderTrackOutput(track: audioTrack, outputSettings: outputSettings)
-        assetReader.add(trackOutput)
 
         let timescale = asset.duration.timescale
         var currentTime = CMTime(seconds: 0, preferredTimescale: timescale)
@@ -170,20 +171,29 @@ class VideoProcessor: NSObject {
                                         interleaved: false)!
 
         while CMTimeGetSeconds(currentTime) < CMTimeGetSeconds(asset.duration) {
-            // Define the time range for each audio snippet
-            let snippetEndTime = CMTimeAdd(currentTime, CMTime(seconds: Double(AUDIOSNIPPETLENGTH), preferredTimescale: timescale))
+            let snippetDuration = CMTime(seconds: Double(AUDIOSNIPPETLENGTH), preferredTimescale: timescale)
+            let remainingDuration = CMTimeSubtract(asset.duration, currentTime)
+            let snippetEndTime = CMTimeAdd(currentTime, CMTimeMinimum(snippetDuration, remainingDuration))
             let timeRange = CMTimeRange(start: currentTime, end: snippetEndTime)
 
-            // Adjust the time range if the snippet end time exceeds the duration
-            if CMTimeGetSeconds(snippetEndTime) > CMTimeGetSeconds(asset.duration) {
-                break
+            // Create a new AVAssetReader for each time range
+            let assetReader: AVAssetReader
+            do {
+                assetReader = try AVAssetReader(asset: asset)
+            } catch {
+                print("Error initializing AVAssetReader: \(error)")
+                return []
             }
 
-            // Start the reader
+            let trackOutput = AVAssetReaderTrackOutput(track: audioTrack, outputSettings: outputSettings)
+            assetReader.add(trackOutput)
             assetReader.timeRange = timeRange
+
             assetReader.startReading()
 
-            // Read audio samples into AVAudioPCMBuffer
+            var accumulatedData = Data()
+
+            // Read audio samples into AVAudioPCMBuffer and accumulate them
             while let sampleBuffer = trackOutput.copyNextSampleBuffer(), assetReader.status == .reading {
                 if let audioBuffer = CMSampleBufferGetDataBuffer(sampleBuffer) {
                     var length: Int = 0
@@ -191,24 +201,32 @@ class VideoProcessor: NSObject {
                     CMBlockBufferGetDataPointer(audioBuffer, atOffset: 0, lengthAtOffsetOut: nil, totalLengthOut: &length, dataPointerOut: &dataPointer)
 
                     let bufferFrameLength = AVAudioFrameCount(length) / audioFormat.streamDescription.pointee.mBytesPerFrame
-                    let pcmBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: bufferFrameLength)!
+                    guard let pcmBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: bufferFrameLength) else {
+                        print("Failed to create AVAudioPCMBuffer")
+                        continue
+                    }
                     pcmBuffer.frameLength = bufferFrameLength
 
-                    memcpy(pcmBuffer.floatChannelData?[0], dataPointer, length)
+                    // Safely copy data into the pcmBuffer
+                    if let channelData = pcmBuffer.floatChannelData {
+                        memcpy(channelData[0], dataPointer, length)
+                    }
 
                     // Apply clampAmplitude to the buffer
                     clampAmplitude(of: pcmBuffer)
 
-                    // Convert clamped buffer to Data
+                    // Convert clamped buffer to Data and accumulate
                     if let recordingData = convertBufferToData(pcmBuffer) {
-                        audioDataArray.append(recordingData)
+                        accumulatedData.append(recordingData)
                     }
                 }
             }
 
+            // Append the accumulated data for the current snippet to the array
+            audioDataArray.append(accumulatedData)
+
             // Move to the next time slice
             currentTime = CMTimeAdd(currentTime, CMTime(seconds: Double(TIMESLICE), preferredTimescale: timescale))
-            assetReader.cancelReading() // Reset the reader for the next snippet
         }
 
         return audioDataArray
