@@ -51,6 +51,6 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>The mic is used video during video capture for clone detection</string>
+	<string>The mic is used during video capture for clone detection</string>
 </dict>
 </plist>

@@ -65,8 +65,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
                 NSLayoutConstraint.activate([
                     transparentView.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
                     transparentView.centerYAnchor.constraint(equalTo: parent.centerYAnchor),
-                    transparentView.widthAnchor.constraint(equalToConstant: widthValue - 100),
-                    transparentView.heightAnchor.constraint(equalToConstant: 512)
+                    transparentView.widthAnchor.constraint(equalToConstant: widthValue - 50),
+                    transparentView.heightAnchor.constraint(equalToConstant: widthValue - 50) // keep it square
                 ])
             }
             
@@ -152,10 +152,55 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     func displayMessage(_ message: String) {
         textPrompt = message
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            // Clear prompt after 4 seconds
-            self.scanPromptLabel.text = self.textPrompt
+    }
+    
+    private func displayCapturedPic(_ capturedPic: UIImage) {
+        // Create UIImageView to display the capturedPic
+        let imageView = UIImageView(image: capturedPic)
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the imageView to the transparentView
+        transparentView.addSubview(imageView)
+        
+        // Set constraints to make the imageView fill the transparentView
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: transparentView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: transparentView.bottomAnchor),
+            imageView.leadingAnchor.constraint(equalTo: transparentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor)
+        ])
+        
+        // Create a dismiss button
+        let dismissButton = UIButton(type: .custom)
+        dismissButton.setTitle("X", for: .normal)
+        dismissButton.setTitleColor(.red, for: .normal)
+        dismissButton.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton.addTarget(self, action: #selector(dismissCapturedPic), for: .touchUpInside)
+        
+        // Add the dismiss button to the transparentView
+        transparentView.addSubview(dismissButton)
+        
+        // Set constraints for the dismiss button in the top right corner
+        NSLayoutConstraint.activate([
+            dismissButton.topAnchor.constraint(equalTo: transparentView.topAnchor, constant: 10),
+            dismissButton.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -10)
+        ])
+    }
+
+    @objc private func dismissCapturedPic() {
+        // Remove the imageView and dismiss button from the transparentView
+        for subview in transparentView.subviews {
+            subview.removeFromSuperview()
         }
+    }
+
+    func displayMessageAndPic(_ message: String, capturedPic: UIImage) {
+        // Display the message using displayMessage()
+        displayMessage(message)
+        
+        // Display the captured picture using displayCapturedPic()
+        displayCapturedPic(capturedPic)
     }
     
     private func addDoubleTapHandler() {

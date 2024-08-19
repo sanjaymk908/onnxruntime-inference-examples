@@ -19,11 +19,11 @@ extension HomeScreenViewController {
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {
     let screenSize: CGRect = self.view.frame
     let luminaAddedOffsetAtTop = 70.0
-    // this toRect kindof works CGRect(x: 400, y: 200, width: 100, height: 400)
-    let croppedRect = CGRect(x: transparentView.frame.origin.y - luminaAddedOffsetAtTop,
-                                y: transparentView.frame.origin.x,
-                                width: transparentView.frame.width,
-                                height: transparentView.frame.height)
+    // the captured pic has wrong orientation; account for this below
+    let croppedRect = CGRect(x: transparentView.frame.origin.y,
+                             y: transparentView.frame.origin.x - luminaAddedOffsetAtTop,
+                             width: transparentView.frame.height - luminaAddedOffsetAtTop,
+                             height: transparentView.frame.width - 4.0)
     if let croppedImage = cropImage(stillImage,
                                     toRect: croppedRect,
                                     viewWidth: screenSize.width,
@@ -34,27 +34,27 @@ extension HomeScreenViewController {
             
         // Convert the resized UIImage to CIImage
         if let ciImage = CIImage(image: resizedUIImage) {
-            imageRecognize(with: ciImage)
+            imageRecognize(with: ciImage, withOriginalImage: croppedImage)
         }
     }
   }
       
-  private func imageRecognize(with bitmap: CIImage) {
+    private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
       let result = videoRecognizer?.picRecognizer?.evaluate(bitmap: bitmap)
       switch result {
         case .some(.success(let cloneCheckResult)):
           DispatchQueue.main.async {
-            self.displayMessage(cloneCheckResult)
+              self.displayMessageAndPic(cloneCheckResult, capturedPic: withOriginalImage)
           }
         case .some(.failure(let error)):
           DispatchQueue.main.async {
             let message = "Error: \(error)"
-            self.displayMessage(message)
+            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
           }
         case .none:
           DispatchQueue.main.async {
             let message = "Error: PicRecognizer is not initialized"
-            self.displayMessage(message)
+            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
           }
         }
   }
