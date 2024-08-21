@@ -16,8 +16,8 @@ class VideoProcessor: NSObject {
     
     private let localURL: URL
     private let TIMESLICE: Int = 3
-    private let AUDIOSNIPPETLENGTH: Int = 5 // Length of each audio snippet in seconds
-    private let kSampleRate: Double = 16000.0 // Example sample rate
+    private let AUDIOSNIPPETLENGTH: Int = 5 // keep in sync w/ SpeechRecognizer
+    private let kSampleRate: Double = 16000.0 // sample rate
     private var videoFragments: [VideoFragment] = []
     private let videoRecognizer: VideoRecognizer
     
@@ -27,6 +27,7 @@ class VideoProcessor: NSObject {
         super.init()
         self.convert2Fragments()
         videoRecognizer.drivePicRecognizer(videoFragments)
+        videoRecognizer.driveSpeechRecognizer(videoFragments)
     }
     
     public func isCloned() -> Bool {
@@ -128,19 +129,6 @@ class VideoProcessor: NSObject {
         return newImage ?? image
     }
     
-    private func convertBufferToData(_ buffer: AVAudioPCMBuffer) -> Data? {
-        guard let recordingFloatChannelData = buffer.floatChannelData else {
-            return nil
-        }
-
-        let frameLength = Int(buffer.frameLength)
-        let dataSize = frameLength * MemoryLayout<Double>.size
-        let recordingDoubleChannelData = UnsafeBufferPointer(start: recordingFloatChannelData[0], count: frameLength)
-            .map { Double($0) }
-
-        return Data(bytes: recordingDoubleChannelData, count: dataSize)
-    }
-
     private func createAudioSnippets(from localURL: URL) -> [Data] {
         var audioDataArray: [Data] = []
 
@@ -163,6 +151,7 @@ class VideoProcessor: NSObject {
 
         let timescale = asset.duration.timescale
         var currentTime = CMTime(seconds: 0, preferredTimescale: timescale)
+        let requiredSampleCount = Int(kSampleRate * 5) // 5 seconds of audio at 16kHz
 
         // Define the audio format that matches your recording format
         let audioFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32,
@@ -191,45 +180,77 @@ class VideoProcessor: NSObject {
 
             assetReader.startReading()
 
-            var accumulatedData = Data()
+            var accumulatedData = [Double]()
+            var totalSamples = 0
 
             // Read audio samples into AVAudioPCMBuffer and accumulate them
             while let sampleBuffer = trackOutput.copyNextSampleBuffer(), assetReader.status == .reading {
                 if let audioBuffer = CMSampleBufferGetDataBuffer(sampleBuffer) {
                     var length: Int = 0
                     var dataPointer: UnsafeMutablePointer<Int8>?
-                    CMBlockBufferGetDataPointer(audioBuffer, atOffset: 0, lengthAtOffsetOut: nil, totalLengthOut: &length, dataPointerOut: &dataPointer)
 
-                    let bufferFrameLength = AVAudioFrameCount(length) / audioFormat.streamDescription.pointee.mBytesPerFrame
-                    guard let pcmBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: bufferFrameLength) else {
-                        print("Failed to create AVAudioPCMBuffer")
+                    let status = CMBlockBufferGetDataPointer(audioBuffer, atOffset: 0, lengthAtOffsetOut: nil, totalLengthOut: &length, dataPointerOut: &dataPointer)
+
+                    guard status == kCMBlockBufferNoErr, let dataPointer = dataPointer, length > 0 else {
+                        print("Failed to get data pointer from audio buffer or invalid length")
                         continue
                     }
+
+                    let bytesPerFrame = audioFormat.streamDescription.pointee.mBytesPerFrame
+                    let bufferFrameLength = AVAudioFrameCount(length) / bytesPerFrame
+
+                    guard bufferFrameLength > 0, let pcmBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: bufferFrameLength) else {
+                        print("Failed to create AVAudioPCMBuffer or invalid frame length")
+                        continue
+                    }
+
                     pcmBuffer.frameLength = bufferFrameLength
 
-                    // Safely copy data into the pcmBuffer
                     if let channelData = pcmBuffer.floatChannelData {
-                        memcpy(channelData[0], dataPointer, length)
+                        if length <= Int(pcmBuffer.frameCapacity) * Int(bytesPerFrame) {
+                            memcpy(channelData[0], dataPointer, length)
+                        } else {
+                            print("Buffer overflow detected!")
+                            continue
+                        }
                     }
 
-                    // Apply clampAmplitude to the buffer
                     clampAmplitude(of: pcmBuffer)
 
-                    // Convert clamped buffer to Data and accumulate
-                    if let recordingData = convertBufferToData(pcmBuffer) {
-                        accumulatedData.append(recordingData)
-                    }
+                    let doubleData = convertBufferToDouble(pcmBuffer)
+                    accumulatedData.append(contentsOf: doubleData)
+                    totalSamples += Int(pcmBuffer.frameLength)
                 }
             }
 
-            // Append the accumulated data for the current snippet to the array
-            audioDataArray.append(accumulatedData)
+            // If the snippet has fewer than 80k samples, pad with zeros
+            if accumulatedData.count < requiredSampleCount {
+                let samplesToPad = requiredSampleCount - accumulatedData.count
+                accumulatedData.append(contentsOf: Array(repeating: 0.0, count: samplesToPad))
+            }
+
+            // Convert accumulatedData to Data and append to the array
+            let data = Data(bytes: accumulatedData, count: accumulatedData.count * MemoryLayout<Double>.size)
+            audioDataArray.append(data)
 
             // Move to the next time slice
             currentTime = CMTimeAdd(currentTime, CMTime(seconds: Double(TIMESLICE), preferredTimescale: timescale))
         }
 
         return audioDataArray
+    }
+
+    // Helper function to convert AVAudioPCMBuffer to Double array
+    private func convertBufferToDouble(_ buffer: AVAudioPCMBuffer) -> [Double] {
+        guard let floatChannelData = buffer.floatChannelData else {
+            return []
+        }
+
+        let frameLength = Int(buffer.frameLength)
+        let floatData = UnsafeBufferPointer(start: floatChannelData[0], count: frameLength)
+        let doubleData = floatData.map { Double($0) }
+
+        return doubleData
     }
     
     private func clampAmplitude(of buffer: AVAudioPCMBuffer) {
