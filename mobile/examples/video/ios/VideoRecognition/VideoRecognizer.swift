@@ -68,7 +68,7 @@ class VideoRecognizer {
             let result = speechRecognizer?.evaluate(inputData: fragment.audioSnippet)
             switch result {
             case .some(.success(let cloneCheckResult)):
-                fragment.isPicCloned = cloneCheckResult.contains("clone")
+                fragment.isAudioCloned = cloneCheckResult.contains("clone")
             case .some(.failure):
                 fragment.isAudioCloned = false
             case .none:

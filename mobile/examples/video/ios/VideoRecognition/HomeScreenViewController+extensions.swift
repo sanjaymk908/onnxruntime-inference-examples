@@ -38,25 +38,63 @@ extension HomeScreenViewController {
         }
     }
   }
-      
-    private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
-      let result = videoRecognizer?.picRecognizer?.evaluate(bitmap: bitmap)
-      switch result {
-        case .some(.success(let cloneCheckResult)):
+          
+  func captured(videoAt: URL, from controller: LuminaViewController) {
+      guard let videoRecognizer = videoRecognizer else {return}
+      let videoProcessor = VideoProcessor(localURL: videoAt, 
+                                          videoRecognizer: videoRecognizer,
+                                          completion: { outputURL in
+          guard let outputURL = outputURL else {return}
           DispatchQueue.main.async {
-              self.displayMessageAndPic(cloneCheckResult, capturedPic: withOriginalImage)
+              self.playAudio(from: outputURL)
+              if videoProcessor.isCloned() {
+                  displayMessage(ISCLONEDMESSAGE)
+              } else {
+                  displayMessage(ISREALMESSAGE)
+              }
           }
-        case .some(.failure(let error)):
-          DispatchQueue.main.async {
-            let message = "Error: \(error)"
-            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
-          }
-        case .none:
-          DispatchQueue.main.async {
-            let message = "Error: PicRecognizer is not initialized"
-            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
-          }
+      })
+  }
+    
+  ///
+  /// MARK :- priate methods, properties
+  ///
+    
+  private func playAudio(from url: URL) {
+      do {
+          // Initialize the AVAudioPlayer with the output URL
+          audioPlayer = try AVAudioPlayer(contentsOf: url)
+          
+          // Prepare to play the audio
+          audioPlayer?.prepareToPlay()
+          
+          // Play the audio
+          audioPlayer?.play()
+          
+          print("Playing audio from \(url)")
+      } catch {
+          print("Failed to play audio: \(error)")
+      }
+  }
+    
+  private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
+    let result = videoRecognizer?.picRecognizer?.evaluate(bitmap: bitmap)
+    switch result {
+    case .some(.success(let cloneCheckResult)):
+        DispatchQueue.main.async {
+            self.displayMessageAndPic(cloneCheckResult, capturedPic: withOriginalImage)
         }
+    case .some(.failure(let error)):
+        DispatchQueue.main.async {
+        let message = "Error: \(error)"
+        self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+        }
+    case .none:
+        DispatchQueue.main.async {
+        let message = "Error: PicRecognizer is not initialized"
+        self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+        }
+    }
   }
     
   private func playVideo(from url: URL) {
@@ -69,17 +107,7 @@ extension HomeScreenViewController {
           playerViewController.player?.play()
       }
   }
-    
-  func captured(videoAt: URL, from controller: LuminaViewController) {
-      guard let videoRecognizer = videoRecognizer else {return}
-      let videoProcessor = VideoProcessor(localURL: videoAt, videoRecognizer: videoRecognizer)
-      if videoProcessor.isCloned() {
-          displayMessage(ISCLONEDMESSAGE)
-      } else {
-          displayMessage(ISREALMESSAGE)
-      }
-      playVideo(from: videoAt)
-  }
+
     
   // Below is src code from apple.com for cropping(). It is VERY non-intuitive because:
   //     1. The image has MANY more pixels than the transparentView (ie scanning) frame

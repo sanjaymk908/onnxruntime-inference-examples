@@ -98,6 +98,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     private let GenericMLError = "Error identifying picture or audio"
     private let RecordMessage = "Hold down record button for video capture"
     private let loadingLine = UIView()
+    var audioPlayer: AVAudioPlayer?
     
     private func updateLabels() {
         let labelFont = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
