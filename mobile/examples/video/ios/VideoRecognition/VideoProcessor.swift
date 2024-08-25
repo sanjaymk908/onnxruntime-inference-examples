@@ -21,19 +21,19 @@ class VideoProcessor: NSObject {
     private let kSampleRate: Double = 16000.0
     private var videoFragments: [VideoFragment] = []
     private let videoRecognizer: VideoRecognizer
-    private let completion: (URL?) -> Void
+    private let completion: (URL?, Bool) -> Void
     
-    init(localURL: URL, videoRecognizer: VideoRecognizer, completion: @escaping (URL?) -> Void) {
+    init(localURL: URL, videoRecognizer: VideoRecognizer, completion: @escaping (URL?, Bool) -> Void) {
         self.localURL = localURL
         self.videoRecognizer = videoRecognizer
         self.completion = completion
         super.init()
         self.convert2Fragments()
-        videoRecognizer.drivePicRecognizer(videoFragments)
-        videoRecognizer.driveSpeechRecognizer(videoFragments)
     }
     
-    public func isCloned() -> Bool {
+    // MARK :- private methods
+    
+    private func isCloned() -> Bool {
         for fragment in videoFragments {
             if fragment.isPicCloned || fragment.isAudioCloned {
                 return true
@@ -42,14 +42,10 @@ class VideoProcessor: NSObject {
         return false
     }
     
-    
-    // MARK :- private methods
-    
     private func convert2Fragments() {
         let picFragments = createStillFrames(from: localURL)
         var audioFragments: [Data] = []
         createAudioSnippets(from: localURL, completion: { audioData, outputURL in
-            self.completion(outputURL)
             audioFragments = audioData
             let count = min(picFragments.count, audioFragments.count)
             var timeSlice: Int = 0
@@ -61,6 +57,9 @@ class VideoProcessor: NSObject {
                 self.videoFragments.append(fragment)
                 timeSlice += self.TIMESLICE
             }
+            self.videoRecognizer.drivePicRecognizer(self.videoFragments)
+            self.videoRecognizer.driveSpeechRecognizer(self.videoFragments)
+            self.completion(outputURL, self.isCloned())
         })
     }
     
@@ -137,21 +136,25 @@ class VideoProcessor: NSObject {
     }
     
     private func createAudioSnippets(from localURL: URL, completion: @escaping ([Data], URL?) -> Void) {
-        convertAudio(from: localURL, completion: { outputURL in
-            let audioDataArray: [Data] = []
+        convertAudio(from: localURL, completion: { outputURL, outputFileLength in
+            guard let outputURL = outputURL else {
+                completion([], localURL)
+                return
+            }
+            let audioDataArray: [Data] = self.extractAudioSnippets(from: outputURL, frameLength: outputFileLength)
             completion(audioDataArray, outputURL)
         })
     }
 
     // convert input audio to 16KHz non-interleaved mono with Float32 internal representation
-    private func convertAudio(from inputURL: URL, completion: @escaping (URL?) -> Void) {
+    private func convertAudio(from inputURL: URL, completion: @escaping (URL?, Int64) -> Void) {
         // Load the asset from the input URL (video file)
         let asset = AVAsset(url: inputURL)
         
         // Get the audio track from the asset
         guard let audioTrack = asset.tracks(withMediaType: .audio).first else {
             print("No audio track found in the asset")
-            completion(nil)
+            completion(nil, 0)
             return
         }
         
@@ -163,12 +166,14 @@ class VideoProcessor: NSObject {
         let outputFileName = inputURL.deletingPathExtension().lastPathComponent + "_converted.wav"
         let outputURL = outputDirectory.appendingPathComponent(outputFileName)
         
+        var fileLength: Int64 = 0
+        
         do {
             // Create an AVAssetReader to read from the audio track
             let assetReader = try AVAssetReader(asset: asset)
             let outputSettings: [String: Any] = [
                 AVFormatIDKey: kAudioFormatLinearPCM,
-                AVSampleRateKey: kSampleRate,  // Use the provided sample rate
+                AVSampleRateKey: kSampleRate,
                 AVNumberOfChannelsKey: 1,
                 AVLinearPCMBitDepthKey: 32,
                 AVLinearPCMIsFloatKey: true,
@@ -178,50 +183,180 @@ class VideoProcessor: NSObject {
             let trackOutput = AVAssetReaderTrackOutput(track: audioTrack, outputSettings: outputSettings)
             assetReader.add(trackOutput)
             
-            // Create an AVAssetReaderOutput to read samples from the audio track
             guard assetReader.startReading() else {
                 print("Failed to start reading from asset")
-                completion(nil)
+                completion(nil, 0)
                 return
             }
             
-            // Prepare to write the converted audio to a file
-            let outputFile = try AVAudioFile(forWriting: outputURL, settings: outputFormat.settings)
-            
-            // Process audio samples
-            while let sampleBuffer = trackOutput.copyNextSampleBuffer() {
-                if let audioBuffer = CMSampleBufferGetDataBuffer(sampleBuffer) {
-                    var length = 0
-                    var dataPointer: UnsafeMutablePointer<Int8>?
+            // Use autoreleasepool to ensure timely deallocation of resources
+            autoreleasepool {
+                // Prepare to write the converted audio to a file
+                do {
+                    let outputFile = try AVAudioFile(forWriting: outputURL, settings: outputFormat.settings)
                     
-                    // Access the raw audio data
-                    CMBlockBufferGetDataPointer(audioBuffer, atOffset: 0, lengthAtOffsetOut: nil, totalLengthOut: &length, dataPointerOut: &dataPointer)
-                    
-                    if let dataPointer = dataPointer, length > 0 {
-                        // Calculate frame length based on byte length and bytes per frame
-                        let bytesPerFrame = Int(outputFormat.streamDescription.pointee.mBytesPerFrame)
-                        let frameLength = AVAudioFrameCount(length / bytesPerFrame)  // Ensure both operands are Int
-                        
-                        // Create an AVAudioPCMBuffer with the calculated frame length
-                        let outputBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: frameLength)!
-                        outputBuffer.frameLength = frameLength
-                        
-                        // Copy data to the buffer's float channel data
-                        memcpy(outputBuffer.floatChannelData?.pointee, dataPointer, length)
-                        
-                        // Write the buffer to the output file
-                        try outputFile.write(from: outputBuffer)
+                    // Process audio samples
+                    while let sampleBuffer = trackOutput.copyNextSampleBuffer() {
+                        if let audioBuffer = CMSampleBufferGetDataBuffer(sampleBuffer) {
+                            var length = 0
+                            var dataPointer: UnsafeMutablePointer<Int8>?
+                            
+                            CMBlockBufferGetDataPointer(audioBuffer, atOffset: 0, lengthAtOffsetOut: nil, totalLengthOut: &length, dataPointerOut: &dataPointer)
+                            
+                            if let dataPointer = dataPointer, length > 0 {
+                                let bytesPerFrame = Int(outputFormat.streamDescription.pointee.mBytesPerFrame)
+                                let frameLength = AVAudioFrameCount(length / bytesPerFrame)
+                                
+                                let outputBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: frameLength)!
+                                outputBuffer.frameLength = frameLength
+                                
+                                memcpy(outputBuffer.floatChannelData?.pointee, dataPointer, length)
+                                
+                                try outputFile.write(from: outputBuffer)
+                            }
+                        }
                     }
+                    
+                    // Store the file length
+                    fileLength = outputFile.length
+                } catch {
+                    print("Error during file writing: \(error)")
                 }
             }
-            
-            // Completion with output URL
-            completion(outputURL)
+            // AVAudioFile will be deallocated and closed here when it goes out of scope
             
         } catch {
             print("Error during conversion: \(error)")
-            completion(nil)
+            completion(nil, 0)
+            return
+        }
+        
+        // Verify file existence and size
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: outputURL.path) {
+            if let attributes = try? fileManager.attributesOfItem(atPath: outputURL.path) {
+                let fileSize = attributes[.size] as? Int64 ?? 0
+                print("File size: \(fileSize) bytes")
+                if fileSize > 0 {
+                    completion(outputURL, fileLength)
+                    return
+                }
+            }
+        }
+        
+        // If we reach here, something went wrong
+        print("File creation failed or file is empty")
+        completion(nil, 0)
+    }
+    
+    private func extractAudioSnippets(from outputURL: URL, frameLength: Int64) -> [Data] {
+        var audioDataArray = [Data]()
+        
+        do {
+            // Load the audio file from the output URL
+            let commonFormat: AVAudioCommonFormat = .pcmFormatFloat32  // 32-bit float
+            let interleaved = false  // Set to false for non-interleaved data
+            let audioFile = try AVAudioFile(forReading: outputURL, commonFormat: commonFormat, interleaved: interleaved)
+            let audioFormat = audioFile.processingFormat
+            let audioFrameCount = frameLength // DOESN'T WORK!! Int(audioFile.length)
+            let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: AVAudioFrameCount(audioFrameCount))!
+            try audioFile.read(into: audioBuffer)
+            
+            // Define the sample rate as a Double
+            let sampleRateDouble = Double(audioFormat.sampleRate)
+            
+            // Calculate frame lengths
+            let timesliceInFrames = AVAudioFrameCount(Double(TIMESLICE) * sampleRateDouble)
+            let samplesPerSlice = Int(sampleRateDouble * Double(AUDIOSNIPPETLENGTH))
+            
+            var startFrame: AVAudioFramePosition = 0
+            
+            while startFrame < audioBuffer.frameLength {
+                // Calculate end frame
+                let endFrame = min(startFrame + AVAudioFramePosition(samplesPerSlice), AVAudioFramePosition(audioBuffer.frameLength))
+                
+                // Create a buffer for the snippet
+                let snippetFrameCount = AVAudioFrameCount(endFrame - startFrame)
+                let snippetBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: snippetFrameCount)!
+                snippetBuffer.frameLength = snippetBuffer.frameCapacity
+                
+                // Copy data manually from the main buffer to the snippet buffer
+                if let sourceChannelData = audioBuffer.floatChannelData?[0],
+                   let destinationChannelData = snippetBuffer.floatChannelData?[0] {
+                    
+                    for frame in 0..<Int(snippetFrameCount) {
+                        let sourceIndex = Int(startFrame) + frame
+                        if sourceIndex < Int(audioBuffer.frameLength) {
+                            destinationChannelData[frame] = sourceChannelData[sourceIndex]
+                        }
+                    }
+                }
+                
+                // Convert buffer to [Double]
+                let doubleData = convertBufferToDouble(snippetBuffer)
+                
+                // Pad data to ensure consistent length
+                let paddedData = padData(doubleData, toLength: Int(kSampleRate * Double(AUDIOSNIPPETLENGTH)))
+                
+                // Convert [Double] to Data
+                let data = doubleArrayToData(paddedData)
+                audioDataArray.append(data)
+                
+                // Move to the next time slice
+                startFrame += AVAudioFramePosition(timesliceInFrames)
+            }
+            
+        } catch {
+            print("Error extracting audio snippets: \(error)")
+        }
+        
+        return audioDataArray
+    }
+
+    
+    private func padData(_ data: [Double], toLength length: Int) -> [Double] {
+        var paddedData = data
+        if paddedData.count < length {
+            paddedData.append(contentsOf: Array(repeating: 0.0, count: length - paddedData.count))
+        }
+        return paddedData
+    }
+
+    private func doubleArrayToData(_ array: [Double]) -> Data {
+        return Data(bytes: array, count: array.count * MemoryLayout<Double>.size)
+    }
+
+
+    private func clampAmplitude(of pcmBuffer: AVAudioPCMBuffer) {
+        guard let channelData = pcmBuffer.floatChannelData else {
+            print("No channel data available")
+            return
+        }
+
+        // Iterate over each channel
+        for channel in 0..<Int(pcmBuffer.format.channelCount) {
+            let dataPointer = channelData[channel]
+            let frameCount = Int(pcmBuffer.frameLength)
+            
+            // Clamp values for each sample
+            for frame in 0..<frameCount {
+                let sample = dataPointer[frame]
+                dataPointer[frame] = min(max(sample, -1.0), 1.0)
+            }
         }
     }
+    
+    private func convertBufferToDouble(_ buffer: AVAudioPCMBuffer) -> [Double] {
+        let channelData = buffer.floatChannelData?[0]
+        let frameLength = Int(buffer.frameLength)
+        
+        // Convert Float32 buffer data to Double
+        let doubleData: [Double] = (0..<frameLength).map { index in
+            return Double(channelData?[index] ?? 0)
+        }
+        
+        return doubleData
+    }
+
 
 }
