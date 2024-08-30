@@ -11,6 +11,13 @@ import CoreImage
 import Foundation
 import UIKit
 
+enum clonedType {
+    case IsPicCloned(fragments:[VideoFragment])
+    case IsAudioCloned(fragments:[VideoFragment])
+    case IsBothCloned(fragments:[VideoFragment])
+    case NotCloned(fragments:[VideoFragment])
+}
+
 // Takes a local mov URL. Splits it into [VideoFragment]
 
 class VideoProcessor: NSObject {
@@ -21,9 +28,9 @@ class VideoProcessor: NSObject {
     private let kSampleRate: Double = 16000.0
     private var videoFragments: [VideoFragment] = []
     private let videoRecognizer: VideoRecognizer
-    private let completion: (URL?, Bool) -> Void
+    private let completion: (URL?, Bool, clonedType) -> Void
     
-    init(localURL: URL, videoRecognizer: VideoRecognizer, completion: @escaping (URL?, Bool) -> Void) {
+    init(localURL: URL, videoRecognizer: VideoRecognizer, completion: @escaping (URL?, Bool, clonedType) -> Void) {
         self.localURL = localURL
         self.videoRecognizer = videoRecognizer
         self.completion = completion
@@ -40,6 +47,27 @@ class VideoProcessor: NSObject {
             }
         }
         return false
+    }
+    
+    private func isCloned() -> clonedType {
+        var isAudioCloned: Bool = false
+        var isPicCloned: Bool = false
+        for fragment in videoFragments {
+            if fragment.isPicCloned {
+                isPicCloned = true
+            } else if fragment.isAudioCloned {
+                isAudioCloned = true
+            }
+        }
+        if isAudioCloned && isPicCloned {
+            return .IsBothCloned(fragments: self.videoFragments)
+        } else if isAudioCloned {
+            return .IsAudioCloned(fragments: videoFragments)
+        } else if isPicCloned {
+            return .IsPicCloned(fragments: videoFragments)
+        } else {
+            return .NotCloned(fragments: videoFragments)
+        }
     }
     
     private func convert2Fragments() {
@@ -59,7 +87,7 @@ class VideoProcessor: NSObject {
             }
             self.videoRecognizer.drivePicRecognizer(self.videoFragments)
             self.videoRecognizer.driveSpeechRecognizer(self.videoFragments)
-            self.completion(outputURL, self.isCloned())
+            self.completion(outputURL, self.isCloned(), self.isCloned())
         })
     }
     

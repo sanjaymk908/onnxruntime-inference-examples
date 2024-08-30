@@ -43,13 +43,18 @@ extension HomeScreenViewController {
       guard let videoRecognizer = videoRecognizer else {return}
       let _ = VideoProcessor(localURL: videoAt, 
                                           videoRecognizer: videoRecognizer,
-                                          completion: { outputURL, isCloned in
+                                          completion: { outputURL, isCloned, isClonedType in
           guard let outputURL = outputURL else {return}
           DispatchQueue.main.async {
               self.playAudio(from: outputURL)
-              if isCloned {
-                  self.displayMessage(self.ISCLONEDMESSAGE)
-              } else {
+              switch isClonedType {
+              case .IsPicCloned(let fragments):
+                  self.displayMessage(self.ISPICCLONEDMESSAGE)
+              case .IsAudioCloned(let fragments):
+                  self.displayMessage(self.ISAUDIOCLONEDMESSAGE)
+              case .IsBothCloned(let fragments):
+                  self.displayMessage(self.ISBOTHCLONEDMESSAGE)
+              case .NotCloned(let fragments):
                   self.displayMessage(self.ISREALMESSAGE)
               }
           }

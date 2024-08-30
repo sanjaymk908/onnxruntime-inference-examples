@@ -16,7 +16,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     var videoProcessor: VideoProcessor?
     var videoRecognizer: VideoRecognizer?
     
-    let ISCLONEDMESSAGE = "Video has cloned fragments"
+    let ISAUDIOCLONEDMESSAGE = "Video has cloned audio fragments"
+    let ISPICCLONEDMESSAGE = "Video has cloned pic fragments"
+    let ISBOTHCLONEDMESSAGE = "Video has cloned pic & cloned audio fragments"
     let ISREALMESSAGE = "Video has no cloned fragments"
     let MLMODELLOADINGFAILED = "Internal error loading ML Models"
     
