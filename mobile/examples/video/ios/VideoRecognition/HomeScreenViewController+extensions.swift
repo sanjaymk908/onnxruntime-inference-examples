@@ -12,8 +12,8 @@ import UIKit
 
 extension HomeScreenViewController {
   
-  func setupVideoProcessor() {
-      videoRecognizer = VideoRecognizer()
+  func setupVideoProcessor(_ completion: @escaping ((Bool) -> Void)) {
+      videoRecognizer = VideoRecognizer(completion)
   }
   
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {

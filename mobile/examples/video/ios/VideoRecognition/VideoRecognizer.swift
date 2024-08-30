@@ -12,38 +12,64 @@ class VideoRecognizer {
     var picRecognizer: PicRecognizer?
     var speechRecognizer: SpeechRecognizer?
     
-    init() {
-        setupPicRecognizer()
-        setupSpeechRecognizer()
+    init(_ completion: @escaping ((Bool) -> Void)) {
+        let dispatchGroup = DispatchGroup()
+        var isSuccessful = true  // Track success status
+        
+        dispatchGroup.enter()
+        setupPicRecognizer { success in
+            if !success { isSuccessful = false }
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        setupSpeechRecognizer { success in
+            if !success { isSuccessful = false }
+            dispatchGroup.leave()
+        }
+        
+        // Notify when both setup tasks are done
+        dispatchGroup.notify(queue: .main) {
+            completion(isSuccessful) // Returns true if both succeeded, false if any failed
+        }
     }
 
-    private func setupPicRecognizer() {
+    private func setupPicRecognizer(completion: @escaping ((Bool) -> Void)) {
         DispatchQueue.global().async {
             do {
                 let picRecognizer = try PicRecognizer()
                 DispatchQueue.main.async {
                     self.picRecognizer = picRecognizer
+                    completion(true) // Success
                 }
             } catch {
                 // Handle the initialization error here
                 print("Failed to initialize PicRecognizer: \(error)")
+                DispatchQueue.main.async {
+                    completion(false) // Failure
+                }
             }
         }
     }
-    
-    private func setupSpeechRecognizer() {
+
+    private func setupSpeechRecognizer(completion: @escaping ((Bool) -> Void)) {
         DispatchQueue.global().async {
             do {
                 let speechRecognizer = try SpeechRecognizer()
                 DispatchQueue.main.async {
                     self.speechRecognizer = speechRecognizer
+                    completion(true) // Success
                 }
             } catch {
                 // Handle the initialization error here
                 print("Failed to initialize SpeechRecognizer: \(error)")
+                DispatchQueue.main.async {
+                    completion(false) // Failure
+                }
             }
         }
     }
+
     
     func drivePicRecognizer(_ videoFragments: [VideoFragment]) {
         let count = videoFragments.count

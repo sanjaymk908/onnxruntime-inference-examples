@@ -18,13 +18,20 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     let ISCLONEDMESSAGE = "Video has cloned fragments"
     let ISREALMESSAGE = "Video has no cloned fragments"
+    let MLMODELLOADINGFAILED = "Internal error loading ML Models"
     
     override init() {
         super.init()
         // Add self as LuminaDelegate
         self.delegate = self
         LuminaViewController.loggingLevel = .critical
-        self.setupVideoProcessor()
+        startLoadingIndicator()
+        self.setupVideoProcessor() { isSuccessful in
+            self.stopLoadingIndicator()
+            if !isSuccessful {
+                self.displayMessage(self.MLMODELLOADINGFAILED)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -34,19 +41,21 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         self.recordsVideo = true
         self.streamFrames = false
         self.streamingModels = []
-        showPromptsForPermissionDeniedCase(true) // do reset location string
+        showPromptsForPermissionDeniedCase()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         createTransparentView(view)
-        showPromptsForPermissionDeniedCase(false)
-        permissionManager.initialize { [weak self] in
+        showPromptsForPermissionDeniedCase()
+        permissionManager.initialize { [weak self] isGranted in
             guard let self = self else {return}
             updateLabels()
-            showPromptsForPermissionEnabledCase()
+            if isGranted {
+                showPromptsForPermissionEnabledCase()
+            }
         }
-        permissionManager.requestCameraPermission()
+        permissionManager.requestPermissions()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -115,7 +124,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         view.endEditing(true)
     }
     
-    private func showPromptsForPermissionDeniedCase(_ resetLocation: Bool) {
+    private func showPromptsForPermissionDeniedCase() {
         displayMessage("Cannot proceed without camera permission!")
         setShutterButton(visible: false)
     }
@@ -130,6 +139,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         loadingLine.backgroundColor = UIColor.blue
         loadingLine.frame = CGRect(x: 0, y: view.frame.height - 3, width: view.frame.width, height: 3)
         view.addSubview(loadingLine)
+        view.bringSubviewToFront(loadingLine)
     }
     
     func startLoadingIndicator() {

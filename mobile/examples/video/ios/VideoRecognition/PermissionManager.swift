@@ -8,39 +8,51 @@
 import AVFoundation
 
 class PermissionManager: NSObject {
-    
+
     static let shared = PermissionManager()
-    
+
     private override init() {}
-    
-    // Closure to be executed when camera permission changes to enabled
-    var cameraPermissionDidChange: (() -> Void)?
-    
+
+    // Closure to be executed when camera and audio permissions are granted or denied
+    var permissionsDidChange: ((Bool) -> Void)?
+
     // Initialize the permission manager
-    func initialize(_ completion: @escaping (() -> Void)) {
-        cameraPermissionDidChange = completion
-        // Add observer for camera permission changes
+    func initialize(_ completion: @escaping ((Bool) -> Void)) {
+        permissionsDidChange = completion
+        // Add observers for camera permission changes
         NotificationCenter.default.addObserver(self, selector: #selector(cameraPermissionChanged), name: .AVCaptureDeviceWasConnected, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(cameraPermissionChanged), name: .AVCaptureDeviceWasDisconnected, object: nil)
     }
-    
-    // Request camera permission and execute the closure when it changes
-    func requestCameraPermission() {
-        AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-            if granted {
+
+    // Request both camera and microphone permissions
+    func requestPermissions() {
+        AVCaptureDevice.requestAccess(for: .video) { [weak self] videoGranted in
+            if videoGranted {
+                AVCaptureDevice.requestAccess(for: .audio) { audioGranted in
+                    DispatchQueue.main.async {
+                        let allGranted = videoGranted && audioGranted
+                        self?.permissionsDidChange?(allGranted)
+                    }
+                }
+            } else {
                 DispatchQueue.main.async {
-                    self?.cameraPermissionDidChange?()
+                    self?.permissionsDidChange?(false)
                 }
             }
         }
     }
-    
+
     // Handle camera permission change notifications
     @objc func cameraPermissionChanged() {
         let cameraPermissionStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        if cameraPermissionStatus == .authorized {
-            cameraPermissionDidChange?()
+        let audioPermissionStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+        
+        if cameraPermissionStatus == .authorized && audioPermissionStatus == .authorized {
+            permissionsDidChange?(true)
+        } else {
+            permissionsDidChange?(false)
         }
     }
 }
+
 
