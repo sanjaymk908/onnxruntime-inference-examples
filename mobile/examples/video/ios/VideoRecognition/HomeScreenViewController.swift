@@ -41,21 +41,12 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         self.recordsVideo = true
         self.streamFrames = false
         self.streamingModels = []
-        showPromptsForPermissionDeniedCase()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         createTransparentView(view)
-        showPromptsForPermissionDeniedCase()
-        permissionManager.initialize { [weak self] isGranted in
-            guard let self = self else {return}
-            updateLabels()
-            if isGranted {
-                showPromptsForPermissionEnabledCase()
-            }
-        }
-        permissionManager.requestPermissions()
+        updateLabels()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,16 +113,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     @objc func handleTap() {
         view.endEditing(true)
-    }
-    
-    private func showPromptsForPermissionDeniedCase() {
-        displayMessage("Cannot proceed without camera permission!")
-        setShutterButton(visible: false)
-    }
-    
-    private func showPromptsForPermissionEnabledCase() {
-        displayMessage("")
-        setShutterButton(visible: true)
     }
     
     private func createLoadingIndicator() {

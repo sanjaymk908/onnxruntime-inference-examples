@@ -7,52 +7,49 @@
 
 import AVFoundation
 
-class PermissionManager: NSObject {
-
+class PermissionManager: ObservableObject {
     static let shared = PermissionManager()
 
-    private override init() {}
-
-    // Closure to be executed when camera and audio permissions are granted or denied
-    var permissionsDidChange: ((Bool) -> Void)?
-
-    // Initialize the permission manager
-    func initialize(_ completion: @escaping ((Bool) -> Void)) {
-        permissionsDidChange = completion
-        // Add observers for camera permission changes
-        NotificationCenter.default.addObserver(self, selector: #selector(cameraPermissionChanged), name: .AVCaptureDeviceWasConnected, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(cameraPermissionChanged), name: .AVCaptureDeviceWasDisconnected, object: nil)
+    @Published var permissionsGranted: Bool = false
+    
+    func initialize() {
+        checkPermissions()
     }
 
-    // Request both camera and microphone permissions
-    func requestPermissions() {
-        AVCaptureDevice.requestAccess(for: .video) { [weak self] videoGranted in
-            if videoGranted {
-                AVCaptureDevice.requestAccess(for: .audio) { audioGranted in
-                    DispatchQueue.main.async {
-                        let allGranted = videoGranted && audioGranted
-                        self?.permissionsDidChange?(allGranted)
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.permissionsDidChange?(false)
-                }
-            }
-        }
-    }
-
-    // Handle camera permission change notifications
-    @objc func cameraPermissionChanged() {
-        let cameraPermissionStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        let audioPermissionStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+    func checkPermissions() {
+        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        let micStatus = AVAudioSession.sharedInstance().recordPermission
         
-        if cameraPermissionStatus == .authorized && audioPermissionStatus == .authorized {
-            permissionsDidChange?(true)
+        if cameraStatus == .authorized && micStatus == .granted {
+            permissionsGranted = true
         } else {
-            permissionsDidChange?(false)
+            permissionsGranted = false
         }
+    }
+
+    func requestPermissions() {
+        let group = DispatchGroup()
+        
+        group.enter()
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            group.leave()
+        }
+        
+        group.enter()
+        AVAudioSession.sharedInstance().requestRecordPermission { granted in
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            self.checkPermissions()
+        }
+    }
+
+    func arePermissionsDenied() -> Bool {
+        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        let micStatus = AVAudioSession.sharedInstance().recordPermission
+        
+        return cameraStatus == .denied || micStatus == .denied
     }
 }
-
 

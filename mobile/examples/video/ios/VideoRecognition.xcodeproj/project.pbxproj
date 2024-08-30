@@ -58,7 +58,6 @@
 		C19DC94F2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */; };
 		C1AFAA5A2C65DCE8003668C1 /* Lumina in Frameworks */ = {isa = PBXBuildFile; productRef = C1AFAA592C65DCE8003668C1 /* Lumina */; };
 		EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* PicRecognitionApp.swift */; };
-		EFE237D926855E4600234E2C /* ContentViewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D826855E4600234E2C /* ContentViewCapture.swift */; };
 		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
 		EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */; };
 		EFE237E926855E4B00234E2C /* SpeechRecognitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237E826855E4B00234E2C /* SpeechRecognitionTests.swift */; };
@@ -145,7 +144,6 @@
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* TruVideo - AI Detector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TruVideo - AI Detector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* PicRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognitionApp.swift; sourceTree = "<group>"; };
-		EFE237D826855E4600234E2C /* ContentViewCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewCapture.swift; sourceTree = "<group>"; };
 		EFE237DA26855E4B00234E2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EFE237DF26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 				C135634D2C18F1D800FF9A99 /* include */,
 				EFE2380326855FC800234E2C /* PicRecognition-Bridging-Header.h */,
 				EFE237D626855E4600234E2C /* PicRecognitionApp.swift */,
-				EFE237D826855E4600234E2C /* ContentViewCapture.swift */,
 				EFE237DA26855E4B00234E2C /* Assets.xcassets */,
 				EFE237DF26855E4B00234E2C /* Info.plist */,
 				EFE237DC26855E4B00234E2C /* Preview Content */,
@@ -465,7 +462,6 @@
 				C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */,
 				C195827A2C757359004B8934 /* InferenceProtocol.swift in Sources */,
 				C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */,
-				EFE237D926855E4600234E2C /* ContentViewCapture.swift in Sources */,
 				EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */,
 				C135635B2C18F1DA00FF9A99 /* cxx_utils.mm in Sources */,
 			);

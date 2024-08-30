@@ -41,7 +41,7 @@ extension HomeScreenViewController {
           
   func captured(videoAt: URL, from controller: LuminaViewController) {
       guard let videoRecognizer = videoRecognizer else {return}
-      let videoProcessor = VideoProcessor(localURL: videoAt, 
+      let _ = VideoProcessor(localURL: videoAt, 
                                           videoRecognizer: videoRecognizer,
                                           completion: { outputURL, isCloned in
           guard let outputURL = outputURL else {return}
