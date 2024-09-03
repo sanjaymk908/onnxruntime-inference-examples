@@ -20,6 +20,10 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     let ISPICCLONEDMESSAGE = "Video has cloned pic fragments"
     let ISBOTHCLONEDMESSAGE = "Video has cloned pic & cloned audio fragments"
     let ISREALMESSAGE = "Video has no cloned fragments"
+    let ISFRAGMENTAUDIOCLONEDMESSAGE = "Fragment has cloned audio"
+    let ISFRAGMENTPICCLONEDMESSAGE = "Fragment has cloned pic"
+    let ISFRAGMENTBOTHCLONEDMESSAGE = "Fragment has cloned pic & cloned audio"
+    let ISFRAGMENTREALMESSAGE = "Fragment has no cloned media"
     let MLMODELLOADINGFAILED = "Internal error loading ML Models"
     
     override init() {
@@ -98,18 +102,18 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     let transparentView = RoundedCornersView()
     private var scanPromptLabel: UILabel!
     private let GenericMLError = "Error identifying picture or audio"
-    private let RecordMessage = "Hold down record button for video capture"
+    private static let RecordMessage = "Hold down record button for video capture"
     private let loadingLine = UIView()
     var audioPlayer: AVAudioPlayer?
     
-    private func updateLabels() {
+    private func updateLabels(_ message: String = RecordMessage) {
         let labelFont = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
         let labelAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white,
             .font: labelFont as Any,
         ]
 
-        let labelAttributedPlaceholder = NSAttributedString(string: RecordMessage, attributes: labelAttributes)
+        let labelAttributedPlaceholder = NSAttributedString(string: message, attributes: labelAttributes)
         scanPromptLabel.attributedText = labelAttributedPlaceholder
     }
     
@@ -146,6 +150,19 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     func displayMessage(_ message: String) {
         textPrompt = message
+    }
+    
+    func displayFragmentMessage(_ fragment: VideoFragment) {
+        // use updateLabels() to show per-fragment message below pic
+        if fragment.isAudioCloned && fragment.isPicCloned {
+            updateLabels(ISFRAGMENTBOTHCLONEDMESSAGE)
+        } else if fragment.isAudioCloned {
+            updateLabels(ISFRAGMENTAUDIOCLONEDMESSAGE)
+        } else if fragment.isPicCloned {
+            updateLabels(ISFRAGMENTPICCLONEDMESSAGE)
+        } else {
+            updateLabels(ISFRAGMENTREALMESSAGE)
+        }
     }
     
     private func displayCapturedPic(_ capturedPic: UIImage) {
@@ -195,6 +212,23 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         
         // Display the captured picture using displayCapturedPic()
         displayCapturedPic(capturedPic)
+    }
+    
+    func displayMessageAndFragments(_ message: String, fragments: [VideoFragment]) {
+        // Display the message using displayMessage()
+        displayMessage(message)
+        
+        for (index, fragment) in fragments.enumerated() {
+            let pic = fragment.stillFrame
+            let displayTime = Double(videoProcessor?.AUDIOSNIPPETLENGTH ?? 5)
+
+            // Delay the display based on the index of the fragment
+            DispatchQueue.main.asyncAfter(deadline: .now() + displayTime * Double(index)) {
+                self.displayCapturedPic(UIImage(ciImage: pic))
+                self.displayFragmentMessage(fragment)
+            }
+        }
+
     }
     
     private func addDoubleTapHandler() {

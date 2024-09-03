@@ -24,7 +24,7 @@ class VideoProcessor: NSObject {
     
     private let localURL: URL
     private let TIMESLICE: Int = 10
-    private let AUDIOSNIPPETLENGTH: Int = 5 // keep in sync w/ SpeechRecognizer
+    public  let AUDIOSNIPPETLENGTH: Int = 5 // keep in sync w/ SpeechRecognizer
     private let kSampleRate: Double = 16000.0
     private var videoFragments: [VideoFragment] = []
     private let videoRecognizer: VideoRecognizer
@@ -55,7 +55,8 @@ class VideoProcessor: NSObject {
         for fragment in videoFragments {
             if fragment.isPicCloned {
                 isPicCloned = true
-            } else if fragment.isAudioCloned {
+            }
+            if fragment.isAudioCloned {
                 isAudioCloned = true
             }
         }

@@ -41,21 +41,22 @@ extension HomeScreenViewController {
           
   func captured(videoAt: URL, from controller: LuminaViewController) {
       guard let videoRecognizer = videoRecognizer else {return}
-      let _ = VideoProcessor(localURL: videoAt, 
-                                          videoRecognizer: videoRecognizer,
-                                          completion: { outputURL, isCloned, isClonedType in
+      print("Starting video processing...")
+      self.videoProcessor = VideoProcessor(localURL: videoAt,
+                                           videoRecognizer: videoRecognizer,
+                                           completion: { outputURL, isCloned, isClonedType in
           guard let outputURL = outputURL else {return}
           DispatchQueue.main.async {
               self.playAudio(from: outputURL)
               switch isClonedType {
               case .IsPicCloned(let fragments):
-                  self.displayMessage(self.ISPICCLONEDMESSAGE)
+                  self.displayMessageAndFragments(self.ISPICCLONEDMESSAGE, fragments: fragments)
               case .IsAudioCloned(let fragments):
-                  self.displayMessage(self.ISAUDIOCLONEDMESSAGE)
+                  self.displayMessageAndFragments(self.ISAUDIOCLONEDMESSAGE, fragments: fragments)
               case .IsBothCloned(let fragments):
-                  self.displayMessage(self.ISBOTHCLONEDMESSAGE)
+                  self.displayMessageAndFragments(self.ISBOTHCLONEDMESSAGE, fragments: fragments)
               case .NotCloned(let fragments):
-                  self.displayMessage(self.ISREALMESSAGE)
+                  self.displayMessageAndFragments(self.ISREALMESSAGE, fragments: fragments)
               }
           }
       })
