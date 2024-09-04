@@ -17,26 +17,25 @@ extension HomeScreenViewController {
   }
   
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {
-    let screenSize: CGRect = self.view.frame
-    let luminaAddedOffsetAtTop = 70.0
-    // the captured pic has wrong orientation; account for this below
-    let croppedRect = CGRect(x: transparentView.frame.origin.y,
-                             y: transparentView.frame.origin.x - luminaAddedOffsetAtTop,
-                             width: transparentView.frame.height - luminaAddedOffsetAtTop,
-                             height: transparentView.frame.width - 4.0)
-    if let croppedImage = cropImage(stillImage,
-                                    toRect: croppedRect,
-                                    viewWidth: screenSize.width,
-                                    viewHeight: screenSize.height) {
-        // Resize it & convert to bitmap
-        // Resize the UIImage to 224x224
-        let resizedUIImage = croppedImage.resized(to: CGSize(width: 224, height: 224))
-            
-        // Convert the resized UIImage to CIImage
-        if let ciImage = CIImage(image: resizedUIImage) {
-            imageRecognize(with: ciImage, withOriginalImage: croppedImage)
-        }
-    }
+      let screenSize: CGRect = self.view.frame
+      // the captured pic has wrong orientation; account for this below
+      let croppedRect = CGRect(x: transparentView.frame.origin.y - 40.0,
+                               y: transparentView.frame.origin.x - 12.0,
+                               width: transparentView.frame.height - 1.0,
+                               height: transparentView.frame.width - 4.0)
+      if let croppedImage = cropImage(stillImage,
+                                      toRect: croppedRect,
+                                      viewWidth: screenSize.width,
+                                      viewHeight: screenSize.height) {
+          // Resize it & convert to bitmap
+          // Resize the UIImage to 224x224
+          let resizedUIImage = croppedImage.resized(to: CGSize(width: 224, height: 224))
+              
+          // Convert the resized UIImage to CIImage
+          if let ciImage = CIImage(image: resizedUIImage) {
+              imageRecognize(with: ciImage, withOriginalImage: croppedImage)
+          }
+      }
   }
           
   func captured(videoAt: URL, from controller: LuminaViewController) {
