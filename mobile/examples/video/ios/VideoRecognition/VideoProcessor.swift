@@ -29,10 +29,14 @@ class VideoProcessor: NSObject {
     private var videoFragments: [VideoFragment] = []
     private let videoRecognizer: VideoRecognizer
     private let completion: (URL?, Bool, clonedType) -> Void
+    private let processStillFrame: (UIImage) -> (UIImage, UIImage)
     
-    init(localURL: URL, videoRecognizer: VideoRecognizer, completion: @escaping (URL?, Bool, clonedType) -> Void) {
+    init(localURL: URL, videoRecognizer: VideoRecognizer, 
+         processStillFrame: @escaping (UIImage) -> (UIImage, UIImage),
+         completion: @escaping (URL?, Bool, clonedType) -> Void) {
         self.localURL = localURL
         self.videoRecognizer = videoRecognizer
+        self.processStillFrame = processStillFrame
         self.completion = completion
         super.init()
         self.convert2Fragments()
@@ -72,7 +76,7 @@ class VideoProcessor: NSObject {
     }
     
     private func convert2Fragments() {
-        let picFragments = createStillFrames(from: localURL)
+        let (picFragments, origPics) = createStillFrames(from: localURL)
         var audioFragments: [Data] = []
         createAudioSnippets(from: localURL, completion: { audioData, outputURL in
             audioFragments = audioData
@@ -81,7 +85,8 @@ class VideoProcessor: NSObject {
             
             for index in 0..<count {
                 let fragment = VideoFragment(timeDelta: timeSlice,
-                                             stillFrame: picFragments[index],
+                                             stillFrame: picFragments[index], 
+                                             origPic: origPics[index],
                                              audioSnippet: audioFragments[index])
                 self.videoFragments.append(fragment)
                 timeSlice += self.TIMESLICE
@@ -93,8 +98,9 @@ class VideoProcessor: NSObject {
     }
     
     // Slice localURL (mov stored locally) every TIMESLICE seconds to get a stillframe per TIMESLICE
-    private func createStillFrames(from localURL: URL) -> [CIImage] {
+    private func createStillFrames(from localURL: URL) -> ([CIImage], [UIImage]) {
         var stillFrames: [CIImage] = []
+        var origPics:    [UIImage] = []
         
         // Create an AVAsset from the local URL
         let asset = AVAsset(url: localURL)
@@ -123,18 +129,19 @@ class VideoProcessor: NSObject {
                 let uiImage = UIImage(cgImage: cgImage)
                 
                 // Resize the UIImage to 224x224
-                let resizedUIImage = uiImage.resized(to: CGSize(width: 224, height: 224))
+                let (resizedUIImage, origPic) = self.processStillFrame(uiImage)
                 
                 // Convert the resized UIImage to CIImage
                 if let ciImage = CIImage(image: resizedUIImage) {
                     stillFrames.append(ciImage)
+                    origPics.append(origPic)
                 }
             } catch {
                 print("Error generating still frame at time \(time): \(error.localizedDescription)")
             }
         }
         
-        return stillFrames
+        return (stillFrames, origPics)
     }
     
     // Helper function to resize UIImage

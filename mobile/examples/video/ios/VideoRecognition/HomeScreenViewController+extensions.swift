@@ -17,25 +17,10 @@ extension HomeScreenViewController {
   }
   
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {
-      let screenSize: CGRect = self.view.frame
-      // the captured pic has wrong orientation; account for this below
-      let croppedRect = CGRect(x: transparentView.frame.origin.y - 40.0,
-                               y: transparentView.frame.origin.x - 12.0,
-                               width: transparentView.frame.height - 1.0,
-                               height: transparentView.frame.width - 4.0)
-      if let croppedImage = cropImage(stillImage,
-                                      toRect: croppedRect,
-                                      viewWidth: screenSize.width,
-                                      viewHeight: screenSize.height) {
-          // Resize it & convert to bitmap
-          // Resize the UIImage to 224x224
-          let resizedUIImage = croppedImage.resized(to: CGSize(width: 224, height: 224))
-              
-          // Convert the resized UIImage to CIImage
-          if let ciImage = CIImage(image: resizedUIImage) {
-              imageRecognize(with: ciImage, withOriginalImage: croppedImage)
-          }
-      }
+    let (resizedUIImage, croppedImage) = processCapturedImage(stillImage, shouldRotate: true)
+    if let ciImage = CIImage(image: resizedUIImage) {
+        imageRecognize(with: ciImage, withOriginalImage: croppedImage)
+    }
   }
           
   func captured(videoAt: URL, from controller: LuminaViewController) {
@@ -43,6 +28,9 @@ extension HomeScreenViewController {
       print("Starting video processing...")
       self.videoProcessor = VideoProcessor(localURL: videoAt,
                                            videoRecognizer: videoRecognizer,
+                                           processStillFrame: { inputImage in
+                                              return self.processCapturedImage(inputImage)
+                                           },
                                            completion: { outputURL, isCloned, isClonedType in
           guard let outputURL = outputURL else {return}
           DispatchQueue.main.async {
@@ -64,6 +52,26 @@ extension HomeScreenViewController {
   ///
   /// MARK :- priate methods, properties
   ///
+
+  private func processCapturedImage(_ inputImage: UIImage, shouldRotate: Bool = false) -> (UIImage, UIImage) {
+    let screenSize: CGRect = self.view.frame
+    // the captured pic has wrong orientation; account for this below
+    let croppedRect = CGRect(x: transparentView.frame.origin.y - 40.0,
+                                y: transparentView.frame.origin.x - 12.0,
+                                width: transparentView.frame.height - 1.0,
+                                height: transparentView.frame.width - 4.0)
+    if let croppedImage = cropImage(inputImage,
+                                    toRect: croppedRect,
+                                    viewWidth: screenSize.width,
+                                    viewHeight: screenSize.height,
+                                    shouldRotate: shouldRotate) {
+        // Resize it & convert to bitmap
+        // Resize the UIImage to 224x224
+        let resizedUIImage = croppedImage.resized(to: CGSize(width: 224, height: 224))
+        return (resizedUIImage, croppedImage)
+    }
+    return (inputImage, inputImage) // on failure
+  }
     
   private func playAudio(from url: URL) {
       do {
@@ -124,7 +132,11 @@ extension HomeScreenViewController {
   //     3. And to make things even more interesting, the static stuff Lumina adds
   //        to the top of its view pushes everything UP by luminaAddedOffsetAtTop.
   //        So, the y origin of the cropRect box has to be reduced by this amount.
-  private func cropImage(_ inputImage: UIImage, toRect cropRect: CGRect, viewWidth: CGFloat, viewHeight: CGFloat) -> UIImage? {
+  private func cropImage(_ inputImage: UIImage, 
+                         toRect cropRect: CGRect,
+                         viewWidth: CGFloat,
+                         viewHeight: CGFloat,
+                         shouldRotate: Bool) -> UIImage? {
     let imageViewScale = max(inputImage.size.width / viewWidth,
                              inputImage.size.height / viewHeight)
 
@@ -144,10 +156,14 @@ extension HomeScreenViewController {
 
     // Return image to UIImage
     let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
-    guard let rotatedImage = rotateImageToPortrait(croppedImage) else {
-        return nil
+    if shouldRotate {
+        guard let rotatedImage = rotateImageToPortrait(croppedImage) else {
+            return nil
+        }
+        return rotatedImage
+    } else {
+        return croppedImage
     }
-    return rotatedImage
   }
     
   private func rotateImageToPortrait(_ image: UIImage) -> UIImage? {
