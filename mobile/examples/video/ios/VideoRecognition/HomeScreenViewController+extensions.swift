@@ -56,10 +56,18 @@ extension HomeScreenViewController {
   private func processCapturedImage(_ inputImage: UIImage, shouldRotate: Bool = false) -> (UIImage, UIImage) {
     let screenSize: CGRect = self.view.frame
     // the captured pic has wrong orientation; account for this below
-    let croppedRect = CGRect(x: transparentView.frame.origin.y - 40.0,
-                                y: transparentView.frame.origin.x - 12.0,
-                                width: transparentView.frame.height - 1.0,
-                                height: transparentView.frame.width - 4.0)
+      var croppedRect: CGRect = CGRect()
+      if shouldRotate {
+          croppedRect = CGRect(x: transparentView.frame.origin.y - 40.0,
+                               y: transparentView.frame.origin.x - 12.0,
+                               width: transparentView.frame.height - 1.0,
+                               height: transparentView.frame.width - 4.0)
+      } else {
+          croppedRect = CGRect(x: transparentView.frame.origin.x,
+                               y: transparentView.frame.origin.y,
+                               width: transparentView.frame.width,
+                               height: transparentView.frame.height)
+      }
     if let croppedImage = cropImage(inputImage,
                                     toRect: croppedRect,
                                     viewWidth: screenSize.width,
