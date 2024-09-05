@@ -260,7 +260,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         for subview in transparentView.subviews {
             subview.removeFromSuperview()
         }
-        resetState()
+        resetState(true) // force text prompt above pic to be reset
     }
 
     func displayMessageAndPic(_ message: String, capturedPic: UIImage) {

@@ -59,11 +59,17 @@ extension HomeScreenViewController {
   /// MARK :- priate methods, properties
   ///
 
-  func resetState() {
+    func resetState(_ force: Bool = false) {
     currentFragments = []
     audioPlayer = nil
-    updateLabels()
-    displayMessage("")
+    DispatchQueue.main.async { [weak self] in
+        guard let self = self else {return}
+        self.updateLabels()
+        // This causes initial display to disapper-why?? 
+        if  force {
+            self.displayMessage("")
+        }
+    }
   }
     
   func isVideoRecording() -> Bool {
