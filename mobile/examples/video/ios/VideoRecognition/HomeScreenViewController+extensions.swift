@@ -17,6 +17,7 @@ extension HomeScreenViewController {
   }
   
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {
+    resetState()
     let (resizedUIImage, croppedImage) = processCapturedImage(stillImage, shouldRotate: true)
     if let ciImage = CIImage(image: resizedUIImage) {
         imageRecognize(with: ciImage, withOriginalImage: croppedImage)
@@ -24,6 +25,7 @@ extension HomeScreenViewController {
   }
           
   func captured(videoAt: URL, from controller: LuminaViewController) {
+      resetState()
       guard let videoRecognizer = videoRecognizer else {return}
       print("Starting video processing...")
       self.videoProcessor = VideoProcessor(localURL: videoAt,
@@ -37,12 +39,16 @@ extension HomeScreenViewController {
               self.playAudio(from: outputURL)
               switch isClonedType {
               case .IsPicCloned(let fragments):
+                  self.setState(fragments)
                   self.displayMessageAndFragments(self.ISPICCLONEDMESSAGE, fragments: fragments)
               case .IsAudioCloned(let fragments):
+                  self.setState(fragments)
                   self.displayMessageAndFragments(self.ISAUDIOCLONEDMESSAGE, fragments: fragments)
               case .IsBothCloned(let fragments):
+                  self.setState(fragments)
                   self.displayMessageAndFragments(self.ISBOTHCLONEDMESSAGE, fragments: fragments)
               case .NotCloned(let fragments):
+                  self.setState(fragments)
                   self.displayMessageAndFragments(self.ISREALMESSAGE, fragments: fragments)
               }
           }
@@ -52,6 +58,21 @@ extension HomeScreenViewController {
   ///
   /// MARK :- priate methods, properties
   ///
+
+  func resetState() {
+    currentFragments = []
+    audioPlayer = nil
+    updateLabels()
+    displayMessage("")
+  }
+    
+  func isVideoRecording() -> Bool {
+    return audioPlayer?.url != nil
+  }
+    
+  private func setState(_ fragments: [VideoFragment]) {
+    currentFragments = fragments
+  }
 
   private func processCapturedImage(_ inputImage: UIImage, shouldRotate: Bool = false) -> (UIImage, UIImage) {
     let screenSize: CGRect = self.view.frame
@@ -81,7 +102,7 @@ extension HomeScreenViewController {
     return (inputImage, inputImage) // on failure
   }
     
-  private func playAudio(from url: URL) {
+  func playAudio(from url: URL) {
       do {
           // Initialize the AVAudioPlayer with the output URL
           audioPlayer = try AVAudioPlayer(contentsOf: url)

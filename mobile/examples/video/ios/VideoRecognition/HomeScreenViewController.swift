@@ -105,8 +105,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     private static let RecordMessage = "Hold down record button for video capture"
     private let loadingLine = UIView()
     var audioPlayer: AVAudioPlayer?
+    var currentFragments: [VideoFragment]?
     
-    private func updateLabels(_ message: String = RecordMessage) {
+    func updateLabels(_ message: String = RecordMessage) {
         let labelFont = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
         let labelAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white,
@@ -166,37 +167,92 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     }
     
     private func displayCapturedPic(_ capturedPic: UIImage) {
-        // Create UIImageView to display the capturedPic
-        let imageView = UIImageView(image: capturedPic)
+        let imageView = createImageView(with: capturedPic)
+        transparentView.addSubview(imageView)
+        setupImageViewConstraints(imageView)
+        
+        let dismissButton = createDismissButton()
+        transparentView.addSubview(dismissButton)
+        setupDismissButtonConstraints(dismissButton)
+        
+        // create replay button iff this is a video recording
+        if isVideoRecording() {
+            let replayButton = createReplayButton()
+            transparentView.addSubview(replayButton)
+            setupReplayButtonConstraints(replayButton)
+        }
+    }
+
+    private func createImageView(with image: UIImage) -> UIImageView {
+        let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Add the imageView to the transparentView
-        transparentView.addSubview(imageView)
-        
-        // Set constraints to make the imageView fill the transparentView
+        return imageView
+    }
+
+    private func setupImageViewConstraints(_ imageView: UIImageView) {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: transparentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: transparentView.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: transparentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor)
         ])
-        
-        // Create a dismiss button
-        let dismissButton = UIButton(type: .custom)
-        dismissButton.setTitle("X", for: .normal)
-        dismissButton.setTitleColor(.red, for: .normal)
-        dismissButton.translatesAutoresizingMaskIntoConstraints = false
-        dismissButton.addTarget(self, action: #selector(dismissCapturedPic), for: .touchUpInside)
-        
-        // Add the dismiss button to the transparentView
-        transparentView.addSubview(dismissButton)
-        
-        // Set constraints for the dismiss button in the top right corner
+    }
+
+    private func createDismissButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.setTitle("X", for: .normal)
+        button.setTitleColor(.red, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(dismissCapturedPic), for: .touchUpInside)
+        return button
+    }
+
+    private func setupDismissButtonConstraints(_ button: UIButton) {
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: transparentView.topAnchor, constant: 10),
-            dismissButton.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -10)
+            button.topAnchor.constraint(equalTo: transparentView.topAnchor, constant: 10),
+            button.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -10)
         ])
+    }
+
+    private func createReplayButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.setTitle("∞", for: .normal)
+        button.setTitleColor(.green, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 30)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(replayTapped), for: .touchUpInside)
+        return button
+    }
+
+    private func setupReplayButtonConstraints(_ button: UIButton) {
+        NSLayoutConstraint.activate([
+            button.bottomAnchor.constraint(equalTo: transparentView.bottomAnchor, constant: -10),
+            button.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -10)
+        ])
+    }
+
+    @objc private func replayTapped() {
+        audioPlayer?.stop()
+        audioPlayer?.currentTime = 0
+        
+        if let url = audioPlayer?.url {
+            playAudio(from: url)
+        }
+        
+        replayStillframes()
+    }
+
+    private func replayStillframes() {
+        for subview in transparentView.subviews {
+            if subview is UIImageView {
+                subview.removeFromSuperview()
+            }
+        }
+        
+        if let fragments = currentFragments {
+            displayMessageAndFragments(textPrompt, fragments: fragments)
+        }
     }
 
     @objc private func dismissCapturedPic() {
@@ -204,6 +260,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         for subview in transparentView.subviews {
             subview.removeFromSuperview()
         }
+        resetState()
     }
 
     func displayMessageAndPic(_ message: String, capturedPic: UIImage) {
