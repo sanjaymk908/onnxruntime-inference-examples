@@ -44,9 +44,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         super.viewDidLoad()
         setCancelButton(visible: false)
         self.captureLivePhotos = false
+        self.streamDepthData = false
         self.recordsVideo = true
         self.streamFrames = false
-        self.streamingModels = []
     }
     
     override func viewDidAppear(_ animated: Bool) {
