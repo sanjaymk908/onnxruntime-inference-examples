@@ -83,7 +83,7 @@ struct PermissionRequestView: View {
                     permissionManager.requestPermissions()
                 }
             }) {
-                Text("Grant Permissions")
+                Text("Continue")
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
                     .frame(minWidth: 200, minHeight: 50)
