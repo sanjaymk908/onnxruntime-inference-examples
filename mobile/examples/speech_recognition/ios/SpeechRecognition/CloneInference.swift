@@ -20,7 +20,7 @@ class CloneInference: Evaluator {
 
     required init() throws {
     ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "8KHz_logreg_96Percent-model", ofType: "ort") else {
+    guard let modelPath = Bundle.main.path(forResource: "8KHz_logreg_96Percent-model_no_zipmap", ofType: "onnx") else {
       throw CloneInferenceError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
@@ -64,41 +64,53 @@ class CloneInference: Evaluator {
   }
 
   func evaluate(inputData: [Double]) -> Result<String, Error> {
-        return Result<String, Error> { () -> String in
-            let startTime = DispatchTime.now()
-            // Step 1: Create ORTValue for input data
-            let inputTensor = try createORTValueFromEmbeddings(inputData)
+    return Result<String, Error> { () -> String in
+        let startTime = DispatchTime.now()
+        
+        // Step 1: Create ORTValue for input data
+        let inputTensor = try createORTValueFromEmbeddings(inputData)
 
-            // Step 2: Prepare input and run session
-            let inputs: [String: ORTValue] = [
-                "float_input": inputTensor,
-            ]
-            let outputs = try ortSession.run(
-                withInputs: inputs,
-                outputNames: ["output_probability", "output_label"],
-                runOptions: nil
-            )
+        // Step 2: Prepare input and run session
+        let inputs: [String: ORTValue] = [
+            "float_input": inputTensor,
+        ]
+        let outputs = try ortSession.run(
+            withInputs: inputs,
+            outputNames: ["output_probability", "output_label"],
+            runOptions: nil
+        )
 
-            let endTime = DispatchTime.now()
-            print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
+        let endTime = DispatchTime.now()
+        print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
 
-            guard let _ = outputs["output_probability"], let labels = outputs["output_label"] else {
-                throw CloneInferenceError.Error("Failed to get model output.")
-            }
-            
-            let labelsData = try labels.tensorData() as Data
-            let labelValue = labelsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Int64 in
-                let int64Buffer = buffer.bindMemory(to: Int64.self)
-                return int64Buffer[0]
-            }
-
-            if labelValue == 0 {
-                return "Audio is real"
-            } else {
-                return "Audio is cloned"
-            }
+        guard let outputProbabilities = outputs["output_probability"], let labels = outputs["output_label"] else {
+            throw CloneInferenceError.Error("Failed to get model output.")
         }
-  }
 
+        // Step 3: Extract label value
+        let labelsData = try labels.tensorData() as Data
+        let labelValue = labelsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Int64 in
+            let int64Buffer = buffer.bindMemory(to: Int64.self)
+            return int64Buffer[0]
+        }
+
+        // Step 4: Extract probabilities
+        let probabilitiesData = try outputProbabilities.tensorData() as Data
+        let probabilities = probabilitiesData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> [Float] in
+            let floatBuffer = buffer.bindMemory(to: Float.self)
+            return Array(floatBuffer.prefix(2)) // Assuming two classes
+        }
+
+        // Print out probabilities
+        print("Probabilities: \(probabilities)")
+
+        // Step 5: Return the result based on the label value
+        if labelValue == 0 {
+            return "Audio is real"
+        } else {
+            return "Audio is cloned"
+        }
+    }
+  }
 }
 
