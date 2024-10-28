@@ -1,0 +1,1361 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		01D26C9790741D5F08E2B47A48D79331 /* onnxruntime-c */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 1FAA34C873E6D52B09F47086906FF3E4 /* Build configuration list for PBXAggregateTarget "onnxruntime-c" */;
+			buildPhases = (
+				3CFBA14174592D8554CB04535DA6DCD3 /* [CP] Copy XCFrameworks */,
+			);
+			dependencies = (
+			);
+			name = "onnxruntime-c";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		01C3855391794AD845F11FF274547E70 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		01D31EBF072AAFF423B35FC433997019 /* assert_arc_enabled.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE4CB8E3F6D4430821247EF46927C1B8 /* assert_arc_enabled.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		07D5DC612A39D1DA84E37C335C538FF0 /* ViewControllerButtonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47610341BC36ED8F8848C11A8970FEED /* ViewControllerButtonFunctions.swift */; };
+		08C0E4EEF828B9AE9C347C1A4F415A72 /* VideoDataOutputSampleBufferDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD601EA3FAFEC4D6A876253A4BBB034E /* VideoDataOutputSampleBufferDelegateExtension.swift */; };
+		08C9A07C4FCB954D2C5430555E18D70E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48155D36738F7ED84A498FC5206ABD7A /* Media.xcassets */; };
+		0D46004CF5800F02BC63C643AE623160 /* cxx_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B71BDEBBD6FAB91DB2B96B1B9FE7F955 /* cxx_utils.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		122B97C3EA2065AFFACADFFFBFD61DED /* onnxruntime.h in Headers */ = {isa = PBXBuildFile; fileRef = 64E227E7A440AEC84DAB72F232952176 /* onnxruntime.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C65F40397D464C761594161682A7129 /* cxx_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 043502485DEA41097675BB122950B176 /* cxx_api.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		292686383777CDF7A162F0C9AD7C82A6 /* CapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC28CFB80204C6AC4958E51673373CBD /* CapturePhotoExtension.swift */; };
+		2977E08655B0ED707C6A97384E4A9489 /* ort_coreml_execution_provider.h in Headers */ = {isa = PBXBuildFile; fileRef = 445905273A6E3AEFFAF1953D59249156 /* ort_coreml_execution_provider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2CD8CBE74152CEB5E4DA7F8F790CF9FD /* PhotoCaptureDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76D071DF92DD26161BAB91A96199429 /* PhotoCaptureDelegateExtension.swift */; };
+		2DA9140CCC4CD93D0082F359D0027910 /* ViewControllerFocusHandlerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50617FB8DC22322AAAA1F4229AA89BEB /* ViewControllerFocusHandlerExtension.swift */; };
+		2F07A9ED2492906BF189FF776EF02A1F /* ort_env.h in Headers */ = {isa = PBXBuildFile; fileRef = 65286C03CC1E6C48663E8285E80F3C43 /* ort_env.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		309F43724F0AC1B0A11DEDEA12A6668F /* ort_enums_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A67613BFF30CA49FB1161DEC11DFF1C0 /* ort_enums_internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		31CEAF740DD90008E439A53E777142BE /* Pods-VideoRecognitionTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 37CBB4801AD4E75375D0663EFD48A53D /* Pods-VideoRecognitionTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		31D74CD8F10972FCEE7609C0099C4CA9 /* LuminaCameraViewSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDE13B0897DB723588C2774720005A6 /* LuminaCameraViewSettings.swift */; };
+		35D7BBE4E6FD97CAA735A6115833C96D /* LuminaLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2E80C2049F1B3EEB63BFBE1EA353D7 /* LuminaLogger.swift */; };
+		3A8B9A6FCA626E2710FFDC224B64A83A /* LuminaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0CFA6F7CD4AB7C5360FD7E4238573 /* LuminaButton.swift */; };
+		3AA583016A5E72626D8709EAB565A181 /* ort_session.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77478858FE096D0B933FB44082C569A1 /* ort_session.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		410FE6DC2BAF9F8714CA17BC703D98F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		45E7C4EBC813B0C5D03365F46D6034FB /* ort_enums.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14F4C7B84210CECD0DB87A317CAD89D2 /* ort_enums.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		46BA344086F8AE2480D32A8A5B21E861 /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632195C563479DA86DDBE75416D1C42 /* LogHandler.swift */; };
+		475D2F04ECD3871D15E680D25C9AC01D /* SampleBufferExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4CE1DA3CE7568F7A7C7D864C6D00CD /* SampleBufferExtension.swift */; };
+		48ED07C3468D24283976EEF6687C7A54 /* ort_value_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 704C30DC1B594BE5BA425E28CD73CFD4 /* ort_value_internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		4C69A4F8E1C0749F3B2AEF43B132A0A6 /* CameraActionsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB7E4133601D8DD068C7AE530F6BCF2 /* CameraActionsExtension.swift */; };
+		4FE0404D84F4A1B56D0109FDBF890374 /* ort_session.h in Headers */ = {isa = PBXBuildFile; fileRef = 9102B442BBA5475C0A09457FFAC38014 /* ort_session.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5A20D51D7F589DF783724C20B85FEFCD /* ort_session_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = D153A761D4D04C4ADDF07F8D31F73DF0 /* ort_session_internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5E33A77EB9C964120F2E05C14D333AB7 /* ort_env.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18361CB09EAAE8A35623F6D5791E8688 /* ort_env.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		5FA522B5259146A36CCF8182B33C6982 /* Pods-VideoRecognition-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 5CB7A08ED4EED4D052187FEB2D9A9915 /* Pods-VideoRecognition-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		60B5337F2D0693138BDEF9B21ED40A05 /* Pods-VideoRecognition-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD35F898176453F5C573551EE36B4E7 /* Pods-VideoRecognition-dummy.m */; };
+		6955CEFB8B7A8CDAC4D48F8292D4892A /* FocusHandlerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76649B018F9F32F706D6AEF46F2CDDE7 /* FocusHandlerExtension.swift */; };
+		726593D60ED2B0B1FC5C33DE8F774936 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FB99125FB26D3E64E6038943755827 /* Logging.swift */; };
+		74BDC383E8F2B678997BE6DE38713B82 /* error_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = AFE1A8DC9D4323C297B9C2DD5BFCCCA7 /* error_utils.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		7600763C9B4D60FB67F0AFFEA8FDF29C /* LuminaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D078E17152EEA022B4839144DC752 /* LuminaModel.swift */; };
+		790111E7B0364CBAA53DE87FD33B404C /* cxx_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = D6648BC0DC6D2758C5FAC4D263074AA9 /* cxx_utils.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8272741B825E6C4FCBC9565B8454F3CC /* LuminaCameraDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE623D80098C7FFC2564975474A600A /* LuminaCameraDelegateExtension.swift */; };
+		83A18DB594ACA9ABDC205B968E589C13 /* MetadataOutputDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B589A87685D61C7409E32689439133B0 /* MetadataOutputDelegateExtension.swift */; };
+		8591892D14A1EC3353962EF85CFEEEA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		88222D61023B791524B2D748E1724DD3 /* Pods-VideoRecognitionTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1C9AA6E64FC0643C36BFE59558B35B /* Pods-VideoRecognitionTests-dummy.m */; };
+		887BD6D09F87C3E70E072C9AABD3F804 /* FileRecordingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01493587201C970B7BED637C587B2A4 /* FileRecordingExtension.swift */; };
+		89C8D7B0815A883E345EF8FD1EB39B23 /* ort_custom_op_registration.h in Headers */ = {isa = PBXBuildFile; fileRef = CFF4DBDDD15DFACDA1432756C7AD2D3C /* ort_custom_op_registration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EA3A8703D481B61F021EAA3AEC1C1EC /* LuminaObjectRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5694CAFD8741F2703F4E66551A992A72 /* LuminaObjectRecognizer.swift */; };
+		90D003179702BF0B04B8AC1BC99A4482 /* SessionConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43436F68602F0C89B0C20C1042541A0 /* SessionConfigurationExtension.swift */; };
+		960FC930460F0EA3DF42A15FDB89FB05 /* ort_enums.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FC2293A4E82D535D2DE74CC736EC561 /* ort_enums.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A4CD80AD81B49BC1A56E6C972DA07182 /* InterfaceHandlerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817AF2DEBCC0E8B5B9198BDFBD7281B4 /* InterfaceHandlerExtension.swift */; };
+		A8789470A89685709623E01FD69CFD68 /* LuminaDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8587FD66210FB8748BF1AA4F353E9CD /* LuminaDelegate.swift */; };
+		AA89A9107A8F14E127007235367F9608 /* LuminaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA67A9492E8C04D175C7321CE52F05 /* LuminaViewController.swift */; };
+		BB36D93015EFEAE83315F8839B16C110 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5A270461A3CB2299FEC34317E980F9E8 /* ort_coreml_execution_provider.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		C0081FFE418DB9F4EDB43B4A5F51A701 /* ort_env_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = D1C328B258D094CDDEB42613AF27BE78 /* ort_env_internal.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		CDA29AFF74FD72DD1C2479A58B5D4342 /* onnxruntime-objc-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E06615F60C57C30ED65AADE42849E06E /* onnxruntime-objc-dummy.m */; };
+		D1C230E9FD13579F3F9A4B6BF111BA1B /* LuminaCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE3D6210C6FBA3243E33B7AE527F885 /* LuminaCamera.swift */; };
+		D2CB205F615D8820F7D2B5E518250636 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		D416809ABC99D9E87057F585627343BB /* DepthDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8884F66962CF2DCEBB312763EB7231 /* DepthDataExtension.swift */; };
+		D459CBD4A41BBA2487C4FDA0A7253A4D /* GestureRecognizerDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAABE4591493E65F97394E470F9B7CD /* GestureRecognizerDelegateExtension.swift */; };
+		DB8A2E078FF5EC4D36F4B29FE26059A4 /* LuminaPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31090CC4809C7C2E8B911D84995CE957 /* LuminaPhotoCapture.swift */; };
+		DD9EB5B04D6652DF8FA45BEEA73F48A3 /* CameraUtilExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5304499498769F8B2FCC9509252F14E /* CameraUtilExtension.swift */; };
+		DFBC0349E0CEB7F157DFC041416ACB1C /* error_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2AA9F0D4CD2F9690A1EAC89AFBE4B3A1 /* error_utils.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		E10CF829F39D58CF796B811A8526C99F /* ort_xnnpack_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256941438EFB07BA9A3D129EB3667F29 /* ort_xnnpack_execution_provider.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		E16E69CEADDC59A3EDE73AF7DDB60994 /* Locks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99F9BAFC8E99720152DFBC632FEAE8B /* Locks.swift */; };
+		E193B41D1C389CE5D0B7579C3888812A /* Lumina-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E1C964CEB00D464D3F6FFD4EB7F099 /* Lumina-dummy.m */; };
+		E8734F0AFF0B414CBA3EFCC0DCE526B2 /* ort_value.mm in Sources */ = {isa = PBXBuildFile; fileRef = B63653A91B3DCAED3557CAB27FC87033 /* ort_value.mm */; settings = {COMPILER_FLAGS = "-std=c++17 -fobjc-arc-exceptions -Wall -Wextra -Werror"; }; };
+		EFDE4E97EC8BD8447AB3170D3ECB1207 /* onnxruntime-objc-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ED07927E08403779186B403AE2B8782 /* onnxruntime-objc-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F2F006C6E3A157F1A806AC241AC39181 /* ort_xnnpack_execution_provider.h in Headers */ = {isa = PBXBuildFile; fileRef = 19AF504F055A890A962FE9FD0BF39C07 /* ort_xnnpack_execution_provider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F3EFB09301180EDE3CC184126DB3A5DE /* Lumina-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F61B920CBC16A0829092E663DE8B8282 /* Lumina-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6CEF5D4B5D7841AAE3439DD900E6047 /* LuminaDeviceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9971FFC8A2DE8E320F35E0D97C381A /* LuminaDeviceUtil.swift */; };
+		F98A48B167A45703428A5E849A7453D4 /* LuminaTextPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB1724F33385901ED968860A2B3AB3E /* LuminaTextPromptView.swift */; };
+		FD4D69049B7212C0F4EB4DB0F1850090 /* ort_value.h in Headers */ = {isa = PBXBuildFile; fileRef = C07E27204B7B24E3A8F9344147590510 /* ort_value.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FFB5C5580FF00E59500B81D8585D5749 /* CaptureDeviceHandlerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46ADD60900F7EF3B4478C46544EC2C0 /* CaptureDeviceHandlerExtension.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		270269AA41EFE057D3947F14AD9A1A15 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 01D26C9790741D5F08E2B47A48D79331;
+			remoteInfo = "onnxruntime-c";
+		};
+		36DE39E4A8CD6F7AA70861D4D06D76BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 01D26C9790741D5F08E2B47A48D79331;
+			remoteInfo = "onnxruntime-c";
+		};
+		5228FA1897028B0A689909BAFBFD1E9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 063243B6E71D05A4C5CAEAAD2E77548B;
+			remoteInfo = Lumina;
+		};
+		6C814021E9BE098F44B4973F44B6CA20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8CDB63350B78F3B6B9DB268818AE89A0;
+			remoteInfo = "Pods-VideoRecognition";
+		};
+		ED57937E22868AB8E4A8B669ACB94D39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD8A7EE9BACB64198DBBF12EA5122AC8;
+			remoteInfo = "onnxruntime-objc";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		043502485DEA41097675BB122950B176 /* cxx_api.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = cxx_api.h; path = objectivec/cxx_api.h; sourceTree = "<group>"; };
+		09E1C964CEB00D464D3F6FFD4EB7F099 /* Lumina-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Lumina-dummy.m"; sourceTree = "<group>"; };
+		0B7FF2CDE14A9B05877AE971B36B5745 /* Pods-VideoRecognition-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-VideoRecognition-frameworks.sh"; sourceTree = "<group>"; };
+		0D269E3C35219D650BE953CF7B8BECC7 /* Pods-VideoRecognitionTests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-VideoRecognitionTests"; path = Pods_VideoRecognitionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E44BDCDC78842E015B4A9F66FD4A580 /* onnxruntime-c.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "onnxruntime-c.release.xcconfig"; sourceTree = "<group>"; };
+		0EB1724F33385901ED968860A2B3AB3E /* LuminaTextPromptView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaTextPromptView.swift; path = Lumina/Lumina/UI/LuminaTextPromptView.swift; sourceTree = "<group>"; };
+		125547FA263E5298FB27FEAC7B94A1FE /* Pods-VideoRecognition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VideoRecognition.debug.xcconfig"; sourceTree = "<group>"; };
+		14F4C7B84210CECD0DB87A317CAD89D2 /* ort_enums.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = ort_enums.mm; path = objectivec/ort_enums.mm; sourceTree = "<group>"; };
+		1632195C563479DA86DDBE75416D1C42 /* LogHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogHandler.swift; path = Lumina/Lumina/Util/Logging/LogHandler.swift; sourceTree = "<group>"; };
+		173A53713795D9196FE68EB9A7844B6D /* onnxruntime_session_options_config_keys.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime_session_options_config_keys.h; path = Headers/onnxruntime_session_options_config_keys.h; sourceTree = "<group>"; };
+		17F0CFA6F7CD4AB7C5360FD7E4238573 /* LuminaButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaButton.swift; path = Lumina/Lumina/UI/LuminaButton.swift; sourceTree = "<group>"; };
+		18361CB09EAAE8A35623F6D5791E8688 /* ort_env.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = ort_env.mm; path = objectivec/ort_env.mm; sourceTree = "<group>"; };
+		19AF504F055A890A962FE9FD0BF39C07 /* ort_xnnpack_execution_provider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_xnnpack_execution_provider.h; path = objectivec/include/ort_xnnpack_execution_provider.h; sourceTree = "<group>"; };
+		19F19274A5C99DC14DC6233CB90288B9 /* onnxruntime_c_api.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime_c_api.h; path = Headers/onnxruntime_c_api.h; sourceTree = "<group>"; };
+		1B4CE1DA3CE7568F7A7C7D864C6D00CD /* SampleBufferExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SampleBufferExtension.swift; path = Lumina/Lumina/Camera/Extensions/SampleBufferExtension.swift; sourceTree = "<group>"; };
+		1DE3D6210C6FBA3243E33B7AE527F885 /* LuminaCamera.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaCamera.swift; path = Lumina/Lumina/Camera/LuminaCamera.swift; sourceTree = "<group>"; };
+		213629FE8C927ACBDA945B42670F02F0 /* Pods-VideoRecognitionTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-VideoRecognitionTests.modulemap"; sourceTree = "<group>"; };
+		23BBE45B1E596E71D6C12C3BADA5C222 /* onnxruntime_float16.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime_float16.h; path = Headers/onnxruntime_float16.h; sourceTree = "<group>"; };
+		256941438EFB07BA9A3D129EB3667F29 /* ort_xnnpack_execution_provider.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = ort_xnnpack_execution_provider.mm; path = objectivec/ort_xnnpack_execution_provider.mm; sourceTree = "<group>"; };
+		25D0DCD1DBA5ED9CA46EB7A4A3EB4415 /* Lumina-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Lumina-prefix.pch"; sourceTree = "<group>"; };
+		2AA9F0D4CD2F9690A1EAC89AFBE4B3A1 /* error_utils.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = error_utils.mm; path = objectivec/error_utils.mm; sourceTree = "<group>"; };
+		2F9174334E8B55FFAF701FA096FE18EA /* Pods-VideoRecognition-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VideoRecognition-acknowledgements.plist"; sourceTree = "<group>"; };
+		31090CC4809C7C2E8B911D84995CE957 /* LuminaPhotoCapture.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaPhotoCapture.swift; path = Lumina/Lumina/Camera/LuminaPhotoCapture.swift; sourceTree = "<group>"; };
+		37CBB4801AD4E75375D0663EFD48A53D /* Pods-VideoRecognitionTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-VideoRecognitionTests-umbrella.h"; sourceTree = "<group>"; };
+		3AC933BB0AD85A2DFAD2CD2E5A031E7F /* Pods-VideoRecognitionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VideoRecognitionTests.release.xcconfig"; sourceTree = "<group>"; };
+		3DB9E4853407CD6F9C494AF7ACE443DD /* Lumina.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Lumina.release.xcconfig; sourceTree = "<group>"; };
+		3FE1B42E3C98906C97010CE7C5B8C9CC /* Pods-VideoRecognition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VideoRecognition.release.xcconfig"; sourceTree = "<group>"; };
+		40975EA9CE791C374A8CC91EEDFE8005 /* onnxruntime_cxx_inline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime_cxx_inline.h; path = Headers/onnxruntime_cxx_inline.h; sourceTree = "<group>"; };
+		445905273A6E3AEFFAF1953D59249156 /* ort_coreml_execution_provider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_coreml_execution_provider.h; path = objectivec/include/ort_coreml_execution_provider.h; sourceTree = "<group>"; };
+		47610341BC36ED8F8848C11A8970FEED /* ViewControllerButtonFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewControllerButtonFunctions.swift; path = Lumina/Lumina/UI/Extensions/ViewControllerButtonFunctions.swift; sourceTree = "<group>"; };
+		48155D36738F7ED84A498FC5206ABD7A /* Media.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Lumina/Lumina/UI/Media.xcassets; sourceTree = "<group>"; };
+		4E656854C41E237AEB2A30CEA4707F75 /* Lumina-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Lumina-Info.plist"; sourceTree = "<group>"; };
+		50617FB8DC22322AAAA1F4229AA89BEB /* ViewControllerFocusHandlerExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewControllerFocusHandlerExtension.swift; path = Lumina/Lumina/UI/Extensions/ViewControllerFocusHandlerExtension.swift; sourceTree = "<group>"; };
+		5694CAFD8741F2703F4E66551A992A72 /* LuminaObjectRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaObjectRecognizer.swift; path = Lumina/Lumina/Camera/LuminaObjectRecognizer.swift; sourceTree = "<group>"; };
+		56D879FA86BBE99CE85B297E828FA768 /* Lumina.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Lumina.modulemap; sourceTree = "<group>"; };
+		57CF962F4CF614C43C65E8C0171221A7 /* Pods-VideoRecognition-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-VideoRecognition-acknowledgements.markdown"; sourceTree = "<group>"; };
+		5A21AA7993CD1BC53CB46D7979454703 /* coreml_provider_factory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = coreml_provider_factory.h; path = Headers/coreml_provider_factory.h; sourceTree = "<group>"; };
+		5A270461A3CB2299FEC34317E980F9E8 /* ort_coreml_execution_provider.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = ort_coreml_execution_provider.mm; path = objectivec/ort_coreml_execution_provider.mm; sourceTree = "<group>"; };
+		5AAA67A9492E8C04D175C7321CE52F05 /* LuminaViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaViewController.swift; path = Lumina/Lumina/UI/LuminaViewController.swift; sourceTree = "<group>"; };
+		5BF5FDD98751DDDDAA93E365E6A9349A /* onnxruntime-objc-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "onnxruntime-objc-Info.plist"; sourceTree = "<group>"; };
+		5CB7A08ED4EED4D052187FEB2D9A9915 /* Pods-VideoRecognition-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-VideoRecognition-umbrella.h"; sourceTree = "<group>"; };
+		5E5C9961453A30627CEDAFA9017C0735 /* onnxruntime-objc-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "onnxruntime-objc-prefix.pch"; sourceTree = "<group>"; };
+		64E227E7A440AEC84DAB72F232952176 /* onnxruntime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime.h; path = objectivec/include/onnxruntime.h; sourceTree = "<group>"; };
+		65286C03CC1E6C48663E8285E80F3C43 /* ort_env.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_env.h; path = objectivec/include/ort_env.h; sourceTree = "<group>"; };
+		6AE623D80098C7FFC2564975474A600A /* LuminaCameraDelegateExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaCameraDelegateExtension.swift; path = Lumina/Lumina/UI/Extensions/Delegates/LuminaCameraDelegateExtension.swift; sourceTree = "<group>"; };
+		6E52A134A60FCF233D9C8ACD0A53BB0A /* onnxruntime-objc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "onnxruntime-objc.release.xcconfig"; sourceTree = "<group>"; };
+		6ED07927E08403779186B403AE2B8782 /* onnxruntime-objc-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "onnxruntime-objc-umbrella.h"; sourceTree = "<group>"; };
+		704C30DC1B594BE5BA425E28CD73CFD4 /* ort_value_internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_value_internal.h; path = objectivec/ort_value_internal.h; sourceTree = "<group>"; };
+		70930B0547869E31371E67167DEF3997 /* Pods-VideoRecognitionTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-VideoRecognitionTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		75AF62C8362D5ABB7CD09F6C1E6887D8 /* Pods-VideoRecognitionTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VideoRecognitionTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		76649B018F9F32F706D6AEF46F2CDDE7 /* FocusHandlerExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FocusHandlerExtension.swift; path = Lumina/Lumina/Camera/Extensions/FocusHandlerExtension.swift; sourceTree = "<group>"; };
+		77478858FE096D0B933FB44082C569A1 /* ort_session.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = ort_session.mm; path = objectivec/ort_session.mm; sourceTree = "<group>"; };
+		817AF2DEBCC0E8B5B9198BDFBD7281B4 /* InterfaceHandlerExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InterfaceHandlerExtension.swift; path = Lumina/Lumina/UI/Extensions/InterfaceHandlerExtension.swift; sourceTree = "<group>"; };
+		8E44EAFA112650197030255A024E7562 /* onnxruntime_run_options_config_keys.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime_run_options_config_keys.h; path = Headers/onnxruntime_run_options_config_keys.h; sourceTree = "<group>"; };
+		8FC2293A4E82D535D2DE74CC736EC561 /* ort_enums.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_enums.h; path = objectivec/include/ort_enums.h; sourceTree = "<group>"; };
+		90FB99125FB26D3E64E6038943755827 /* Logging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logging.swift; path = Lumina/Lumina/Util/Logging/Logging.swift; sourceTree = "<group>"; };
+		9102B442BBA5475C0A09457FFAC38014 /* ort_session.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_session.h; path = objectivec/include/ort_session.h; sourceTree = "<group>"; };
+		9981F1E0EB60C395BCC820836331AADE /* onnxruntime-objc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "onnxruntime-objc.debug.xcconfig"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A5304499498769F8B2FCC9509252F14E /* CameraUtilExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraUtilExtension.swift; path = Lumina/Lumina/Camera/Extensions/CameraUtilExtension.swift; sourceTree = "<group>"; };
+		A67613BFF30CA49FB1161DEC11DFF1C0 /* ort_enums_internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_enums_internal.h; path = objectivec/ort_enums_internal.h; sourceTree = "<group>"; };
+		AAD35F898176453F5C573551EE36B4E7 /* Pods-VideoRecognition-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-VideoRecognition-dummy.m"; sourceTree = "<group>"; };
+		AC2E80C2049F1B3EEB63BFBE1EA353D7 /* LuminaLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaLogger.swift; path = Lumina/Lumina/Util/LuminaLogger.swift; sourceTree = "<group>"; };
+		AF44BE896BEBBE099592D03904279C1C /* onnxruntime-objc */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "onnxruntime-objc"; path = onnxruntime_objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFE1A8DC9D4323C297B9C2DD5BFCCCA7 /* error_utils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = error_utils.h; path = objectivec/error_utils.h; sourceTree = "<group>"; };
+		B589A87685D61C7409E32689439133B0 /* MetadataOutputDelegateExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetadataOutputDelegateExtension.swift; path = Lumina/Lumina/Camera/Extensions/Delegates/MetadataOutputDelegateExtension.swift; sourceTree = "<group>"; };
+		B63653A91B3DCAED3557CAB27FC87033 /* ort_value.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = ort_value.mm; path = objectivec/ort_value.mm; sourceTree = "<group>"; };
+		B71BDEBBD6FAB91DB2B96B1B9FE7F955 /* cxx_utils.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = cxx_utils.mm; path = objectivec/cxx_utils.mm; sourceTree = "<group>"; };
+		B885F28AB6FEDB0BA24187EFC28D2B33 /* cpu_provider_factory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = cpu_provider_factory.h; path = Headers/cpu_provider_factory.h; sourceTree = "<group>"; };
+		C03B217197F476EAE493927BC204BE92 /* Pods-VideoRecognition */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-VideoRecognition"; path = Pods_VideoRecognition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C07E27204B7B24E3A8F9344147590510 /* ort_value.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_value.h; path = objectivec/include/ort_value.h; sourceTree = "<group>"; };
+		C250AF1D9FB4E00DC22A77D5E43E2160 /* onnxruntime_cxx_api.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = onnxruntime_cxx_api.h; path = Headers/onnxruntime_cxx_api.h; sourceTree = "<group>"; };
+		C6955CE149363D4D2244EB6E9F95892D /* Pods-VideoRecognition.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-VideoRecognition.modulemap"; sourceTree = "<group>"; };
+		C99F9BAFC8E99720152DFBC632FEAE8B /* Locks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Locks.swift; path = Lumina/Lumina/Util/Logging/Locks.swift; sourceTree = "<group>"; };
+		CB1C9AA6E64FC0643C36BFE59558B35B /* Pods-VideoRecognitionTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-VideoRecognitionTests-dummy.m"; sourceTree = "<group>"; };
+		CD601EA3FAFEC4D6A876253A4BBB034E /* VideoDataOutputSampleBufferDelegateExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VideoDataOutputSampleBufferDelegateExtension.swift; path = Lumina/Lumina/Camera/Extensions/Delegates/VideoDataOutputSampleBufferDelegateExtension.swift; sourceTree = "<group>"; };
+		CFF4DBDDD15DFACDA1432756C7AD2D3C /* ort_custom_op_registration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_custom_op_registration.h; path = objectivec/include/ort_custom_op_registration.h; sourceTree = "<group>"; };
+		D153A761D4D04C4ADDF07F8D31F73DF0 /* ort_session_internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_session_internal.h; path = objectivec/ort_session_internal.h; sourceTree = "<group>"; };
+		D1C328B258D094CDDEB42613AF27BE78 /* ort_env_internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ort_env_internal.h; path = objectivec/ort_env_internal.h; sourceTree = "<group>"; };
+		D53988BEE594E3DDE5C9205F6B05035A /* onnxruntime-c.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "onnxruntime-c.debug.xcconfig"; sourceTree = "<group>"; };
+		D6648BC0DC6D2758C5FAC4D263074AA9 /* cxx_utils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = cxx_utils.h; path = objectivec/cxx_utils.h; sourceTree = "<group>"; };
+		DA9971FFC8A2DE8E320F35E0D97C381A /* LuminaDeviceUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaDeviceUtil.swift; path = Lumina/Lumina/Camera/LuminaDeviceUtil.swift; sourceTree = "<group>"; };
+		DD71B59BBD265DFB311D2DB0013FD702 /* Pods-VideoRecognitionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-VideoRecognitionTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DF14B2B9403B92E9DA323FF4F7A66702 /* Pods-VideoRecognitionTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VideoRecognitionTests-Info.plist"; sourceTree = "<group>"; };
+		E06615F60C57C30ED65AADE42849E06E /* onnxruntime-objc-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "onnxruntime-objc-dummy.m"; sourceTree = "<group>"; };
+		E587037E43215BE0D7D978C1C712F948 /* onnxruntime-c-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "onnxruntime-c-xcframeworks.sh"; sourceTree = "<group>"; };
+		E76D071DF92DD26161BAB91A96199429 /* PhotoCaptureDelegateExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PhotoCaptureDelegateExtension.swift; path = Lumina/Lumina/Camera/Extensions/Delegates/PhotoCaptureDelegateExtension.swift; sourceTree = "<group>"; };
+		E8587FD66210FB8748BF1AA4F353E9CD /* LuminaDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaDelegate.swift; path = Lumina/Lumina/UI/Extensions/Delegates/LuminaDelegate.swift; sourceTree = "<group>"; };
+		EC28CFB80204C6AC4958E51673373CBD /* CapturePhotoExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapturePhotoExtension.swift; path = Lumina/Lumina/Camera/Extensions/CapturePhotoExtension.swift; sourceTree = "<group>"; };
+		F01493587201C970B7BED637C587B2A4 /* FileRecordingExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileRecordingExtension.swift; path = Lumina/Lumina/Camera/Extensions/Delegates/FileRecordingExtension.swift; sourceTree = "<group>"; };
+		F135A1BA3C4B40844CF9E47F1B517505 /* Lumina */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Lumina; path = Lumina.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F43436F68602F0C89B0C20C1042541A0 /* SessionConfigurationExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionConfigurationExtension.swift; path = Lumina/Lumina/Camera/Extensions/SessionConfigurationExtension.swift; sourceTree = "<group>"; };
+		F46ADD60900F7EF3B4478C46544EC2C0 /* CaptureDeviceHandlerExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CaptureDeviceHandlerExtension.swift; path = Lumina/Lumina/Camera/Extensions/CaptureDeviceHandlerExtension.swift; sourceTree = "<group>"; };
+		F61B920CBC16A0829092E663DE8B8282 /* Lumina-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Lumina-umbrella.h"; sourceTree = "<group>"; };
+		F78309766E0F829383780F43436FB230 /* onnxruntime-objc.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "onnxruntime-objc.modulemap"; sourceTree = "<group>"; };
+		F8C98F1BE69778EA2C7C6D95DF0A4AFF /* Pods-VideoRecognition-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-VideoRecognition-Info.plist"; sourceTree = "<group>"; };
+		F96D078E17152EEA022B4839144DC752 /* LuminaModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaModel.swift; path = Lumina/Lumina/Camera/LuminaModel.swift; sourceTree = "<group>"; };
+		F9F6BA05B574AB4B10B0C6C571939F85 /* onnxruntime.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = onnxruntime.xcframework; sourceTree = "<group>"; };
+		FAB7E4133601D8DD068C7AE530F6BCF2 /* CameraActionsExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraActionsExtension.swift; path = Lumina/Lumina/Camera/Extensions/CameraActionsExtension.swift; sourceTree = "<group>"; };
+		FC8884F66962CF2DCEBB312763EB7231 /* DepthDataExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DepthDataExtension.swift; path = Lumina/Lumina/Camera/Extensions/Delegates/DepthDataExtension.swift; sourceTree = "<group>"; };
+		FE4CB8E3F6D4430821247EF46927C1B8 /* assert_arc_enabled.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = assert_arc_enabled.mm; path = objectivec/assert_arc_enabled.mm; sourceTree = "<group>"; };
+		FEDE13B0897DB723588C2774720005A6 /* LuminaCameraViewSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LuminaCameraViewSettings.swift; path = Lumina/Lumina/UI/LuminaCameraViewSettings.swift; sourceTree = "<group>"; };
+		FFAABE4591493E65F97394E470F9B7CD /* GestureRecognizerDelegateExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GestureRecognizerDelegateExtension.swift; path = Lumina/Lumina/UI/Extensions/Delegates/GestureRecognizerDelegateExtension.swift; sourceTree = "<group>"; };
+		FFB9F4AEFF952654E45FF71B08253119 /* Lumina.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Lumina.debug.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		254D3F5772694E6556610369CDB53237 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				410FE6DC2BAF9F8714CA17BC703D98F9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9E6EF32971A299EF7D8E9E9813F31E5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8591892D14A1EC3353962EF85CFEEEA6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D83A0533FDE422648931AE17BFD9B276 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2CB205F615D8820F7D2B5E518250636 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE0A0E11D04ACA623F8CFC745E4E0105 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01C3855391794AD845F11FF274547E70 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		063E0754668D7FB40DC6762EFB26204A /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				56D879FA86BBE99CE85B297E828FA768 /* Lumina.modulemap */,
+				09E1C964CEB00D464D3F6FFD4EB7F099 /* Lumina-dummy.m */,
+				4E656854C41E237AEB2A30CEA4707F75 /* Lumina-Info.plist */,
+				25D0DCD1DBA5ED9CA46EB7A4A3EB4415 /* Lumina-prefix.pch */,
+				F61B920CBC16A0829092E663DE8B8282 /* Lumina-umbrella.h */,
+				FFB9F4AEFF952654E45FF71B08253119 /* Lumina.debug.xcconfig */,
+				3DB9E4853407CD6F9C494AF7ACE443DD /* Lumina.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Lumina";
+			sourceTree = "<group>";
+		};
+		1F22A9EF9A1A9F89F78CA7BF11F68BBA /* onnxruntime-objc */ = {
+			isa = PBXGroup;
+			children = (
+				2FA922EC9CBD9AF91E5AB49EACBDF6B8 /* Core */,
+				7404135CA58B0E620361ABA18FD6B835 /* Support Files */,
+			);
+			name = "onnxruntime-objc";
+			path = "onnxruntime-objc";
+			sourceTree = "<group>";
+		};
+		2FA922EC9CBD9AF91E5AB49EACBDF6B8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FE4CB8E3F6D4430821247EF46927C1B8 /* assert_arc_enabled.mm */,
+				043502485DEA41097675BB122950B176 /* cxx_api.h */,
+				D6648BC0DC6D2758C5FAC4D263074AA9 /* cxx_utils.h */,
+				B71BDEBBD6FAB91DB2B96B1B9FE7F955 /* cxx_utils.mm */,
+				AFE1A8DC9D4323C297B9C2DD5BFCCCA7 /* error_utils.h */,
+				2AA9F0D4CD2F9690A1EAC89AFBE4B3A1 /* error_utils.mm */,
+				64E227E7A440AEC84DAB72F232952176 /* onnxruntime.h */,
+				445905273A6E3AEFFAF1953D59249156 /* ort_coreml_execution_provider.h */,
+				5A270461A3CB2299FEC34317E980F9E8 /* ort_coreml_execution_provider.mm */,
+				CFF4DBDDD15DFACDA1432756C7AD2D3C /* ort_custom_op_registration.h */,
+				8FC2293A4E82D535D2DE74CC736EC561 /* ort_enums.h */,
+				14F4C7B84210CECD0DB87A317CAD89D2 /* ort_enums.mm */,
+				A67613BFF30CA49FB1161DEC11DFF1C0 /* ort_enums_internal.h */,
+				65286C03CC1E6C48663E8285E80F3C43 /* ort_env.h */,
+				18361CB09EAAE8A35623F6D5791E8688 /* ort_env.mm */,
+				D1C328B258D094CDDEB42613AF27BE78 /* ort_env_internal.h */,
+				9102B442BBA5475C0A09457FFAC38014 /* ort_session.h */,
+				77478858FE096D0B933FB44082C569A1 /* ort_session.mm */,
+				D153A761D4D04C4ADDF07F8D31F73DF0 /* ort_session_internal.h */,
+				C07E27204B7B24E3A8F9344147590510 /* ort_value.h */,
+				B63653A91B3DCAED3557CAB27FC87033 /* ort_value.mm */,
+				704C30DC1B594BE5BA425E28CD73CFD4 /* ort_value_internal.h */,
+				19AF504F055A890A962FE9FD0BF39C07 /* ort_xnnpack_execution_provider.h */,
+				256941438EFB07BA9A3D129EB3667F29 /* ort_xnnpack_execution_provider.mm */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		60FD69BCA57B0841B440D5AFFB051A4A /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				CB9E327E0BEA0F5B4327923C06921B08 /* Pods-VideoRecognition */,
+				C034FBB73A9FAB9588D800551984F68B /* Pods-VideoRecognitionTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		7404135CA58B0E620361ABA18FD6B835 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F78309766E0F829383780F43436FB230 /* onnxruntime-objc.modulemap */,
+				E06615F60C57C30ED65AADE42849E06E /* onnxruntime-objc-dummy.m */,
+				5BF5FDD98751DDDDAA93E365E6A9349A /* onnxruntime-objc-Info.plist */,
+				5E5C9961453A30627CEDAFA9017C0735 /* onnxruntime-objc-prefix.pch */,
+				6ED07927E08403779186B403AE2B8782 /* onnxruntime-objc-umbrella.h */,
+				9981F1E0EB60C395BCC820836331AADE /* onnxruntime-objc.debug.xcconfig */,
+				6E52A134A60FCF233D9C8ACD0A53BB0A /* onnxruntime-objc.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/onnxruntime-objc";
+			sourceTree = "<group>";
+		};
+		A2F4A66D0EF0BCAC53111803465BD8F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9F6BA05B574AB4B10B0C6C571939F85 /* onnxruntime.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ACA7B969F5E95411D8F3F9F78444729F /* Lumina */ = {
+			isa = PBXGroup;
+			children = (
+				FAB7E4133601D8DD068C7AE530F6BCF2 /* CameraActionsExtension.swift */,
+				A5304499498769F8B2FCC9509252F14E /* CameraUtilExtension.swift */,
+				F46ADD60900F7EF3B4478C46544EC2C0 /* CaptureDeviceHandlerExtension.swift */,
+				EC28CFB80204C6AC4958E51673373CBD /* CapturePhotoExtension.swift */,
+				FC8884F66962CF2DCEBB312763EB7231 /* DepthDataExtension.swift */,
+				F01493587201C970B7BED637C587B2A4 /* FileRecordingExtension.swift */,
+				76649B018F9F32F706D6AEF46F2CDDE7 /* FocusHandlerExtension.swift */,
+				FFAABE4591493E65F97394E470F9B7CD /* GestureRecognizerDelegateExtension.swift */,
+				817AF2DEBCC0E8B5B9198BDFBD7281B4 /* InterfaceHandlerExtension.swift */,
+				C99F9BAFC8E99720152DFBC632FEAE8B /* Locks.swift */,
+				90FB99125FB26D3E64E6038943755827 /* Logging.swift */,
+				1632195C563479DA86DDBE75416D1C42 /* LogHandler.swift */,
+				17F0CFA6F7CD4AB7C5360FD7E4238573 /* LuminaButton.swift */,
+				1DE3D6210C6FBA3243E33B7AE527F885 /* LuminaCamera.swift */,
+				6AE623D80098C7FFC2564975474A600A /* LuminaCameraDelegateExtension.swift */,
+				FEDE13B0897DB723588C2774720005A6 /* LuminaCameraViewSettings.swift */,
+				E8587FD66210FB8748BF1AA4F353E9CD /* LuminaDelegate.swift */,
+				DA9971FFC8A2DE8E320F35E0D97C381A /* LuminaDeviceUtil.swift */,
+				AC2E80C2049F1B3EEB63BFBE1EA353D7 /* LuminaLogger.swift */,
+				F96D078E17152EEA022B4839144DC752 /* LuminaModel.swift */,
+				5694CAFD8741F2703F4E66551A992A72 /* LuminaObjectRecognizer.swift */,
+				31090CC4809C7C2E8B911D84995CE957 /* LuminaPhotoCapture.swift */,
+				0EB1724F33385901ED968860A2B3AB3E /* LuminaTextPromptView.swift */,
+				5AAA67A9492E8C04D175C7321CE52F05 /* LuminaViewController.swift */,
+				B589A87685D61C7409E32689439133B0 /* MetadataOutputDelegateExtension.swift */,
+				E76D071DF92DD26161BAB91A96199429 /* PhotoCaptureDelegateExtension.swift */,
+				1B4CE1DA3CE7568F7A7C7D864C6D00CD /* SampleBufferExtension.swift */,
+				F43436F68602F0C89B0C20C1042541A0 /* SessionConfigurationExtension.swift */,
+				CD601EA3FAFEC4D6A876253A4BBB034E /* VideoDataOutputSampleBufferDelegateExtension.swift */,
+				47610341BC36ED8F8848C11A8970FEED /* ViewControllerButtonFunctions.swift */,
+				50617FB8DC22322AAAA1F4229AA89BEB /* ViewControllerFocusHandlerExtension.swift */,
+				CDEB30B965203352628355F0D27413E8 /* Resources */,
+				063E0754668D7FB40DC6762EFB26204A /* Support Files */,
+			);
+			name = Lumina;
+			path = Lumina;
+			sourceTree = "<group>";
+		};
+		B7CFBE81CDAB0A6F5C51688517829480 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F135A1BA3C4B40844CF9E47F1B517505 /* Lumina */,
+				AF44BE896BEBBE099592D03904279C1C /* onnxruntime-objc */,
+				C03B217197F476EAE493927BC204BE92 /* Pods-VideoRecognition */,
+				0D269E3C35219D650BE953CF7B8BECC7 /* Pods-VideoRecognitionTests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C034FBB73A9FAB9588D800551984F68B /* Pods-VideoRecognitionTests */ = {
+			isa = PBXGroup;
+			children = (
+				213629FE8C927ACBDA945B42670F02F0 /* Pods-VideoRecognitionTests.modulemap */,
+				70930B0547869E31371E67167DEF3997 /* Pods-VideoRecognitionTests-acknowledgements.markdown */,
+				75AF62C8362D5ABB7CD09F6C1E6887D8 /* Pods-VideoRecognitionTests-acknowledgements.plist */,
+				CB1C9AA6E64FC0643C36BFE59558B35B /* Pods-VideoRecognitionTests-dummy.m */,
+				DF14B2B9403B92E9DA323FF4F7A66702 /* Pods-VideoRecognitionTests-Info.plist */,
+				37CBB4801AD4E75375D0663EFD48A53D /* Pods-VideoRecognitionTests-umbrella.h */,
+				DD71B59BBD265DFB311D2DB0013FD702 /* Pods-VideoRecognitionTests.debug.xcconfig */,
+				3AC933BB0AD85A2DFAD2CD2E5A031E7F /* Pods-VideoRecognitionTests.release.xcconfig */,
+			);
+			name = "Pods-VideoRecognitionTests";
+			path = "Target Support Files/Pods-VideoRecognitionTests";
+			sourceTree = "<group>";
+		};
+		CB9E327E0BEA0F5B4327923C06921B08 /* Pods-VideoRecognition */ = {
+			isa = PBXGroup;
+			children = (
+				C6955CE149363D4D2244EB6E9F95892D /* Pods-VideoRecognition.modulemap */,
+				57CF962F4CF614C43C65E8C0171221A7 /* Pods-VideoRecognition-acknowledgements.markdown */,
+				2F9174334E8B55FFAF701FA096FE18EA /* Pods-VideoRecognition-acknowledgements.plist */,
+				AAD35F898176453F5C573551EE36B4E7 /* Pods-VideoRecognition-dummy.m */,
+				0B7FF2CDE14A9B05877AE971B36B5745 /* Pods-VideoRecognition-frameworks.sh */,
+				F8C98F1BE69778EA2C7C6D95DF0A4AFF /* Pods-VideoRecognition-Info.plist */,
+				5CB7A08ED4EED4D052187FEB2D9A9915 /* Pods-VideoRecognition-umbrella.h */,
+				125547FA263E5298FB27FEAC7B94A1FE /* Pods-VideoRecognition.debug.xcconfig */,
+				3FE1B42E3C98906C97010CE7C5B8C9CC /* Pods-VideoRecognition.release.xcconfig */,
+			);
+			name = "Pods-VideoRecognition";
+			path = "Target Support Files/Pods-VideoRecognition";
+			sourceTree = "<group>";
+		};
+		CDEB30B965203352628355F0D27413E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				48155D36738F7ED84A498FC5206ABD7A /* Media.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				D65EA1CC412E1594C2687DFEEB0C82B6 /* Pods */,
+				B7CFBE81CDAB0A6F5C51688517829480 /* Products */,
+				60FD69BCA57B0841B440D5AFFB051A4A /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D1453D00A9B1D83CF4ACB786C43DF33D /* onnxruntime-c */ = {
+			isa = PBXGroup;
+			children = (
+				5A21AA7993CD1BC53CB46D7979454703 /* coreml_provider_factory.h */,
+				B885F28AB6FEDB0BA24187EFC28D2B33 /* cpu_provider_factory.h */,
+				19F19274A5C99DC14DC6233CB90288B9 /* onnxruntime_c_api.h */,
+				C250AF1D9FB4E00DC22A77D5E43E2160 /* onnxruntime_cxx_api.h */,
+				40975EA9CE791C374A8CC91EEDFE8005 /* onnxruntime_cxx_inline.h */,
+				23BBE45B1E596E71D6C12C3BADA5C222 /* onnxruntime_float16.h */,
+				8E44EAFA112650197030255A024E7562 /* onnxruntime_run_options_config_keys.h */,
+				173A53713795D9196FE68EB9A7844B6D /* onnxruntime_session_options_config_keys.h */,
+				A2F4A66D0EF0BCAC53111803465BD8F0 /* Frameworks */,
+				E898EA2E842BC105E866698451C8BD9A /* Support Files */,
+			);
+			name = "onnxruntime-c";
+			path = "onnxruntime-c";
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				578452D2E740E91742655AC8F1636D1F /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D65EA1CC412E1594C2687DFEEB0C82B6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ACA7B969F5E95411D8F3F9F78444729F /* Lumina */,
+				D1453D00A9B1D83CF4ACB786C43DF33D /* onnxruntime-c */,
+				1F22A9EF9A1A9F89F78CA7BF11F68BBA /* onnxruntime-objc */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E898EA2E842BC105E866698451C8BD9A /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E587037E43215BE0D7D978C1C712F948 /* onnxruntime-c-xcframeworks.sh */,
+				D53988BEE594E3DDE5C9205F6B05035A /* onnxruntime-c.debug.xcconfig */,
+				0E44BDCDC78842E015B4A9F66FD4A580 /* onnxruntime-c.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/onnxruntime-c";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		9512E3B24384A42259B5CE6768C18B7B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31CEAF740DD90008E439A53E777142BE /* Pods-VideoRecognitionTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A59D77153C78A05A1B1467949D37E1EA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3EFB09301180EDE3CC184126DB3A5DE /* Lumina-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5BBB1407B2C795AE83B8CEC614AA86A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C65F40397D464C761594161682A7129 /* cxx_api.h in Headers */,
+				790111E7B0364CBAA53DE87FD33B404C /* cxx_utils.h in Headers */,
+				74BDC383E8F2B678997BE6DE38713B82 /* error_utils.h in Headers */,
+				122B97C3EA2065AFFACADFFFBFD61DED /* onnxruntime.h in Headers */,
+				EFDE4E97EC8BD8447AB3170D3ECB1207 /* onnxruntime-objc-umbrella.h in Headers */,
+				2977E08655B0ED707C6A97384E4A9489 /* ort_coreml_execution_provider.h in Headers */,
+				89C8D7B0815A883E345EF8FD1EB39B23 /* ort_custom_op_registration.h in Headers */,
+				960FC930460F0EA3DF42A15FDB89FB05 /* ort_enums.h in Headers */,
+				309F43724F0AC1B0A11DEDEA12A6668F /* ort_enums_internal.h in Headers */,
+				2F07A9ED2492906BF189FF776EF02A1F /* ort_env.h in Headers */,
+				C0081FFE418DB9F4EDB43B4A5F51A701 /* ort_env_internal.h in Headers */,
+				4FE0404D84F4A1B56D0109FDBF890374 /* ort_session.h in Headers */,
+				5A20D51D7F589DF783724C20B85FEFCD /* ort_session_internal.h in Headers */,
+				FD4D69049B7212C0F4EB4DB0F1850090 /* ort_value.h in Headers */,
+				48ED07C3468D24283976EEF6687C7A54 /* ort_value_internal.h in Headers */,
+				F2F006C6E3A157F1A806AC241AC39181 /* ort_xnnpack_execution_provider.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA69ED889D972FA18EAC760CB6CAEFA7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FA522B5259146A36CCF8182B33C6982 /* Pods-VideoRecognition-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		063243B6E71D05A4C5CAEAAD2E77548B /* Lumina */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC319D01288A4CEC11DA46E74F9731AD /* Build configuration list for PBXNativeTarget "Lumina" */;
+			buildPhases = (
+				A59D77153C78A05A1B1467949D37E1EA /* Headers */,
+				9A5138DEF1A7C17ED0A1DE0C270F3A0C /* Sources */,
+				D83A0533FDE422648931AE17BFD9B276 /* Frameworks */,
+				BB0556EDD99CBA8F8A88EE77CD9EFD35 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lumina;
+			productName = Lumina;
+			productReference = F135A1BA3C4B40844CF9E47F1B517505 /* Lumina */;
+			productType = "com.apple.product-type.framework";
+		};
+		8CDB63350B78F3B6B9DB268818AE89A0 /* Pods-VideoRecognition */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5316BE7FFC2AE91A163D75E45375E80 /* Build configuration list for PBXNativeTarget "Pods-VideoRecognition" */;
+			buildPhases = (
+				FA69ED889D972FA18EAC760CB6CAEFA7 /* Headers */,
+				3AC00710BC7C3ABB9A0889208601D4AA /* Sources */,
+				254D3F5772694E6556610369CDB53237 /* Frameworks */,
+				FFC1A826DC0618407C6BD55A97643616 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E68665504609BC1CE35EC2FCE1ED3796 /* PBXTargetDependency */,
+				6AFF54D2AF4841F750AB9EDA38B8FD36 /* PBXTargetDependency */,
+				C0F58880FE00E430C2A5BDB32F455F62 /* PBXTargetDependency */,
+			);
+			name = "Pods-VideoRecognition";
+			productName = Pods_VideoRecognition;
+			productReference = C03B217197F476EAE493927BC204BE92 /* Pods-VideoRecognition */;
+			productType = "com.apple.product-type.framework";
+		};
+		A678D63B43E9857FFD2EC7CF59A6F6FF /* Pods-VideoRecognitionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB5290767AF5BF33B20F306FAB7DDF11 /* Build configuration list for PBXNativeTarget "Pods-VideoRecognitionTests" */;
+			buildPhases = (
+				9512E3B24384A42259B5CE6768C18B7B /* Headers */,
+				C26D4453361E50603B2C29C1FBEE7284 /* Sources */,
+				EE0A0E11D04ACA623F8CFC745E4E0105 /* Frameworks */,
+				BB88DB44CF957EB00CD84A57646D6732 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA1F68322B280EB3935DA3E5DD7C29B4 /* PBXTargetDependency */,
+			);
+			name = "Pods-VideoRecognitionTests";
+			productName = Pods_VideoRecognitionTests;
+			productReference = 0D269E3C35219D650BE953CF7B8BECC7 /* Pods-VideoRecognitionTests */;
+			productType = "com.apple.product-type.framework";
+		};
+		DD8A7EE9BACB64198DBBF12EA5122AC8 /* onnxruntime-objc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1ABB7B5015457D4F66C9AE8922045727 /* Build configuration list for PBXNativeTarget "onnxruntime-objc" */;
+			buildPhases = (
+				F5BBB1407B2C795AE83B8CEC614AA86A /* Headers */,
+				B06EBCDFF5722EFBEABFC851B94AC2ED /* Sources */,
+				9E6EF32971A299EF7D8E9E9813F31E5D /* Frameworks */,
+				FB5D436F01B00893C0ACA937A427AFC6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2AAC61066F29A7F31140715D0E687966 /* PBXTargetDependency */,
+			);
+			name = "onnxruntime-objc";
+			productName = onnxruntime_objc;
+			productReference = AF44BE896BEBBE099592D03904279C1C /* onnxruntime-objc */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = B7CFBE81CDAB0A6F5C51688517829480 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				063243B6E71D05A4C5CAEAAD2E77548B /* Lumina */,
+				01D26C9790741D5F08E2B47A48D79331 /* onnxruntime-c */,
+				DD8A7EE9BACB64198DBBF12EA5122AC8 /* onnxruntime-objc */,
+				8CDB63350B78F3B6B9DB268818AE89A0 /* Pods-VideoRecognition */,
+				A678D63B43E9857FFD2EC7CF59A6F6FF /* Pods-VideoRecognitionTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BB0556EDD99CBA8F8A88EE77CD9EFD35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08C9A07C4FCB954D2C5430555E18D70E /* Media.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB88DB44CF957EB00CD84A57646D6732 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB5D436F01B00893C0ACA937A427AFC6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFC1A826DC0618407C6BD55A97643616 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3CFBA14174592D8554CB04535DA6DCD3 /* [CP] Copy XCFrameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/onnxruntime-c/onnxruntime-c-xcframeworks-input-files.xcfilelist",
+			);
+			name = "[CP] Copy XCFrameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/onnxruntime-c/onnxruntime-c-xcframeworks-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/onnxruntime-c/onnxruntime-c-xcframeworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3AC00710BC7C3ABB9A0889208601D4AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60B5337F2D0693138BDEF9B21ED40A05 /* Pods-VideoRecognition-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A5138DEF1A7C17ED0A1DE0C270F3A0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C69A4F8E1C0749F3B2AEF43B132A0A6 /* CameraActionsExtension.swift in Sources */,
+				DD9EB5B04D6652DF8FA45BEEA73F48A3 /* CameraUtilExtension.swift in Sources */,
+				FFB5C5580FF00E59500B81D8585D5749 /* CaptureDeviceHandlerExtension.swift in Sources */,
+				292686383777CDF7A162F0C9AD7C82A6 /* CapturePhotoExtension.swift in Sources */,
+				D416809ABC99D9E87057F585627343BB /* DepthDataExtension.swift in Sources */,
+				887BD6D09F87C3E70E072C9AABD3F804 /* FileRecordingExtension.swift in Sources */,
+				6955CEFB8B7A8CDAC4D48F8292D4892A /* FocusHandlerExtension.swift in Sources */,
+				D459CBD4A41BBA2487C4FDA0A7253A4D /* GestureRecognizerDelegateExtension.swift in Sources */,
+				A4CD80AD81B49BC1A56E6C972DA07182 /* InterfaceHandlerExtension.swift in Sources */,
+				E16E69CEADDC59A3EDE73AF7DDB60994 /* Locks.swift in Sources */,
+				726593D60ED2B0B1FC5C33DE8F774936 /* Logging.swift in Sources */,
+				46BA344086F8AE2480D32A8A5B21E861 /* LogHandler.swift in Sources */,
+				E193B41D1C389CE5D0B7579C3888812A /* Lumina-dummy.m in Sources */,
+				3A8B9A6FCA626E2710FFDC224B64A83A /* LuminaButton.swift in Sources */,
+				D1C230E9FD13579F3F9A4B6BF111BA1B /* LuminaCamera.swift in Sources */,
+				8272741B825E6C4FCBC9565B8454F3CC /* LuminaCameraDelegateExtension.swift in Sources */,
+				31D74CD8F10972FCEE7609C0099C4CA9 /* LuminaCameraViewSettings.swift in Sources */,
+				A8789470A89685709623E01FD69CFD68 /* LuminaDelegate.swift in Sources */,
+				F6CEF5D4B5D7841AAE3439DD900E6047 /* LuminaDeviceUtil.swift in Sources */,
+				35D7BBE4E6FD97CAA735A6115833C96D /* LuminaLogger.swift in Sources */,
+				7600763C9B4D60FB67F0AFFEA8FDF29C /* LuminaModel.swift in Sources */,
+				8EA3A8703D481B61F021EAA3AEC1C1EC /* LuminaObjectRecognizer.swift in Sources */,
+				DB8A2E078FF5EC4D36F4B29FE26059A4 /* LuminaPhotoCapture.swift in Sources */,
+				F98A48B167A45703428A5E849A7453D4 /* LuminaTextPromptView.swift in Sources */,
+				AA89A9107A8F14E127007235367F9608 /* LuminaViewController.swift in Sources */,
+				83A18DB594ACA9ABDC205B968E589C13 /* MetadataOutputDelegateExtension.swift in Sources */,
+				2CD8CBE74152CEB5E4DA7F8F790CF9FD /* PhotoCaptureDelegateExtension.swift in Sources */,
+				475D2F04ECD3871D15E680D25C9AC01D /* SampleBufferExtension.swift in Sources */,
+				90D003179702BF0B04B8AC1BC99A4482 /* SessionConfigurationExtension.swift in Sources */,
+				08C0E4EEF828B9AE9C347C1A4F415A72 /* VideoDataOutputSampleBufferDelegateExtension.swift in Sources */,
+				07D5DC612A39D1DA84E37C335C538FF0 /* ViewControllerButtonFunctions.swift in Sources */,
+				2DA9140CCC4CD93D0082F359D0027910 /* ViewControllerFocusHandlerExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B06EBCDFF5722EFBEABFC851B94AC2ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01D31EBF072AAFF423B35FC433997019 /* assert_arc_enabled.mm in Sources */,
+				0D46004CF5800F02BC63C643AE623160 /* cxx_utils.mm in Sources */,
+				DFBC0349E0CEB7F157DFC041416ACB1C /* error_utils.mm in Sources */,
+				CDA29AFF74FD72DD1C2479A58B5D4342 /* onnxruntime-objc-dummy.m in Sources */,
+				BB36D93015EFEAE83315F8839B16C110 /* ort_coreml_execution_provider.mm in Sources */,
+				45E7C4EBC813B0C5D03365F46D6034FB /* ort_enums.mm in Sources */,
+				5E33A77EB9C964120F2E05C14D333AB7 /* ort_env.mm in Sources */,
+				3AA583016A5E72626D8709EAB565A181 /* ort_session.mm in Sources */,
+				E8734F0AFF0B414CBA3EFCC0DCE526B2 /* ort_value.mm in Sources */,
+				E10CF829F39D58CF796B811A8526C99F /* ort_xnnpack_execution_provider.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26D4453361E50603B2C29C1FBEE7284 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88222D61023B791524B2D748E1724DD3 /* Pods-VideoRecognitionTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2AAC61066F29A7F31140715D0E687966 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "onnxruntime-c";
+			target = 01D26C9790741D5F08E2B47A48D79331 /* onnxruntime-c */;
+			targetProxy = 36DE39E4A8CD6F7AA70861D4D06D76BA /* PBXContainerItemProxy */;
+		};
+		6AFF54D2AF4841F750AB9EDA38B8FD36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "onnxruntime-c";
+			target = 01D26C9790741D5F08E2B47A48D79331 /* onnxruntime-c */;
+			targetProxy = 270269AA41EFE057D3947F14AD9A1A15 /* PBXContainerItemProxy */;
+		};
+		C0F58880FE00E430C2A5BDB32F455F62 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "onnxruntime-objc";
+			target = DD8A7EE9BACB64198DBBF12EA5122AC8 /* onnxruntime-objc */;
+			targetProxy = ED57937E22868AB8E4A8B669ACB94D39 /* PBXContainerItemProxy */;
+		};
+		CA1F68322B280EB3935DA3E5DD7C29B4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-VideoRecognition";
+			target = 8CDB63350B78F3B6B9DB268818AE89A0 /* Pods-VideoRecognition */;
+			targetProxy = 6C814021E9BE098F44B4973F44B6CA20 /* PBXContainerItemProxy */;
+		};
+		E68665504609BC1CE35EC2FCE1ED3796 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Lumina;
+			target = 063243B6E71D05A4C5CAEAAD2E77548B /* Lumina */;
+			targetProxy = 5228FA1897028B0A689909BAFBFD1E9D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		222A4FD7E96685ECD8286EF010644705 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3DB9E4853407CD6F9C494AF7ACE443DD /* Lumina.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Lumina/Lumina-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Lumina/Lumina-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/Lumina/Lumina.modulemap";
+				PRODUCT_MODULE_NAME = Lumina;
+				PRODUCT_NAME = Lumina;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2B9E26EAE2CD392AD762421F663075A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		475A40A2FD48F4C7C7C1019FBE145808 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E52A134A60FCF233D9C8ACD0A53BB0A /* onnxruntime-objc.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/onnxruntime-objc/onnxruntime-objc-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/onnxruntime-objc/onnxruntime-objc-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/onnxruntime-objc/onnxruntime-objc.modulemap";
+				PRODUCT_MODULE_NAME = onnxruntime_objc;
+				PRODUCT_NAME = onnxruntime_objc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		477189C6C01040368E3F69D3398A5CB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AC933BB0AD85A2DFAD2CD2E5A031E7F /* Pods-VideoRecognitionTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-VideoRecognitionTests/Pods-VideoRecognitionTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-VideoRecognitionTests/Pods-VideoRecognitionTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		63FAF33E1C55B71A5F5A8B3CC8749F99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		69535684D8505FE92B87E02E1D7D802B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFB9F4AEFF952654E45FF71B08253119 /* Lumina.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Lumina/Lumina-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Lumina/Lumina-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/Lumina/Lumina.modulemap";
+				PRODUCT_MODULE_NAME = Lumina;
+				PRODUCT_NAME = Lumina;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		82E95548D314FBB7AF323CCE09205C32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D53988BEE594E3DDE5C9205F6B05035A /* onnxruntime-c.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1E19C6064AD162DD8B861951DD8193F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9981F1E0EB60C395BCC820836331AADE /* onnxruntime-objc.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/onnxruntime-objc/onnxruntime-objc-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/onnxruntime-objc/onnxruntime-objc-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/onnxruntime-objc/onnxruntime-objc.modulemap";
+				PRODUCT_MODULE_NAME = onnxruntime_objc;
+				PRODUCT_NAME = onnxruntime_objc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A877D0D67DA90A52C5076BAD5009D29B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD71B59BBD265DFB311D2DB0013FD702 /* Pods-VideoRecognitionTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-VideoRecognitionTests/Pods-VideoRecognitionTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-VideoRecognitionTests/Pods-VideoRecognitionTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		DF8F4DC9C8DFB1957203868887574848 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 125547FA263E5298FB27FEAC7B94A1FE /* Pods-VideoRecognition.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-VideoRecognition/Pods-VideoRecognition-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-VideoRecognition/Pods-VideoRecognition.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E5F2FA1C8D73203E4C8B59893C57931D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FE1B42E3C98906C97010CE7C5B8C9CC /* Pods-VideoRecognition.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-VideoRecognition/Pods-VideoRecognition-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-VideoRecognition/Pods-VideoRecognition.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E8095DD3F53809AB089CCA5E4073A60E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0E44BDCDC78842E015B4A9F66FD4A580 /* onnxruntime-c.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1ABB7B5015457D4F66C9AE8922045727 /* Build configuration list for PBXNativeTarget "onnxruntime-objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1E19C6064AD162DD8B861951DD8193F /* Debug */,
+				475A40A2FD48F4C7C7C1019FBE145808 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1FAA34C873E6D52B09F47086906FF3E4 /* Build configuration list for PBXAggregateTarget "onnxruntime-c" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82E95548D314FBB7AF323CCE09205C32 /* Debug */,
+				E8095DD3F53809AB089CCA5E4073A60E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B9E26EAE2CD392AD762421F663075A1 /* Debug */,
+				63FAF33E1C55B71A5F5A8B3CC8749F99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB5290767AF5BF33B20F306FAB7DDF11 /* Build configuration list for PBXNativeTarget "Pods-VideoRecognitionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A877D0D67DA90A52C5076BAD5009D29B /* Debug */,
+				477189C6C01040368E3F69D3398A5CB1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DC319D01288A4CEC11DA46E74F9731AD /* Build configuration list for PBXNativeTarget "Lumina" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69535684D8505FE92B87E02E1D7D802B /* Debug */,
+				222A4FD7E96685ECD8286EF010644705 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5316BE7FFC2AE91A163D75E45375E80 /* Build configuration list for PBXNativeTarget "Pods-VideoRecognition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF8F4DC9C8DFB1957203868887574848 /* Debug */,
+				E5F2FA1C8D73203E4C8B59893C57931D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

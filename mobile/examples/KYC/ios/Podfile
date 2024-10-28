@@ -1,0 +1,12 @@
+platform :ios, '12.0'
+
+target 'VideoRecognition' do
+  use_frameworks!
+
+  pod 'onnxruntime-objc'
+  pod 'Lumina'
+
+  target 'VideoRecognitionTests' do
+    inherit! :search_paths
+  end
+end
