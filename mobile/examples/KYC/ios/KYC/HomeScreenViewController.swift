@@ -45,14 +45,14 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         setCancelButton(visible: false)
         self.captureLivePhotos = false
         self.streamDepthData = false
-        self.recordsVideo = true
+        self.recordsVideo = false
         self.streamFrames = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         createTransparentView(view)
-        updateLabels()
+        updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -89,7 +89,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
                 scanPromptLabel.centerXAnchor.constraint(equalTo: transparentView.centerXAnchor)
             ])
             
-            updateLabels()
+            updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
             
             // Add a tap gesture recognizer to dismiss the keyboard
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -102,12 +102,21 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     let transparentView = RoundedCornersView()
     private var scanPromptLabel: UILabel!
     private let GenericMLError = "Error identifying picture or audio"
-    private static let RecordMessage = "Hold down record button for video capture"
+    private static let ScanSelfieMessage = "Step 1 - take a selfie"
+    private static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
     var audioPlayer: AVAudioPlayer?
     var currentFragments: [VideoFragment]?
+    var step1Image: CIImage?
+    var step2Image: CIImage?
+    var step1Embs: [Double]?
+    var step2Embs: [Double]?
     
-    func updateLabels(_ message: String = RecordMessage) {
+    func isStep1Complete() -> Bool {
+        return step1Image != nil
+    }
+    
+    func updateLabels(_ message: String = ScanSelfieMessage) {
         let labelFont = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
         let labelAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white,

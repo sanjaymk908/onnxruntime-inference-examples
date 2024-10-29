@@ -70,18 +70,23 @@ class VideoRecognizer {
         }
     }
 
-    
     func drivePicRecognizer(_ videoFragments: [VideoFragment]) {
         let count = videoFragments.count
         for index in 0..<count {
             let fragment = videoFragments[index]
-            let result = picRecognizer?.evaluate(bitmap: fragment.stillFrame)
-            switch result {
-            case .some(.success(let cloneCheckResult)):
-                fragment.isPicCloned = cloneCheckResult.contains("clone")
-            case .some(.failure):
-                fragment.isPicCloned = false
-            case .none:
+            
+            if let picRecognizer = picRecognizer {
+                let result = picRecognizer.evaluate(bitmap: fragment.stillFrame)
+                
+                switch result {
+                case .success(let cloneCheckResult):
+                    // Check if cloneCheckResult tuple contains "clone" in the result string
+                    fragment.isPicCloned = cloneCheckResult.0.contains("clone")
+                case .failure:
+                    fragment.isPicCloned = false
+                }
+            } else {
+                // Handle case where picRecognizer is nil
                 fragment.isPicCloned = false
             }
         }

@@ -25,51 +25,30 @@ extension HomeScreenViewController {
   }
           
   func captured(videoAt: URL, from controller: LuminaViewController) {
-      resetState()
-      guard let videoRecognizer = videoRecognizer else {return}
-      print("Starting video processing...")
-      self.videoProcessor = VideoProcessor(localURL: videoAt,
-                                           videoRecognizer: videoRecognizer,
-                                           processStillFrame: { inputImage in
-                                              return self.processCapturedImage(inputImage)
-                                           },
-                                           completion: { outputURL, isCloned, isClonedType in
-          guard let outputURL = outputURL else {return}
-          DispatchQueue.main.async {
-              self.playAudio(from: outputURL)
-              switch isClonedType {
-              case .IsPicCloned(let fragments):
-                  self.setState(fragments)
-                  self.displayMessageAndFragments(self.ISPICCLONEDMESSAGE, fragments: fragments)
-              case .IsAudioCloned(let fragments):
-                  self.setState(fragments)
-                  self.displayMessageAndFragments(self.ISAUDIOCLONEDMESSAGE, fragments: fragments)
-              case .IsBothCloned(let fragments):
-                  self.setState(fragments)
-                  self.displayMessageAndFragments(self.ISBOTHCLONEDMESSAGE, fragments: fragments)
-              case .NotCloned(let fragments):
-                  self.setState(fragments)
-                  self.displayMessageAndFragments(self.ISREALMESSAGE, fragments: fragments)
-              }
-          }
-      })
   }
     
   ///
   /// MARK :- priate methods, properties
   ///
 
-    func resetState(_ force: Bool = false) {
+  func resetState(_ force: Bool = false) {
     currentFragments = []
     audioPlayer = nil
     DispatchQueue.main.async { [weak self] in
         guard let self = self else {return}
         self.updateLabels()
-        // This causes initial display to disapper-why?? 
+        // This causes initial display to disapper-why??
         if  force {
             self.displayMessage("")
         }
     }
+  }
+    
+  func resetInternalState() {
+    step1Image = nil
+    step2Image = nil
+    step1Embs = []
+    step2Embs = []
   }
     
   func isVideoRecording() -> Bool {
@@ -126,22 +105,90 @@ extension HomeScreenViewController {
   }
     
   private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
-    let result = videoRecognizer?.picRecognizer?.evaluate(bitmap: bitmap)
+      if !self.isStep1Complete() {
+          step1Driver(with: bitmap, withOriginalImage: withOriginalImage)
+      } else {
+          step2Driver(with: bitmap, withOriginalImage: withOriginalImage)
+      }
+  }
+    
+  private func step1Driver(with bitmap: CIImage, withOriginalImage: UIImage) {
+    guard let picRecognizer = videoRecognizer?.picRecognizer else {
+        DispatchQueue.main.async {
+            let message = "Error: PicRecognizer is not initialized"
+            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+        }
+        return
+    }
+    let result = picRecognizer.evaluate(bitmap: bitmap)
     switch result {
-    case .some(.success(let cloneCheckResult)):
+    case .success(let cloneCheckResult):
         DispatchQueue.main.async {
-            self.displayMessageAndPic(cloneCheckResult, capturedPic: withOriginalImage)
+            self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
+            self.step1Image = bitmap
+            self.step1Embs = cloneCheckResult.1
         }
-    case .some(.failure(let error)):
+    case .failure(let error):
         DispatchQueue.main.async {
-        let message = "Error: \(error)"
-        self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+            let message = "Error: \(error.localizedDescription)"
+            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
         }
-    case .none:
-        DispatchQueue.main.async {
-        let message = "Error: PicRecognizer is not initialized"
-        self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+    }
+  }
+    
+  private func step2Driver(with bitmap: CIImage, withOriginalImage: UIImage) {
+    let picIDRecognizer = PicIDRecognizer()
+    picIDRecognizer.recognizeID(from: bitmap) { result in
+        switch result {
+        case .success(let idInformation):
+            print("ID Information:")
+            print("First Name: \(idInformation.firstName ?? "N/A")")
+            print("Last Name: \(idInformation.lastName ?? "N/A")")
+            print("Date of Birth: \(idInformation.dateOfBirth ?? "N/A")")
+            print("ID Number: \(idInformation.idNumber ?? "N/A")")
+            print("Issue Date: \(idInformation.issueDate ?? "N/A")")
+            print("Expiration Date: \(idInformation.expirationDate ?? "N/A")")
+            print("Address: \(idInformation.address ?? "N/A")")
+              
+            if let userProfilePic = idInformation.userProfilePic {
+                DispatchQueue.main.async {
+                    let message = "Profile picture extracted successfully"
+                    self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                }
+                self.step2Image = userProfilePic
+                let similarityMatcher = SimilarityMatcher()
+                similarityMatcher.storeBaselineVec(self.step1Embs ?? [])
+                if let step2Image = self.step2Image {
+                    guard let picRecognizer = self.videoRecognizer?.picRecognizer else {
+                        DispatchQueue.main.async {
+                            let message = "Error: PicRecognizer is not initialized"
+                            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                        }
+                        self.resetInternalState()
+                        return
+                    }
+                    let result = picRecognizer.getEmbeddings(bitmap: step2Image)
+                    switch result {
+                    case .success(let step2Embs):
+                        similarityMatcher.storeTestVec(step2Embs)
+                        let match = similarityMatcher.cosineMatch()
+                        if match {
+                            self.displayMessage("Selfie & ID pictures match!")
+                        } else {
+                            self.displayMessage("Selfie & ID pictures do not match!")
+                        }
+                    case .failure(let error):
+                        self.displayMessage(error.localizedDescription)
+                    }
+                }
+            } else {
+                self.displayMessage("No profile picture found.")
+            }
+              
+        case .failure(let error):
+            self.displayMessage("Failed to recognize ID with error: \(error)")
         }
+        self.resetInternalState()
     }
   }
     
@@ -167,7 +214,7 @@ extension HomeScreenViewController {
   //     3. And to make things even more interesting, the static stuff Lumina adds
   //        to the top of its view pushes everything UP by luminaAddedOffsetAtTop.
   //        So, the y origin of the cropRect box has to be reduced by this amount.
-  private func cropImage(_ inputImage: UIImage, 
+  private func cropImage(_ inputImage: UIImage,
                          toRect cropRect: CGRect,
                          viewWidth: CGFloat,
                          viewHeight: CGFloat,

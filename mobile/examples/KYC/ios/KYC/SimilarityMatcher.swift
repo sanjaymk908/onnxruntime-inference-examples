@@ -1,0 +1,63 @@
+//
+//  SimilarityMatcher.swift
+//  KYC
+//
+//  Created by Sanjay Krishnamurthy on 6/14/24.
+//
+
+import Foundation
+
+class SimilarityMatcher {
+    
+    private let THRESHOLD: Double = 0.85
+    private var baselineVec: [Double]?
+    private var testVec: [Double]?
+    
+    init() {}
+    
+    public func storeBaselineVec(_ doubleArray: [Double]) {
+        baselineVec = doubleArray
+    }
+    
+    public func storeTestVec(_ doubleArray: [Double]) {
+        testVec = doubleArray
+    }
+    
+    public func clearAllInputs() {
+        baselineVec = nil
+        testVec = nil
+    }
+    
+    public func doesBaselineVecExist() -> Bool {
+        return baselineVec != nil
+    }
+    
+    public func doBothVecsExist() -> Bool {
+        return baselineVec != nil && testVec != nil
+    }
+    
+    public func cosineMatch() -> Bool {
+        guard let baselineVec = baselineVec, let testVec = testVec else { return false }
+        
+        // Calculate dot product
+        let dotProduct: Double = zip(baselineVec, testVec).reduce(0.0) { result, vecs in
+            result + (vecs.0 * vecs.1)
+        }
+        
+        // Calculate magnitudes of both vectors
+        let baselineMagnitude: Double = baselineVec.reduce(0.0) { result, number in
+            result + (number * number)
+        }.squareRoot()
+        
+        let testMagnitude: Double = testVec.reduce(0.0) { result, number in
+            result + (number * number)
+        }.squareRoot()
+        
+        let magnitude: Double = baselineMagnitude * testMagnitude
+        let result: Double = dotProduct / magnitude
+        print("Cosine Matcher magnitude: \(result)")
+        
+        return result >= THRESHOLD
+    }
+}
+

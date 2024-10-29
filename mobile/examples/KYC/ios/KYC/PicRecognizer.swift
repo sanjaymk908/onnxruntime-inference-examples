@@ -45,7 +45,7 @@ class PicRecognizer {
         print("Loading ML Models time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
     }
 
-    func evaluate(bitmap: CIImage) -> Result<String, Error> {
+    func evaluate(bitmap: CIImage) -> Result<(String, [Double]), Error> {
         do {
             let inputTensor = try createInputTensor(bitmap: bitmap)
             let outputs = try runModel(with: [inputName: inputTensor])
@@ -54,16 +54,51 @@ class PicRecognizer {
             }
 
             let embsData = try imageEmbeds.tensorData() as Data
-            var clonedTestResult: Result<String, any Error> = .success("Default Value")
-            let result = try embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Result<String, any Error> in
+            let result = try embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Result<(String, [Double]), Error> in
                 let floatBuffer = buffer.bindMemory(to: Float.self)
                 print("embs size: \(floatBuffer.count)")
+                
+                // Convert floatBuffer to an array of Floats, rearrange, and then convert to Doubles
                 let floatArray = Array(floatBuffer)
                 let floatArrayRearranged: [Float] = try rearrangeArray(floatArray)
                 let doubleArray = floatArrayRearranged.map { Double($0) }
-                clonedTestResult = cloneDetector.evaluate(inputData: doubleArray)
-                return clonedTestResult
+                
+                // Evaluate using cloneDetector and handle the result
+                let clonedTestResult = cloneDetector.evaluate(inputData: doubleArray)
+                switch clonedTestResult {
+                case .success(let cloneResult):
+                    return .success((cloneResult, doubleArray))
+                case .failure(let error):
+                    return .failure(error)
+                }
             }
+            
+            return result
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func getEmbeddings(bitmap: CIImage) -> Result<[Double], Error> {
+        do {
+            let inputTensor = try createInputTensor(bitmap: bitmap)
+            let outputs = try runModel(with: [inputName: inputTensor])
+            guard let imageEmbeds = outputs[outputName] else {
+                throw PicRecognizerError.failedToRunModel
+            }
+
+            let embsData = try imageEmbeds.tensorData() as Data
+            let result = try embsData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Result<[Double], Error> in
+                let floatBuffer = buffer.bindMemory(to: Float.self)
+                print("embs size: \(floatBuffer.count)")
+                
+                // Convert floatBuffer to an array of Floats, rearrange, and then convert to Doubles
+                let floatArray = Array(floatBuffer)
+                let floatArrayRearranged: [Float] = try rearrangeArray(floatArray)
+                let doubleArray = floatArrayRearranged.map { Double($0) }
+                return .success(doubleArray)
+            }
+            
             return result
         } catch {
             return .failure(error)
