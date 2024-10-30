@@ -6,10 +6,11 @@
 //
 
 import CoreImage
+import CoreImage.CIFilterBuiltins
 import Vision
 import UIKit
 
-struct IDInformation: Codable {
+class IDInformation {
     var firstName: String?
     var lastName: String?
     var dateOfBirth: String?
@@ -18,27 +19,9 @@ struct IDInformation: Codable {
     var expirationDate: String?
     var address: String?
     
-    // Store profile picture as Data for Codable conformance
-    var userProfilePicData: Data?
+    var userProfilePic: CIImage?
     
-    var userProfilePic: CIImage? {
-        get {
-            guard let data = userProfilePicData else { return nil }
-            return CIImage(data: data)
-        }
-        set {
-            guard let ciImage = newValue else {
-                userProfilePicData = nil
-                return
-            }
-            let uiImage = UIImage(ciImage: ciImage)
-            userProfilePicData = uiImage.pngData()
-        }
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case firstName, lastName, dateOfBirth, idNumber, issueDate, expirationDate, address, userProfilePicData
-    }
+    init() {}
 }
 
 public class PicIDRecognizer {
@@ -50,7 +33,7 @@ public class PicIDRecognizer {
                 return
             }
             
-            var idInfo = IDInformation()
+            let idInfo = IDInformation()
             
             if let results = request.results as? [VNRecognizedTextObservation] {
                 for observation in results {
@@ -87,35 +70,81 @@ public class PicIDRecognizer {
     }
     
     private func extractProfilePicture(from ciImage: CIImage) -> CIImage? {
-        var profilePic: CIImage?
+        // Step 1: Detect faces
+        let faceRequest = VNDetectFaceRectanglesRequest()
+        let handler = VNImageRequestHandler(ciImage: ciImage, orientation: .up)
         
-        // Create a face detection request
-        let faceDetectionRequest = VNDetectFaceRectanglesRequest { (request, error) in
-            guard let results = request.results as? [VNFaceObservation], let faceObservation = results.first else {
-                return
-            }
-            
-            // Calculate bounding box for the detected face
-            let faceBoundingBox = faceObservation.boundingBox
-            
-            // Convert bounding box to image coordinates
-            let imageSize = ciImage.extent.size
-            let boundingBoxInPixels = CGRect(
-                x: faceBoundingBox.origin.x * imageSize.width,
-                y: (1 - faceBoundingBox.origin.y - faceBoundingBox.height) * imageSize.height,
-                width: faceBoundingBox.width * imageSize.width,
-                height: faceBoundingBox.height * imageSize.height
-            )
-            
-            // Crop the face region from the original image
-            profilePic = ciImage.cropped(to: boundingBoxInPixels)
+        do {
+            try handler.perform([faceRequest])
+        } catch {
+            print("Face detection failed: \(error)")
+            return nil
         }
         
-        // Execute the face detection request
-        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-        try? handler.perform([faceDetectionRequest])
-        
-        return profilePic
+        // Helper function to process and resize the cropped image
+        func processAndResizeImage(_ croppedImage: CIImage) -> CIImage? {
+            let targetSize = CGSize(width: 224, height: 224)
+
+            // Calculate scale with a small buffer to ensure 224x224 size
+            let scaleX = targetSize.width / croppedImage.extent.width
+            let scaleY = targetSize.height / croppedImage.extent.height
+            let scale = max(scaleX, scaleY) * 1.001  // Adding a tiny buffer for rounding
+
+            // Scale the image
+            let scaledImage = croppedImage.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
+
+            // Center the image to (0,0) after scaling
+            let translatedImage = scaledImage.transformed(by: CGAffineTransform(translationX: -scaledImage.extent.origin.x, y: -scaledImage.extent.origin.y))
+
+            // Define the final crop rectangle and pad if necessary
+            let cropRect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
+            var finalImage = translatedImage.cropped(to: cropRect)
+
+            // Check if padding is needed and apply padding if required
+            if finalImage.extent.width < targetSize.width || finalImage.extent.height < targetSize.height {
+                let paddingX = max(0, (targetSize.width - finalImage.extent.width) / 2)
+                let paddingY = max(0, (targetSize.height - finalImage.extent.height) / 2)
+
+                finalImage = finalImage.transformed(by: CGAffineTransform(translationX: paddingX, y: paddingY))
+            }
+
+            // Print extents for debugging
+            print("Face detection crop extent:", croppedImage.extent)
+            print("Scaled Image Extent:", scaledImage.extent)
+            print("Translated Image Extent:", translatedImage.extent)
+            print("Final Image Extent:", finalImage.extent)
+
+            return finalImage
+        }
+
+        // Check if any faces were detected
+        if let faceObservations = faceRequest.results, !faceObservations.isEmpty {
+            guard let faceObservation = faceObservations.first else { return nil }
+            
+            // Expand the face bounding box slightly to include more of the head/shoulders
+            var expandedBoundingBox = VNImageRectForNormalizedRect(
+                faceObservation.boundingBox.insetBy(dx: -0.1, dy: -0.1),
+                Int(ciImage.extent.width),
+                Int(ciImage.extent.height)
+            )
+            
+            // Ensure the expanded bounding box is within the image bounds
+            expandedBoundingBox = expandedBoundingBox.intersection(ciImage.extent)
+            
+            guard !expandedBoundingBox.isNull && expandedBoundingBox.width > 0 && expandedBoundingBox.height > 0 else {
+                print("Invalid face bounding box")
+                return nil
+            }
+            
+            let croppedImage = ciImage.cropped(to: expandedBoundingBox)
+            print("Face detection crop extent: \(croppedImage.extent)")
+            
+            return processAndResizeImage(croppedImage)
+        } else {
+            print("No faces detected; returning nil.")
+            return nil // Or you could return the entire image if desired.
+        }
     }
+
 }
 

@@ -107,13 +107,11 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     private let loadingLine = UIView()
     var audioPlayer: AVAudioPlayer?
     var currentFragments: [VideoFragment]?
-    var step1Image: CIImage?
-    var step2Image: CIImage?
     var step1Embs: [Double]?
     var step2Embs: [Double]?
     
     func isStep1Complete() -> Bool {
-        return step1Image != nil
+        return (step1Embs != nil && step1Embs?.count ?? 0 > 0)
     }
     
     func updateLabels(_ message: String = ScanSelfieMessage) {

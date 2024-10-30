@@ -45,8 +45,6 @@ extension HomeScreenViewController {
   }
     
   func resetInternalState() {
-    step1Image = nil
-    step2Image = nil
     step1Embs = []
     step2Embs = []
   }
@@ -125,7 +123,6 @@ extension HomeScreenViewController {
     case .success(let cloneCheckResult):
         DispatchQueue.main.async {
             self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
-            self.step1Image = bitmap
             self.step1Embs = cloneCheckResult.1
         }
     case .failure(let error):
@@ -155,31 +152,29 @@ extension HomeScreenViewController {
                     let message = "Profile picture extracted successfully"
                     self.displayMessageAndPic(message, capturedPic: withOriginalImage)
                 }
-                self.step2Image = userProfilePic
+                let step2Image = userProfilePic
                 let similarityMatcher = SimilarityMatcher()
                 similarityMatcher.storeBaselineVec(self.step1Embs ?? [])
-                if let step2Image = self.step2Image {
-                    guard let picRecognizer = self.videoRecognizer?.picRecognizer else {
-                        DispatchQueue.main.async {
-                            let message = "Error: PicRecognizer is not initialized"
-                            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
-                        }
-                        self.resetInternalState()
-                        return
+                guard let picRecognizer = self.videoRecognizer?.picRecognizer else {
+                    DispatchQueue.main.async {
+                        let message = "Error: PicRecognizer is not initialized"
+                        self.displayMessageAndPic(message, capturedPic: withOriginalImage)
                     }
-                    let result = picRecognizer.getEmbeddings(bitmap: step2Image)
-                    switch result {
-                    case .success(let step2Embs):
-                        similarityMatcher.storeTestVec(step2Embs)
-                        let match = similarityMatcher.cosineMatch()
-                        if match {
-                            self.displayMessage("Selfie & ID pictures match!")
-                        } else {
-                            self.displayMessage("Selfie & ID pictures do not match!")
-                        }
-                    case .failure(let error):
-                        self.displayMessage(error.localizedDescription)
+                    self.resetInternalState()
+                    return
+                }
+                let result = picRecognizer.getEmbeddings(bitmap: step2Image)
+                switch result {
+                case .success(let step2Embs):
+                    similarityMatcher.storeTestVec(step2Embs)
+                    let match = similarityMatcher.cosineMatch()
+                    if match {
+                        self.displayMessage("Selfie & ID pictures match!")
+                    } else {
+                        self.displayMessage("Selfie & ID pictures do not match!")
                     }
+                case .failure(let error):
+                    self.displayMessage(error.localizedDescription)
                 }
             } else {
                 self.displayMessage("No profile picture found.")
