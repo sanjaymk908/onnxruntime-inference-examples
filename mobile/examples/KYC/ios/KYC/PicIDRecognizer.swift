@@ -108,6 +108,20 @@ public class PicIDRecognizer {
                 finalImage = finalImage.transformed(by: CGAffineTransform(translationX: paddingX, y: paddingY))
             }
 
+            // Handle edge case where dimensions are off by 1 pixel
+            if finalImage.extent.width < targetSize.width || finalImage.extent.height < targetSize.height {
+                // Calculate exact padding required on each side
+                let widthDifference = targetSize.width - finalImage.extent.width
+                let heightDifference = targetSize.height - finalImage.extent.height
+
+                // Divide the difference and round to ensure integer padding
+                let leftPadding = floor(widthDifference / 2)
+                let topPadding = floor(heightDifference / 2)
+
+                // Apply padding by transforming the image
+                finalImage = finalImage.transformed(by: CGAffineTransform(translationX: leftPadding, y: topPadding))
+            }
+
             // Print extents for debugging
             print("Face detection crop extent:", croppedImage.extent)
             print("Scaled Image Extent:", scaledImage.extent)
@@ -123,7 +137,7 @@ public class PicIDRecognizer {
             
             // Expand the face bounding box slightly to include more of the head/shoulders
             var expandedBoundingBox = VNImageRectForNormalizedRect(
-                faceObservation.boundingBox.insetBy(dx: -0.1, dy: -0.1),
+                faceObservation.boundingBox.insetBy(dx: -0.03, dy: -0.03),
                 Int(ciImage.extent.width),
                 Int(ciImage.extent.height)
             )

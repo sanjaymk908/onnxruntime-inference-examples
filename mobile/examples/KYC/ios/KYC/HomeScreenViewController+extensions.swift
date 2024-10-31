@@ -150,7 +150,7 @@ extension HomeScreenViewController {
             if let userProfilePic = idInformation.userProfilePic {
                 DispatchQueue.main.async {
                     let message = "Profile picture extracted successfully"
-                    self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic)) // was withOriginalImage
                 }
                 let step2Image = userProfilePic
                 let similarityMatcher = SimilarityMatcher()
