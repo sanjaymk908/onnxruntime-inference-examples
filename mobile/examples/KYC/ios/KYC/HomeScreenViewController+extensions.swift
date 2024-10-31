@@ -111,6 +111,7 @@ extension HomeScreenViewController {
   }
     
   private func step1Driver(with bitmap: CIImage, withOriginalImage: UIImage) {
+    // Do normal Step 1 processing to check for real selfie vs printed fake
     guard let picRecognizer = videoRecognizer?.picRecognizer else {
         DispatchQueue.main.async {
             let message = "Error: PicRecognizer is not initialized"
@@ -131,6 +132,32 @@ extension HomeScreenViewController {
             self.displayMessageAndPic(message, capturedPic: withOriginalImage)
         }
     }
+      
+    // Now get focused contour of face & embeddings for it
+    let picIDRecognizer = PicIDRecognizer()
+    picIDRecognizer.recognizeID(from: bitmap) { result in
+        switch result {
+        case .success(let idInformation):
+            if let userProfilePic = idInformation.userProfilePic {
+                DispatchQueue.main.async {
+                    let message = "Profile picture extracted successfully"
+                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic)) // was withOriginalImage
+                }
+                let step1Image = userProfilePic
+                let result = picRecognizer.getEmbeddings(bitmap: step1Image)
+                switch result {
+                case .success(let step1Embs):
+                    self.step1Embs = step1Embs
+                case .failure(let error):
+                    self.displayMessage(error.localizedDescription)
+                }
+            } else {
+                self.displayMessage("No profile picture found.")
+            }
+        case .failure(let error):
+            self.displayMessage("Failed to recognize ID with error: \(error)")
+        }
+      }
   }
     
   private func step2Driver(with bitmap: CIImage, withOriginalImage: UIImage) {

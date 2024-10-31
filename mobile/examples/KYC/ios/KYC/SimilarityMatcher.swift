@@ -9,7 +9,7 @@ import Foundation
 
 class SimilarityMatcher {
     
-    private let THRESHOLD: Float = 0.55
+    private let THRESHOLD: Double = 0.75
     private var baselineVec: [Double]?
     private var testVec: [Double]?
     
@@ -39,27 +39,23 @@ class SimilarityMatcher {
     public func cosineMatch() -> Bool {
         guard let baselineVec = baselineVec, let testVec = testVec else { return false }
         
-        // Convert baseline and test vectors to Float arrays
-        let baselineFloatVec = baselineVec.map { Float($0) }
-        let testFloatVec = testVec.map { Float($0) }
-        
-        // Calculate dot product in Float
-        let dotProduct: Float = zip(baselineFloatVec, testFloatVec).reduce(0.0) { result, vecs in
+        // Calculate dot product in Double
+        let dotProduct: Double = zip(baselineVec, testVec).reduce(0.0) { result, vecs in
             result + (vecs.0 * vecs.1)
         }
         
-        // Calculate magnitudes of both vectors in Float
-        let baselineMagnitude: Float = baselineFloatVec.reduce(0.0) { result, number in
+        // Calculate magnitudes of both vectors in Double
+        let baselineMagnitude: Double = baselineVec.reduce(0.0) { result, number in
             result + (number * number)
         }.squareRoot()
         
-        let testMagnitude: Float = testFloatVec.reduce(0.0) { result, number in
+        let testMagnitude: Double = testVec.reduce(0.0) { result, number in
             result + (number * number)
         }.squareRoot()
         
         // Calculate cosine similarity and check against threshold
-        let magnitude: Float = baselineMagnitude * testMagnitude
-        let result: Float = dotProduct / magnitude
+        let magnitude: Double = baselineMagnitude * testMagnitude
+        let result: Double = dotProduct / magnitude
         print("Cosine Matcher magnitude: \(result)")
         
         return result >= THRESHOLD
