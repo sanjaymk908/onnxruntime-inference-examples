@@ -36,7 +36,7 @@ extension HomeScreenViewController {
     audioPlayer = nil
     DispatchQueue.main.async { [weak self] in
         guard let self = self else {return}
-        self.updateLabels()
+        self.updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
         // This causes initial display to disapper-why??
         if  force {
             self.displayMessage("")
@@ -125,6 +125,8 @@ extension HomeScreenViewController {
         DispatchQueue.main.async {
             self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
             self.step1Embs = cloneCheckResult.1
+            self.updateLabels(HomeScreenViewController.ScanIDMessage)
+            self.position = .back
         }
     case .failure(let error):
         DispatchQueue.main.async {
@@ -139,10 +141,10 @@ extension HomeScreenViewController {
         switch result {
         case .success(let idInformation):
             if let userProfilePic = idInformation.userProfilePic {
-                DispatchQueue.main.async {
-                    let message = "Profile picture extracted successfully"
-                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic)) // was withOriginalImage
-                }
+//                DispatchQueue.main.async {
+//                    let message = "Profile picture extracted successfully"
+//                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic))
+//                }
                 let step1Image = userProfilePic
                 let result = picRecognizer.getEmbeddings(bitmap: step1Image)
                 switch result {
@@ -177,7 +179,7 @@ extension HomeScreenViewController {
             if let userProfilePic = idInformation.userProfilePic {
                 DispatchQueue.main.async {
                     let message = "Profile picture extracted successfully"
-                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic)) // was withOriginalImage
+                    self.displayMessageAndPic(message, capturedPic: withOriginalImage) // was withOriginalImage
                 }
                 let step2Image = userProfilePic
                 let similarityMatcher = SimilarityMatcher()
@@ -200,6 +202,7 @@ extension HomeScreenViewController {
                     } else {
                         self.displayMessage("Selfie & ID pictures do not match!")
                     }
+                    self.position = .front
                 case .failure(let error):
                     self.displayMessage(error.localizedDescription)
                 }

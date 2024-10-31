@@ -47,12 +47,15 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         self.streamDepthData = false
         self.recordsVideo = false
         self.streamFrames = false
+        self.position = .front
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         createTransparentView(view)
-        updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
+        if !isStep1Complete() {
+            self.updateLabels(HomeScreenViewController.ScanSelfieMessage)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -89,8 +92,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
                 scanPromptLabel.centerXAnchor.constraint(equalTo: transparentView.centerXAnchor)
             ])
             
-            updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
-            
             // Add a tap gesture recognizer to dismiss the keyboard
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
             view.addGestureRecognizer(tapGestureRecognizer)
@@ -102,8 +103,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     let transparentView = RoundedCornersView()
     private var scanPromptLabel: UILabel!
     private let GenericMLError = "Error identifying picture or audio"
-    private static let ScanSelfieMessage = "Step 1 - take a selfie"
-    private static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
+    static let ScanSelfieMessage = "Step 1 - take a selfie"
+    static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
     var audioPlayer: AVAudioPlayer?
     var currentFragments: [VideoFragment]?
