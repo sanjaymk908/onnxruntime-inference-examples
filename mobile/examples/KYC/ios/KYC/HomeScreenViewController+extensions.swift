@@ -172,9 +172,7 @@ extension HomeScreenViewController {
             print("Last Name: \(idInformation.lastName ?? "N/A")")
             print("Date of Birth: \(idInformation.dateOfBirth ?? "N/A")")
             print("ID Number: \(idInformation.idNumber ?? "N/A")")
-            print("Issue Date: \(idInformation.issueDate ?? "N/A")")
             print("Expiration Date: \(idInformation.expirationDate ?? "N/A")")
-            print("Address: \(idInformation.address ?? "N/A")")
               
             if let userProfilePic = idInformation.userProfilePic {
                 DispatchQueue.main.async {
@@ -198,7 +196,9 @@ extension HomeScreenViewController {
                     similarityMatcher.storeTestVec(step2Embs)
                     let match = similarityMatcher.cosineMatch()
                     if match {
-                        self.displayMessage("Selfie & ID pictures match!")
+                        let message = idInformation.isNotUnderAge ? "User is above 21" :
+                                                                    "User is below 21"
+                        self.displayMessage(message)
                     } else {
                         self.displayMessage("Selfie & ID pictures do not match!")
                     }

@@ -17,9 +17,41 @@ class IDInformation {
     var idNumber: String?
     var issueDate: String?
     var expirationDate: String?
-    var address: String?
-    
     var userProfilePic: CIImage?
+    
+    var isNotUnderAge: Bool {
+        // Ensure both dates are available and correctly formatted
+        guard let dobString = dateOfBirth, let expString = expirationDate,
+                let dob = parseDate(dobString), let exp = parseDate(expString) else {
+            return false
+        }
+            
+        // Calculate age from date of birth
+        let ageComponents = Calendar.current.dateComponents([.year], from: dob, to: Date())
+        guard let age = ageComponents.year else { return false }
+            
+        // Check if expired and if age is sufficient
+        let isExpired = exp < Date()
+        return age >= 21 && !isExpired
+    }
+        
+    // Helper function to parse date strings to Date objects
+    private func parseDate(_ dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        // Common date formats found on IDs and passports
+        let dateFormats = ["MM/dd/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "MM-dd-yyyy"]
+        
+        for format in dateFormats {
+            dateFormatter.dateFormat = format
+            if let date = dateFormatter.date(from: dateString) {
+                return date
+            }
+        }
+        
+        return nil // Return nil if none of the formats match
+    }
     
     init() {}
 }
@@ -40,13 +72,11 @@ public class PicIDRecognizer {
                     guard let topCandidate = observation.topCandidates(1).first else { continue }
                     
                     let text = topCandidate.string
-                    if text.contains("First Name:") { idInfo.firstName = text.replacingOccurrences(of: "First Name:", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("Last Name:") { idInfo.lastName = text.replacingOccurrences(of: "Last Name:", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("DOB:") { idInfo.dateOfBirth = text.replacingOccurrences(of: "DOB:", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("ID Number:") { idInfo.idNumber = text.replacingOccurrences(of: "ID Number:", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("Issue Date:") { idInfo.issueDate = text.replacingOccurrences(of: "Issue Date:", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("Expiration Date:") { idInfo.expirationDate = text.replacingOccurrences(of: "Expiration Date:", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("Address:") { idInfo.address = text.replacingOccurrences(of: "Address:", with: "").trimmingCharacters(in: .whitespaces) }
+                    if text.contains("FN") { idInfo.firstName = text.replacingOccurrences(of: "FN", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.contains("LN") { idInfo.lastName = text.replacingOccurrences(of: "LN", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.contains("DOB") { idInfo.dateOfBirth = text.replacingOccurrences(of: "DOB", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.contains("DL") { idInfo.idNumber = text.replacingOccurrences(of: "DL", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.contains("EXP") { idInfo.expirationDate = text.replacingOccurrences(of: "EXP", with: "").trimmingCharacters(in: .whitespaces) }
                 }
             }
             
