@@ -72,11 +72,14 @@ public class PicIDRecognizer {
                     guard let topCandidate = observation.topCandidates(1).first else { continue }
                     
                     let text = topCandidate.string
-                    if text.contains("FN") { idInfo.firstName = text.replacingOccurrences(of: "FN", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("LN") { idInfo.lastName = text.replacingOccurrences(of: "LN", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("DOB") { idInfo.dateOfBirth = text.replacingOccurrences(of: "DOB", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("DL") { idInfo.idNumber = text.replacingOccurrences(of: "DL", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("EXP") { idInfo.expirationDate = text.replacingOccurrences(of: "EXP", with: "").trimmingCharacters(in: .whitespaces) }
+                    print("Extracted field from ID: \(text)")
+                    if text.uppercased().contains("FN") { idInfo.firstName = text.replacingOccurrences(of: "FN", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.uppercased().contains("LN") { idInfo.lastName = text.replacingOccurrences(of: "LN", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.uppercased().contains("DOB") { idInfo.dateOfBirth = text.replacingOccurrences(of: "DOB", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.contains("ров") { idInfo.dateOfBirth = text.replacingOccurrences(of: "ров", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.uppercased().contains("DL") { idInfo.idNumber = text.replacingOccurrences(of: "DL", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.uppercased().contains("ĐL") { idInfo.idNumber = text.replacingOccurrences(of: "ĐL", with: "").trimmingCharacters(in: .whitespaces) }
+                    else if text.uppercased().contains("EXP") { idInfo.expirationDate = text.replacingOccurrences(of: "EXP", with: "").trimmingCharacters(in: .whitespaces) }
                 }
             }
             
