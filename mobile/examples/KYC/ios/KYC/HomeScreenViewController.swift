@@ -12,7 +12,6 @@ import UIKit
 
 class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFieldDelegate {
 
-    private var permissionManager = PermissionManager.shared
     var videoProcessor: VideoProcessor?
     var videoRecognizer: VideoRecognizer?
     
@@ -55,6 +54,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         createTransparentView(view)
         if !isStep1Complete() {
             self.updateLabels(HomeScreenViewController.ScanSelfieMessage)
+            DispatchQueue.main.async {
+                self.setupFaceOverlay()
+            }
         }
     }
     
@@ -100,6 +102,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     // MARK :- Private
     
+    private var permissionManager = PermissionManager.shared
+    private var faceOverlayView: FaceOverlayView?
     let transparentView = RoundedCornersView()
     private var scanPromptLabel: UILabel!
     private let GenericMLError = "Error identifying picture or audio"
@@ -110,6 +114,19 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     var currentFragments: [VideoFragment]?
     var step1Embs: [Double]?
     var step2Embs: [Double]?
+    
+    func setupFaceOverlay() {
+        // Remove existing overlay if any
+        faceOverlayView?.removeFromSuperview()
+        
+        faceOverlayView = FaceOverlayView(frame: transparentView.bounds)
+        faceOverlayView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        if let faceOverlayView = faceOverlayView {
+            transparentView.addSubview(faceOverlayView)
+            transparentView.bringSubviewToFront(faceOverlayView)
+        }
+    }
     
     func isStep1Complete() -> Bool {
         return (step1Embs != nil && step1Embs?.count ?? 0 > 0)
@@ -269,6 +286,12 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             subview.removeFromSuperview()
         }
         resetState(true) // force text prompt above pic to be reset
+        // redraw oval silhouette for face
+        if !isStep1Complete() {
+            DispatchQueue.main.async {
+                self.setupFaceOverlay()
+            }
+        }
     }
 
     func displayMessageAndPic(_ message: String, capturedPic: UIImage) {
