@@ -19,16 +19,16 @@ class IDInformation {
     var expirationDate: String?
     var userProfilePic: CIImage?
     
-    var isNotUnderAge: Bool {
+    var isNotUnderAge: Bool? {
         // Ensure both dates are available and correctly formatted
         guard let dobString = dateOfBirth, let expString = expirationDate,
                 let dob = parseDate(dobString), let exp = parseDate(expString) else {
-            return false
+            return nil
         }
             
         // Calculate age from date of birth
         let ageComponents = Calendar.current.dateComponents([.year], from: dob, to: Date())
-        guard let age = ageComponents.year else { return false }
+        guard let age = ageComponents.year else { return nil }
             
         // Check if expired and if age is sufficient
         let isExpired = exp < Date()
@@ -58,7 +58,6 @@ class IDInformation {
 
 public class PicIDRecognizer {
     func recognizeID(from ciImage: CIImage, completion: @escaping (Result<IDInformation, Error>) -> Void) {
-        
         let request = VNRecognizeTextRequest { request, error in
             guard error == nil else {
                 completion(.failure(error!))
@@ -90,7 +89,12 @@ public class PicIDRecognizer {
             completion(.success(idInfo))
         }
         
+        // Configure the request to focus on English text
         request.recognitionLevel = .accurate
+        request.recognitionLanguages = ["en-US"]
+        request.usesLanguageCorrection = true
+        request.customWords = ["FN", "LN", "DOB", "DL", "EXP"]
+        
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
         
         DispatchQueue.global(qos: .userInitiated).async {

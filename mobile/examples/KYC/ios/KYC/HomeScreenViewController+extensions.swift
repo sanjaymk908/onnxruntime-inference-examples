@@ -196,8 +196,14 @@ extension HomeScreenViewController {
                     similarityMatcher.storeTestVec(step2Embs)
                     let match = similarityMatcher.cosineMatch()
                     if match {
-                        let message = idInformation.isNotUnderAge ? "User is above 21" :
-                                                                    "User is below 21"
+                        var message: String = ""
+                        if idInformation.isNotUnderAge == nil {
+                            message = "ID could not be read - please rescan"
+                        } else {
+                            message = idInformation.isNotUnderAge ?? false ? 
+                               "User is above 21" :
+                               "User is below 21"
+                        }
                         self.displayMessage(message)
                     } else {
                         self.displayMessage("Selfie & ID pictures do not match!")
