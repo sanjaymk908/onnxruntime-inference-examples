@@ -41,7 +41,14 @@ class IDInformation {
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
         // Common date formats found on IDs and passports
-        let dateFormats = ["MM/dd/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "MM-dd-yyyy"]
+        let dateFormats = [
+                    "MM/dd/yyyy",
+                    "yyyy-MM-dd",
+                    "dd-MM-yyyy",
+                    "MM-dd-yyyy",
+                    "dd MMM yyyy",  // Added for formats like "08 Sep 1966"
+                    "d MMM yyyy"    // Added for single-digit days
+                ]
         
         for format in dateFormats {
             dateFormatter.dateFormat = format
@@ -63,45 +70,113 @@ public class PicIDRecognizer {
                 completion(.failure(error!))
                 return
             }
-            
+                
             let idInfo = IDInformation()
-            
             if let results = request.results as? [VNRecognizedTextObservation] {
-                for observation in results {
-                    guard let topCandidate = observation.topCandidates(1).first else { continue }
-                    
-                    let text = topCandidate.string
-                    print("Extracted field from ID: \(text)")
-                    if text.uppercased().contains("FN") { idInfo.firstName = text.replacingOccurrences(of: "FN", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.uppercased().contains("LN") { idInfo.lastName = text.replacingOccurrences(of: "LN", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.uppercased().contains("DOB") { idInfo.dateOfBirth = text.replacingOccurrences(of: "DOB", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.contains("ров") { idInfo.dateOfBirth = text.replacingOccurrences(of: "ров", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.uppercased().contains("DL") { idInfo.idNumber = text.replacingOccurrences(of: "DL", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.uppercased().contains("ĐL") { idInfo.idNumber = text.replacingOccurrences(of: "ĐL", with: "").trimmingCharacters(in: .whitespaces) }
-                    else if text.uppercased().contains("EXP") { idInfo.expirationDate = text.replacingOccurrences(of: "EXP", with: "").trimmingCharacters(in: .whitespaces) }
+                let firstFewLines = results.prefix(5).compactMap { $0.topCandidates(1).first?.string.uppercased() }
+                
+                if firstFewLines.contains(where: { $0.contains("LICENSE") }) {
+                    self.extractFieldsFromLic(results: results, idInfo: idInfo)
+                } else if firstFewLines.contains(where: { $0.contains("PASSPORT") || $0.contains("PASAPORTE") || 
+                    $0.contains("SURNAME") || $0.contains("PASSEPORT") }) {
+                    self.extractFieldsFromPassport(results: results, idInfo: idInfo)
+                } else {
+                    // Step 1 pic extraction - fall thru to pic extraction
                 }
             }
-            
+                
             if let profilePic = self.extractProfilePicture(from: ciImage) {
                 idInfo.userProfilePic = profilePic
             }
-            
+                
             completion(.success(idInfo))
         }
-        
-        // Configure the request to focus on English text
+            
+        // Configure the request
         request.recognitionLevel = .accurate
         request.recognitionLanguages = ["en-US"]
         request.usesLanguageCorrection = true
-        request.customWords = ["FN", "LN", "DOB", "DL", "EXP"]
-        
+        request.customWords = [
+            "FN", "LN", "DOB", "DL", "EXP",
+            "PASSPORT", "PASAPORTE", "PASSEPORT",
+            "SURNAME", "GIVEN NAMES", "DATE OF BIRTH", "DATE OF EXPIRATION",
+            "APELLIDOS", "NOMBRES", "FECHA DE NACIMIENTO", "FECHA DE CADUCIDAD",
+            "PASSPORT NO", "PASAPORT NO", "DATE OF EXP"
+        ]
+            
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-        
         DispatchQueue.global(qos: .userInitiated).async {
             do {
                 try handler.perform([request])
             } catch {
                 completion(.failure(error))
+            }
+        }
+    }
+        
+    private func extractFieldsFromLic(results: [VNRecognizedTextObservation], idInfo: IDInformation) {
+        for observation in results {
+            guard let topCandidate = observation.topCandidates(1).first else { continue }
+            let text = topCandidate.string
+            print("Extracted field from ID: \(text)")
+            if text.uppercased().contains("FN") { idInfo.firstName = text.replacingOccurrences(of: "FN", with: "").trimmingCharacters(in: .whitespaces) }
+            else if text.uppercased().contains("LN") { idInfo.lastName = text.replacingOccurrences(of: "LN", with: "").trimmingCharacters(in: .whitespaces) }
+            else if text.uppercased().contains("DOB") { idInfo.dateOfBirth = text.replacingOccurrences(of: "DOB", with: "").trimmingCharacters(in: .whitespaces) }
+            else if text.contains("ров") { idInfo.dateOfBirth = text.replacingOccurrences(of: "ров", with: "").trimmingCharacters(in: .whitespaces) }
+            else if text.uppercased().contains("DL") { idInfo.idNumber = text.replacingOccurrences(of: "DL", with: "").trimmingCharacters(in: .whitespaces) }
+            else if text.uppercased().contains("ĐL") { idInfo.idNumber = text.replacingOccurrences(of: "ĐL", with: "").trimmingCharacters(in: .whitespaces) }
+            else if text.uppercased().contains("EXP") { idInfo.expirationDate = text.replacingOccurrences(of: "EXP", with: "").trimmingCharacters(in: .whitespaces) }
+        }
+    }
+        
+    private func extractFieldsFromPassport(results: [VNRecognizedTextObservation], idInfo: IDInformation) {
+        var mrz = ""
+        var currentField = ""
+        
+        for observation in results {
+            guard let topCandidate = observation.topCandidates(1).first else { continue }
+            
+            let text = topCandidate.string.trimmingCharacters(in: .whitespaces)
+            print("Extracted field from ID: \(text)")
+            
+            if text.contains("Surname") || text.contains("Apellidos") {
+                currentField = "lastName"
+            } else if text.contains("Given Names") || text.contains("Nombres") {
+                currentField = "firstName"
+            } else if text.contains("Date of birth") || text.contains("Fecha de nacimiento") {
+                currentField = "dateOfBirth"
+            } else if text.contains("Date of exp") {
+                currentField = "expirationDate"
+            } else if text.contains("Passport No") || text.contains("Pasaport No") {
+                currentField = "idNumber"
+            } else if text.starts(with: "P<") || (text.contains("USA") && text.contains("<")) {
+                mrz = text
+            } else if !currentField.isEmpty && !text.contains("/") {
+                switch currentField {
+                case "lastName": idInfo.lastName = text
+                case "firstName": idInfo.firstName = text
+                case "dateOfBirth": idInfo.dateOfBirth = text
+                case "expirationDate": idInfo.expirationDate = text
+                case "idNumber": idInfo.idNumber = text
+                default: break
+                }
+                currentField = ""
+            }
+        }
+        
+        // Extract passport number from MRZ if not already extracted
+        if idInfo.idNumber == nil && !mrz.isEmpty {
+            if mrz.starts(with: "P<") {
+                let components = mrz.components(separatedBy: "USA")
+                if components.count > 1 {
+                    idInfo.idNumber = String(components[0].suffix(9))
+                }
+            } else {
+                // Handle the case where MRZ doesn't start with "P<"
+                let mrzComponents = mrz.components(separatedBy: "USA")
+                if mrzComponents.count > 0 {
+                    idInfo.idNumber = String(mrzComponents[0].prefix(9))
+                }
             }
         }
     }
