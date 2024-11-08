@@ -13,7 +13,8 @@ class CloneInference {
     
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
-  private let THRESHOLD: Float32 = 0.75
+  private let THRESHOLD: Double = 0.6 // Base threshold
+  private let CONFIDENCE_MARGIN:Double = 0.2 // Parameterized difference
 
   enum CloneInferenceError: Error {
     case Error(_ message: String)
@@ -85,11 +86,28 @@ class CloneInference {
                 return Array(float32Buffer)
             }
             print("Probabilities: \(probValues)")
-            let realProb = probValues[0]
-            if (labelValue == 0  && realProb > THRESHOLD) {
-                return "Pic is real"
+            let realProb = Double(probValues[0]) // Convert Float to Double
+            let fakeProb = Double(probValues[1]) // Convert Float to Double
+            let probDifference = abs(realProb - fakeProb)
+
+            if probDifference >= CONFIDENCE_MARGIN {
+                // There's a large difference, so we can be more confident in the decision
+                if realProb > fakeProb {
+                    let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                } else {
+                    let message = "Pic is printout/fake. Probs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                }
             } else {
-                return "Pic is a printout/fake"
+                // Difference is small, so we use the base threshold
+                if realProb > THRESHOLD {
+                    let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                } else {
+                    let message = "Pic is printout/fake. Probs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                }
             }
         }
   }
