@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import CoreGraphics
 import CoreImage
 import CoreVideo
 import Foundation
@@ -28,12 +29,13 @@ class PicRecognizer {
         case failedToCreatePixelBuffer
         case invalidArraySizes
         case invalidColumnNumbers
+        case failedToNormalize
     }
 
     required init() throws {
         let startTime = DispatchTime.now()
         ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-        guard let modelPath = Bundle.main.path(forResource: "clip_image_encoder", ofType: "onnx") else {
+        guard let modelPath = Bundle.main.path(forResource: "clip_image_encoder.quant", ofType: "onnx") else {
             throw PicRecognizerError.failedToLoadModel
         }
         let sessionOptions = try ORTSessionOptions()
@@ -47,7 +49,10 @@ class PicRecognizer {
 
     func evaluate(bitmap: CIImage) -> Result<(String, [Double]), Error> {
         do {
-            let inputTensor = try createInputTensor(bitmap: bitmap)
+            guard let normalizedBitmap = normalizeCIImage(inputImage: bitmap) else {
+                throw PicRecognizerError.failedToNormalize
+            }
+            let inputTensor = try createInputTensor(bitmap: normalizedBitmap)
             let outputs = try runModel(with: [inputName: inputTensor])
             guard let imageEmbeds = outputs[outputName] else {
                 throw PicRecognizerError.failedToRunModel
@@ -199,5 +204,35 @@ class PicRecognizer {
         let endTime = DispatchTime.now()
         print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
         return outputs
+    }
+    
+    private func normalizeCIImage(inputImage: CIImage) -> CIImage? {
+        // Define the normalization parameters
+        let meanRed: CGFloat = 0.48145466
+        let meanGreen: CGFloat = 0.4578275
+        let meanBlue: CGFloat = 0.40821073
+        let stdRed: CGFloat = 0.26862954
+        let stdGreen: CGFloat = 0.26130258
+        let stdBlue: CGFloat = 0.27577711
+
+        // Use CIColorMatrix filter to normalize the image
+        let colorMatrixFilter = CIFilter.colorMatrix()
+        colorMatrixFilter.inputImage = inputImage
+
+        // (pixel - mean) / std normalization for RGB channels
+        // Apply color matrix with mean subtraction and standard deviation scaling
+        // Subtract mean
+        colorMatrixFilter.rVector = CIVector(x: 1.0 / stdRed, y: 0, z: 0, w: -meanRed / stdRed)
+        colorMatrixFilter.gVector = CIVector(x: 0, y: 1.0 / stdGreen, z: 0, w: -meanGreen / stdGreen)
+        colorMatrixFilter.bVector = CIVector(x: 0, y: 0, z: 1.0 / stdBlue, w: -meanBlue / stdBlue)
+        colorMatrixFilter.aVector = CIVector(x: 0, y: 0, z: 0, w: 1)
+
+        // Get the output image
+        guard let normalizedImage = colorMatrixFilter.outputImage else {
+            print("Error: Failed to apply normalization filter")
+            return nil
+        }
+
+        return normalizedImage
     }
 }

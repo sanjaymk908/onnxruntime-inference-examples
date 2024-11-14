@@ -22,7 +22,7 @@ class CloneInference {
 
     required init() throws {
     ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "xgboost_liveness", ofType: "onnx") else {
+    guard let modelPath = Bundle.main.path(forResource: "xgboost_liveness_quant", ofType: "onnx") else {
       throw CloneInferenceError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
