@@ -104,6 +104,9 @@ class CloneInference {
                 if realProb > THRESHOLD {
                     let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
                     return message
+                }  else if realProb > fakeProb {
+                    let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
+                    return message
                 } else {
                     let message = "Pic is printout/fake. Probs: " + String(realProb) + " " + String(fakeProb)
                     return message
