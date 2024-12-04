@@ -17,7 +17,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
@@ -47,10 +47,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>The rear facing camera is used to capture videos for clone detection</string>
+	<string>Camera is used to take selfie pic &amp; ID pic</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>The mic is used during video capture for clone detection</string>
 </dict>
 </plist>

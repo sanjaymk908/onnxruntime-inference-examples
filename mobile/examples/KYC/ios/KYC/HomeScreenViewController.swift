@@ -1,6 +1,5 @@
 //
 //  HomeViewController.swift
-//  VideoRecognition
 //
 //  Created by Sanjay Krishnamurthy on 8/9/24.
 //
@@ -12,17 +11,7 @@ import UIKit
 
 class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFieldDelegate {
 
-    var videoProcessor: VideoProcessor?
     var videoRecognizer: VideoRecognizer?
-    
-    let ISAUDIOCLONEDMESSAGE = "Video has cloned audio fragments"
-    let ISPICCLONEDMESSAGE = "Video has cloned pic fragments"
-    let ISBOTHCLONEDMESSAGE = "Video has cloned pic & cloned audio fragments"
-    let ISREALMESSAGE = "Video has no cloned fragments"
-    let ISFRAGMENTAUDIOCLONEDMESSAGE = "Fragment has cloned audio"
-    let ISFRAGMENTPICCLONEDMESSAGE = "Fragment has cloned pic"
-    let ISFRAGMENTBOTHCLONEDMESSAGE = "Fragment has cloned pic & cloned audio"
-    let ISFRAGMENTREALMESSAGE = "Fragment has no cloned media"
     let MLMODELLOADINGFAILED = "Internal error loading ML Models"
     
     override init() {
@@ -110,8 +99,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     static let ScanSelfieMessage = "Step 1 - take a selfie"
     static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
-    var audioPlayer: AVAudioPlayer?
-    var currentFragments: [VideoFragment]?
     var step1Embs: [Double]?
     var step2Embs: [Double]?
     
@@ -178,19 +165,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         textPrompt = message
     }
     
-    func displayFragmentMessage(_ fragment: VideoFragment) {
-        // use updateLabels() to show per-fragment message below pic
-        if fragment.isAudioCloned && fragment.isPicCloned {
-            updateLabels(ISFRAGMENTBOTHCLONEDMESSAGE)
-        } else if fragment.isAudioCloned {
-            updateLabels(ISFRAGMENTAUDIOCLONEDMESSAGE)
-        } else if fragment.isPicCloned {
-            updateLabels(ISFRAGMENTPICCLONEDMESSAGE)
-        } else {
-            updateLabels(ISFRAGMENTREALMESSAGE)
-        }
-    }
-    
     private func displayCapturedPic(_ capturedPic: UIImage) {
         let imageView = createImageView(with: capturedPic)
         transparentView.addSubview(imageView)
@@ -199,13 +173,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         let dismissButton = createDismissButton()
         transparentView.addSubview(dismissButton)
         setupDismissButtonConstraints(dismissButton)
-        
-        // create replay button iff this is a video recording
-        if isVideoRecording() {
-            let replayButton = createReplayButton()
-            transparentView.addSubview(replayButton)
-            setupReplayButtonConstraints(replayButton)
-        }
     }
 
     private func createImageView(with image: UIImage) -> UIImageView {
@@ -240,46 +207,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         ])
     }
 
-    private func createReplayButton() -> UIButton {
-        let button = UIButton(type: .custom)
-        button.setTitle("∞", for: .normal)
-        button.setTitleColor(.green, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 30)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(replayTapped), for: .touchUpInside)
-        return button
-    }
-
-    private func setupReplayButtonConstraints(_ button: UIButton) {
-        NSLayoutConstraint.activate([
-            button.bottomAnchor.constraint(equalTo: transparentView.bottomAnchor, constant: -10),
-            button.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -10)
-        ])
-    }
-
-    @objc private func replayTapped() {
-        audioPlayer?.stop()
-        audioPlayer?.currentTime = 0
-        
-        if let url = audioPlayer?.url {
-            playAudio(from: url)
-        }
-        
-        replayStillframes()
-    }
-
-    private func replayStillframes() {
-        for subview in transparentView.subviews {
-            if subview is UIImageView {
-                subview.removeFromSuperview()
-            }
-        }
-        
-        if let fragments = currentFragments {
-            displayMessageAndFragments(textPrompt, fragments: fragments)
-        }
-    }
-
     @objc private func dismissCapturedPic() {
         // Remove the imageView and dismiss button from the transparentView
         for subview in transparentView.subviews {
@@ -300,23 +227,6 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         
         // Display the captured picture using displayCapturedPic()
         displayCapturedPic(capturedPic)
-    }
-    
-    func displayMessageAndFragments(_ message: String, fragments: [VideoFragment]) {
-        // Display the message using displayMessage()
-        displayMessage(message)
-        
-        for (index, fragment) in fragments.enumerated() {
-            let pic = fragment.stillFrame
-            let displayTime = Double(videoProcessor?.AUDIOSNIPPETLENGTH ?? 5)
-
-            // Delay the display based on the index of the fragment
-            DispatchQueue.main.asyncAfter(deadline: .now() + displayTime * Double(index)) {
-                self.displayCapturedPic(UIImage(ciImage: pic))
-                self.displayFragmentMessage(fragment)
-            }
-        }
-
     }
     
     private func addDoubleTapHandler() {

@@ -1,6 +1,5 @@
 //
 //  CloneInference.swift
-//  SpeechRecognition
 //
 //  Created by Sanjay Krishnamurthy on 6/27/24.
 //

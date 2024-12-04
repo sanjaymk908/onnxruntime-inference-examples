@@ -1,6 +1,5 @@
 //
 //  HomeScreenViewController+extensions.swift
-//  VideoRecognition
 //
 //  Created by Sanjay Krishnamurthy on 8/14/24.
 //
@@ -32,8 +31,6 @@ extension HomeScreenViewController {
   ///
 
   func resetState(_ force: Bool = false) {
-    currentFragments = []
-    audioPlayer = nil
     DispatchQueue.main.async { [weak self] in
         guard let self = self else {return}
         self.updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
@@ -47,14 +44,6 @@ extension HomeScreenViewController {
   func resetInternalState() {
     step1Embs = []
     step2Embs = []
-  }
-    
-  func isVideoRecording() -> Bool {
-    return audioPlayer?.url != nil
-  }
-    
-  private func setState(_ fragments: [VideoFragment]) {
-    currentFragments = fragments
   }
 
   private func processCapturedImage(_ inputImage: UIImage, shouldRotate: Bool = false) -> (UIImage, UIImage) {
@@ -83,23 +72,6 @@ extension HomeScreenViewController {
         return (resizedUIImage, croppedImage)
     }
     return (inputImage, inputImage) // on failure
-  }
-    
-  func playAudio(from url: URL) {
-      do {
-          // Initialize the AVAudioPlayer with the output URL
-          audioPlayer = try AVAudioPlayer(contentsOf: url)
-          
-          // Prepare to play the audio
-          audioPlayer?.prepareToPlay()
-          
-          // Play the audio
-          audioPlayer?.play()
-          
-          print("Playing audio from \(url)")
-      } catch {
-          print("Failed to play audio: \(error)")
-      }
   }
     
   private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
@@ -221,17 +193,6 @@ extension HomeScreenViewController {
         }
         self.resetInternalState()
     }
-  }
-    
-  private func playVideo(from url: URL) {
-      let player = AVPlayer(url: url)
-      let playerViewController = AVPlayerViewController()
-      playerViewController.player = player
-
-      // Present the video player
-      self.present(playerViewController, animated: true) {
-          playerViewController.player?.play()
-      }
   }
 
     

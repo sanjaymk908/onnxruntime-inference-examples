@@ -38,7 +38,7 @@ struct PermissionHandlerView: View {
         .alert(isPresented: $showSettingsAlert) {
             Alert(
                 title: Text("Permissions Denied"),
-                message: Text("Please go to Settings to allow Camera and Microphone access."),
+                message: Text("Please go to Settings to allow Camera access."),
                 primaryButton: .default(Text("Go to Settings")) {
                     goToSettings()
                 },
@@ -67,12 +67,12 @@ struct PermissionRequestView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Camera and Microphone Access")
+            Text("Camera Access")
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .font(.title)
             
-            Text("Please grant camera and microphone permissions to use this app.")
+            Text("Please grant camera permission to use this app.")
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             

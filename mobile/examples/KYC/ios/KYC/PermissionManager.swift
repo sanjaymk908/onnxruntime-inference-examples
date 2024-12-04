@@ -18,9 +18,7 @@ class PermissionManager: ObservableObject {
 
     func checkPermissions() {
         let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        let micStatus = AVAudioSession.sharedInstance().recordPermission
-        
-        if cameraStatus == .authorized && micStatus == .granted {
+        if cameraStatus == .authorized {
             permissionsGranted = true
         } else {
             permissionsGranted = false
@@ -35,11 +33,6 @@ class PermissionManager: ObservableObject {
             group.leave()
         }
         
-        group.enter()
-        AVAudioSession.sharedInstance().requestRecordPermission { granted in
-            group.leave()
-        }
-        
         group.notify(queue: .main) {
             self.checkPermissions()
         }
@@ -47,9 +40,7 @@ class PermissionManager: ObservableObject {
 
     func arePermissionsDenied() -> Bool {
         let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        let micStatus = AVAudioSession.sharedInstance().recordPermission
-        
-        return cameraStatus == .denied || micStatus == .denied
+        return cameraStatus == .denied
     }
 }
 

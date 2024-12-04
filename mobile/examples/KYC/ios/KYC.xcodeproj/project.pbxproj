@@ -25,31 +25,13 @@
 		C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
 		C19582622C660AB5004B8934 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
 		C19582632C660AB5004B8934 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
-		C19582652C6B572F004B8934 /* VideoFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582642C6B572F004B8934 /* VideoFragment.swift */; };
-		C19582662C6B572F004B8934 /* VideoFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582642C6B572F004B8934 /* VideoFragment.swift */; };
-		C19582682C6B5AEB004B8934 /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582672C6B5AEB004B8934 /* VideoProcessor.swift */; };
-		C19582692C6B5AEB004B8934 /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582672C6B5AEB004B8934 /* VideoProcessor.swift */; };
 		C195826B2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */; };
 		C195826C2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */; };
 		C195826E2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */; };
 		C195826F2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */; };
-		C19582712C757252004B8934 /* titanet_large.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19582702C757252004B8934 /* titanet_large.onnx */; };
-		C19582722C757252004B8934 /* titanet_large.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C19582702C757252004B8934 /* titanet_large.onnx */; };
-		C19582742C757295004B8934 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C19582732C757295004B8934 /* 8KHz_logreg_96Percent-model.ort */; };
-		C19582752C757295004B8934 /* 8KHz_logreg_96Percent-model.ort in Resources */ = {isa = PBXBuildFile; fileRef = C19582732C757295004B8934 /* 8KHz_logreg_96Percent-model.ort */; };
-		C19582772C7572E4004B8934 /* AudioCloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582762C7572E4004B8934 /* AudioCloneInference.swift */; };
-		C19582782C7572E4004B8934 /* AudioCloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582762C7572E4004B8934 /* AudioCloneInference.swift */; };
-		C195827A2C757359004B8934 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582792C757359004B8934 /* InferenceProtocol.swift */; };
-		C195827B2C757359004B8934 /* InferenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582792C757359004B8934 /* InferenceProtocol.swift */; };
-		C195827D2C757418004B8934 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195827C2C757418004B8934 /* SpeechRecognizer.swift */; };
-		C195827E2C757418004B8934 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195827C2C757418004B8934 /* SpeechRecognizer.swift */; };
-		C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
-		C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9392C33D9F9008023F3 /* PicCapture.swift */; };
 		C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
 		C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
 		C19DC9462C35463C008023F3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C19DC9452C35463C008023F3 /* Metal.framework */; };
-		C19DC9482C3A64F8008023F3 /* PicUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9472C3A64F8008023F3 /* PicUpload.swift */; };
-		C19DC9492C3A64F8008023F3 /* PicUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC9472C3A64F8008023F3 /* PicUpload.swift */; };
 		C19DC94B2C3A69E4008023F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC94A2C3A69E4008023F3 /* ContentView.swift */; };
 		C19DC94C2C3A69E4008023F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC94A2C3A69E4008023F3 /* ContentView.swift */; };
 		C1AFAA5A2C65DCE8003668C1 /* Lumina in Frameworks */ = {isa = PBXBuildFile; productRef = C1AFAA592C65DCE8003668C1 /* Lumina */; };
@@ -131,19 +113,10 @@
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 		C19582612C660AB5004B8934 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
-		C19582642C6B572F004B8934 /* VideoFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFragment.swift; sourceTree = "<group>"; };
-		C19582672C6B5AEB004B8934 /* VideoProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProcessor.swift; sourceTree = "<group>"; };
 		C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRecognizer.swift; sourceTree = "<group>"; };
 		C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeScreenViewController+extensions.swift"; sourceTree = "<group>"; };
-		C19582702C757252004B8934 /* titanet_large.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; name = titanet_large.onnx; path = ../../../speech_recognition/ios/SpeechRecognition/titanet_large.onnx; sourceTree = "<group>"; };
-		C19582732C757295004B8934 /* 8KHz_logreg_96Percent-model.ort */ = {isa = PBXFileReference; lastKnownFileType = file; name = "8KHz_logreg_96Percent-model.ort"; path = "../../../speech_recognition/ios/SpeechRecognition/8KHz_logreg_96Percent-model.ort"; sourceTree = "<group>"; };
-		C19582762C7572E4004B8934 /* AudioCloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCloneInference.swift; sourceTree = "<group>"; };
-		C19582792C757359004B8934 /* InferenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceProtocol.swift; sourceTree = "<group>"; };
-		C195827C2C757418004B8934 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
-		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
 		C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognizer.swift; sourceTree = "<group>"; };
 		C19DC9452C35463C008023F3 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-		C19DC9472C3A64F8008023F3 /* PicUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicUpload.swift; sourceTree = "<group>"; };
 		C19DC94A2C3A69E4008023F3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C1DB80752CD02DCE006431BE /* SimilarityMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarityMatcher.swift; sourceTree = "<group>"; };
 		C1DB80782CD031C1006431BE /* PicIDRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicIDRecognizer.swift; sourceTree = "<group>"; };
@@ -291,8 +264,6 @@
 			children = (
 				C1DB80812CE3E40B006431BE /* clip_image_encoder.quant.onnx */,
 				C1DB80842CE65A47006431BE /* xgboost_liveness_quant.onnx */,
-				C19582702C757252004B8934 /* titanet_large.onnx */,
-				C19582732C757295004B8934 /* 8KHz_logreg_96Percent-model.ort */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
 				EFE2380326855FC800234E2C /* KYC-Bridging-Header.h */,
@@ -301,19 +272,12 @@
 				EFE237DF26855E4B00234E2C /* Info.plist */,
 				EFE237DC26855E4B00234E2C /* Preview Content */,
 				C161D98D2C2D52FD00F60151 /* CloneInference.swift */,
-				C19DC9392C33D9F9008023F3 /* PicCapture.swift */,
 				C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */,
-				C19DC9472C3A64F8008023F3 /* PicUpload.swift */,
 				C19DC94A2C3A69E4008023F3 /* ContentView.swift */,
 				C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */,
 				C19582612C660AB5004B8934 /* PermissionManager.swift */,
-				C19582642C6B572F004B8934 /* VideoFragment.swift */,
-				C19582672C6B5AEB004B8934 /* VideoProcessor.swift */,
 				C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */,
 				C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */,
-				C19582762C7572E4004B8934 /* AudioCloneInference.swift */,
-				C19582792C757359004B8934 /* InferenceProtocol.swift */,
-				C195827C2C757418004B8934 /* SpeechRecognizer.swift */,
 				C1DB80752CD02DCE006431BE /* SimilarityMatcher.swift */,
 				C1DB80782CD031C1006431BE /* PicIDRecognizer.swift */,
 				C1DB807B2CD925B0006431BE /* FaceOverlayView.swift */,
@@ -425,8 +389,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C19582712C757252004B8934 /* titanet_large.onnx in Resources */,
-				C19582742C757295004B8934 /* 8KHz_logreg_96Percent-model.ort in Resources */,
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
 				C1DB80852CE65A47006431BE /* xgboost_liveness_quant.onnx in Resources */,
@@ -438,8 +400,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C19582722C757252004B8934 /* titanet_large.onnx in Resources */,
-				C19582752C757295004B8934 /* 8KHz_logreg_96Percent-model.ort in Resources */,
 				C1DB80862CE65A47006431BE /* xgboost_liveness_quant.onnx in Resources */,
 				C1DB80832CE3E40B006431BE /* clip_image_encoder.quant.onnx in Resources */,
 			);
@@ -452,8 +412,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C19DC9482C3A64F8008023F3 /* PicUpload.swift in Sources */,
-				C19DC93A2C33D9F9008023F3 /* PicCapture.swift in Sources */,
 				C19582622C660AB5004B8934 /* PermissionManager.swift in Sources */,
 				C19DC94B2C3A69E4008023F3 /* ContentView.swift in Sources */,
 				C195825F2C6609D8004B8934 /* HomeScreenViewController.swift in Sources */,
@@ -461,12 +419,8 @@
 				C135635C2C18F1DA00FF9A99 /* ort_enums.mm in Sources */,
 				C19DC93D2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
 				C1DB807C2CD925B0006431BE /* FaceOverlayView.swift in Sources */,
-				C19582652C6B572F004B8934 /* VideoFragment.swift in Sources */,
 				C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */,
 				C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */,
-				C195827D2C757418004B8934 /* SpeechRecognizer.swift in Sources */,
-				C19582772C7572E4004B8934 /* AudioCloneInference.swift in Sources */,
-				C19582682C6B5AEB004B8934 /* VideoProcessor.swift in Sources */,
 				C135635E2C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm in Sources */,
 				C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */,
 				C195826E2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */,
@@ -474,7 +428,6 @@
 				C195826B2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */,
 				C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */,
 				C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */,
-				C195827A2C757359004B8934 /* InferenceProtocol.swift in Sources */,
 				C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */,
 				C1DB80792CD031C1006431BE /* PicIDRecognizer.swift in Sources */,
 				EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */,
@@ -486,23 +439,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C19582692C6B5AEB004B8934 /* VideoProcessor.swift in Sources */,
-				C195827B2C757359004B8934 /* InferenceProtocol.swift in Sources */,
-				C19DC9492C3A64F8008023F3 /* PicUpload.swift in Sources */,
-				C19582782C7572E4004B8934 /* AudioCloneInference.swift in Sources */,
 				EFE237E926855E4B00234E2C /* SpeechRecognitionTests.swift in Sources */,
-				C195827E2C757418004B8934 /* SpeechRecognizer.swift in Sources */,
 				C19DC94C2C3A69E4008023F3 /* ContentView.swift in Sources */,
 				C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
 				C1DB807D2CD925B0006431BE /* FaceOverlayView.swift in Sources */,
-				C19582662C6B572F004B8934 /* VideoFragment.swift in Sources */,
 				C1DB807A2CD031C1006431BE /* PicIDRecognizer.swift in Sources */,
 				C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */,
 				C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */,
 				C19582632C660AB5004B8934 /* PermissionManager.swift in Sources */,
 				C195826C2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */,
 				C1DB80772CD02DCE006431BE /* SimilarityMatcher.swift in Sources */,
-				C19DC93B2C33D9F9008023F3 /* PicCapture.swift in Sources */,
 				C195826F2C6C814E004B8934 /* HomeScreenViewController+extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
