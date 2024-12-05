@@ -21,6 +21,8 @@
 		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
 		C161D98F2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
+		C16730E42D026C1D009D7325 /* xgboost_liveness_quant_enh.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C16730E32D026C1C009D7325 /* xgboost_liveness_quant_enh.onnx */; };
+		C16730E52D026C1D009D7325 /* xgboost_liveness_quant_enh.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C16730E32D026C1C009D7325 /* xgboost_liveness_quant_enh.onnx */; };
 		C195825F2C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
 		C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
 		C19582622C660AB5004B8934 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
@@ -43,8 +45,6 @@
 		C1DB807D2CD925B0006431BE /* FaceOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB807B2CD925B0006431BE /* FaceOverlayView.swift */; };
 		C1DB80822CE3E40B006431BE /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1DB80812CE3E40B006431BE /* clip_image_encoder.quant.onnx */; };
 		C1DB80832CE3E40B006431BE /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1DB80812CE3E40B006431BE /* clip_image_encoder.quant.onnx */; };
-		C1DB80852CE65A47006431BE /* xgboost_liveness_quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1DB80842CE65A47006431BE /* xgboost_liveness_quant.onnx */; };
-		C1DB80862CE65A47006431BE /* xgboost_liveness_quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1DB80842CE65A47006431BE /* xgboost_liveness_quant.onnx */; };
 		EFE237D726855E4600234E2C /* PicRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* PicRecognitionApp.swift */; };
 		EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
 		EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */; };
@@ -111,6 +111,7 @@
 		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
+		C16730E32D026C1C009D7325 /* xgboost_liveness_quant_enh.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = xgboost_liveness_quant_enh.onnx; sourceTree = "<group>"; };
 		C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 		C19582612C660AB5004B8934 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRecognizer.swift; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		C1DB80782CD031C1006431BE /* PicIDRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicIDRecognizer.swift; sourceTree = "<group>"; };
 		C1DB807B2CD925B0006431BE /* FaceOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOverlayView.swift; sourceTree = "<group>"; };
 		C1DB80812CE3E40B006431BE /* clip_image_encoder.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.quant.onnx; sourceTree = "<group>"; };
-		C1DB80842CE65A47006431BE /* xgboost_liveness_quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = xgboost_liveness_quant.onnx; sourceTree = "<group>"; };
 		C1F2C8122C17875D001AE4F8 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = onnxruntime.framework; sourceTree = "<group>"; };
 		EFE237D326855E4600234E2C /* TruKYC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TruKYC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237D626855E4600234E2C /* PicRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicRecognitionApp.swift; sourceTree = "<group>"; };
@@ -263,7 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				C1DB80812CE3E40B006431BE /* clip_image_encoder.quant.onnx */,
-				C1DB80842CE65A47006431BE /* xgboost_liveness_quant.onnx */,
+				C16730E32D026C1C009D7325 /* xgboost_liveness_quant_enh.onnx */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
 				EFE2380326855FC800234E2C /* KYC-Bridging-Header.h */,
@@ -389,9 +389,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C16730E42D026C1D009D7325 /* xgboost_liveness_quant_enh.onnx in Resources */,
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
-				C1DB80852CE65A47006431BE /* xgboost_liveness_quant.onnx in Resources */,
 				C1DB80822CE3E40B006431BE /* clip_image_encoder.quant.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,7 +400,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1DB80862CE65A47006431BE /* xgboost_liveness_quant.onnx in Resources */,
+				C16730E52D026C1D009D7325 /* xgboost_liveness_quant_enh.onnx in Resources */,
 				C1DB80832CE3E40B006431BE /* clip_image_encoder.quant.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

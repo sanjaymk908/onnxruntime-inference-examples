@@ -12,8 +12,8 @@ class CloneInference {
     
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
-  private let THRESHOLD: Double = 0.6 // Base threshold
-  private let CONFIDENCE_MARGIN:Double = 0.2 // Parameterized difference
+  private let THRESHOLD: Double = 0.7 // Base threshold
+  private let CONFIDENCE_MARGIN:Double = 0.4 // Parameterized difference
 
   enum CloneInferenceError: Error {
     case Error(_ message: String)
@@ -21,7 +21,7 @@ class CloneInference {
 
     required init() throws {
     ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "xgboost_liveness_quant", ofType: "onnx") else {
+    guard let modelPath = Bundle.main.path(forResource: "xgboost_liveness_quant_enh", ofType: "onnx") else {
       throw CloneInferenceError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
@@ -85,31 +85,32 @@ class CloneInference {
                 return Array(float32Buffer)
             }
             print("Probabilities: \(probValues)")
-            let realProb = Double(probValues[0]) // Convert Float to Double
-            let fakeProb = Double(probValues[1]) // Convert Float to Double
+            let realProb = ceil(Double(probValues[0]) * 100) / 100
+            let fakeProb = ceil(Double(probValues[1]) * 100) / 100
             let probDifference = abs(realProb - fakeProb)
 
-            if probDifference >= CONFIDENCE_MARGIN {
+            if realProb > THRESHOLD || fakeProb > THRESHOLD {
                 // There's a large difference, so we can be more confident in the decision
                 if realProb > fakeProb {
-                    let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
+                    let message = "Pic is real. \nProbs: " + String(realProb) + " " + String(fakeProb)
                     return message
                 } else {
-                    let message = "Pic is printout/fake. Probs: " + String(realProb) + " " + String(fakeProb)
+                    let message = "Pic is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                }
+            } else if probDifference >= CONFIDENCE_MARGIN {
+                // Difference is large enough
+                if realProb > fakeProb {
+                    let message = "Pic is real. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                } else {
+                    let message = "Pic is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
                     return message
                 }
             } else {
-                // Difference is small, so we use the base threshold
-                if realProb > THRESHOLD {
-                    let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                }  else if realProb > fakeProb {
-                    let message = "Pic is real. Probs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                } else {
-                    let message = "Pic is printout/fake. Probs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                }
+                // difference is not large enough to justify decision
+                let message = "Inconclusive. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                return message
             }
         }
   }
