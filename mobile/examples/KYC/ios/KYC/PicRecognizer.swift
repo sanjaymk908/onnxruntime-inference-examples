@@ -11,6 +11,7 @@ import CoreImage
 import CoreVideo
 import Foundation
 import UIKit
+import Vision
 
 class PicRecognizer {
     typealias InputType = Data
@@ -54,6 +55,10 @@ class PicRecognizer {
             }
             guard let normalizedBitmap = normalizeCIImage(inputImage: bitmap) else {
                 throw PicRecognizerError.failedToNormalize
+            }
+            if detectTextInCIImage(ciImage: bitmap) {
+                // NOTE :- above check uses un-normalized image
+                return fakeResultTemplate()
             }
             let inputTensor = try createInputTensor(bitmap: normalizedBitmap)
             let outputs = try runModel(with: [inputName: inputTensor])
@@ -247,6 +252,62 @@ class PicRecognizer {
             return false // Assume non-RGB if no color space is defined
         }
         return colorSpace.model == .rgb
+    }
+    
+    private func detectTextInCIImage(ciImage: CIImage) -> Bool {
+        let group = DispatchGroup()
+        var textDetected = false
+
+        // Convert CIImage to CGImage
+        let context = CIContext(options: nil)
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            return false
+        }
+
+        // Create a request handler
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+
+        // Enter the group before performing the request
+        group.enter()
+
+        // Create a text detection request
+        let request = VNDetectTextRectanglesRequest { request, error in
+            defer { group.leave() }
+
+            if let error = error {
+                print("Error detecting text: \(error)")
+                return
+            }
+
+            // Get the text observations
+            if let observations = request.results as? [VNTextObservation] {
+                // Check if any text is detected
+                textDetected = !observations.isEmpty
+            }
+        }
+
+        // Perform the request
+        do {
+            try handler.perform([request])
+        } catch {
+            print("Unable to perform the requests: \(error).")
+            group.leave()
+            return false
+        }
+
+        // Wait for the group to be notified
+        group.wait()
+
+        return textDetected
+    }
+    
+    private func fakeResultTemplate() -> Result<(String, [Double]), Error> {
+        // mark as fake
+        let realProb = 0.01
+        let fakeProb = 0.99
+        let doubleArray = [realProb, fakeProb]
+        let message = "Pic is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
+        return .success((message, doubleArray))
     }
     
 }
