@@ -142,9 +142,25 @@ extension HomeScreenViewController {
             print("ID Information:")
             print("First Name: \(idInformation.firstName ?? "N/A")")
             print("Last Name: \(idInformation.lastName ?? "N/A")")
-            print("Date of Birth: \(idInformation.dateOfBirth ?? "N/A")")
             print("ID Number: \(idInformation.idNumber ?? "N/A")")
-            print("Expiration Date: \(idInformation.expirationDate ?? "N/A")")
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .none
+            // Date of Birth
+            if let dateOfBirth = idInformation.dateOfBirth {
+                let formattedDOB = dateFormatter.string(from: dateOfBirth)
+                print("Date of Birth: \(formattedDOB)")
+            } else {
+                print("Date of Birth: N/A")
+            }
+            // Expiration Date
+            if let expirationDate = idInformation.expirationDate {
+                let formattedExpiration = dateFormatter.string(from: expirationDate)
+                print("Expiration Date: \(formattedExpiration)")
+            } else {
+                print("Expiration Date: N/A")
+            }
+
               
             if let userProfilePic = idInformation.userProfilePic {
                 DispatchQueue.main.async {

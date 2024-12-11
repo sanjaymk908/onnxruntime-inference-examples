@@ -84,7 +84,7 @@ class CloneInference {
                 let float32Buffer = buffer.bindMemory(to: Float32.self)
                 return Array(float32Buffer)
             }
-            print("Probabilities: \(probValues)")
+            print("True 0 or False 1: \(labelValue) Probabilities: \(probValues)")
             let realProb = ceil(Double(probValues[0]) * 100) / 100
             let fakeProb = ceil(Double(probValues[1]) * 100) / 100
             let probDifference = abs(realProb - fakeProb)
