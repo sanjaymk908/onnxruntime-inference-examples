@@ -237,14 +237,26 @@ public class PicIDRecognizer {
 
         // Find the first non-date field of numbers (with or without dashes) as the idNumber
         if idInfo.idNumber == nil {
-            let idNumberRegex = try! NSRegularExpression(pattern: "\\d{1,}-?\\d{0,}", options: [])
-            let idNumberMatches = cleanedTexts.compactMap { text in
+            // Regular expression to match common date formats
+            let dateRegex = try! NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})", options: [])
+
+            // Regular expression to match idNumber formats, including those starting with uppercase letters and ignoring prefixes
+            let idNumberRegex = try! NSRegularExpression(pattern: "[^\\dA-Z]*([A-Z]+\\d{1,}-?\\d{0,})", options: [])
+
+            let idNumberMatches = cleanedTexts.compactMap { text -> String? in
+                // Check if the text matches a date format
+                if let _ = dateRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
+                    return nil // Skip if it's a date format
+                }
+
+                // Check if the text matches the idNumber format
                 if let _ = idNumberRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
                     return text
                 } else {
                     return nil
                 }
             }
+
             if let idNumber = idNumberMatches.first {
                 idInfo.idNumber = idNumber
             }
