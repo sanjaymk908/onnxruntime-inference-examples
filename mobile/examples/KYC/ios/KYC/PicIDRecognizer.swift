@@ -22,12 +22,20 @@ class IDInformation {
     var isNotUnderAge: Bool? {
         // Ensure both dates are available and correctly formatted
         guard let dob = dateOfBirth, let exp = expirationDate else { return nil }
+
         // Calculate age from date of birth
-        let ageComponents = Calendar.current.dateComponents([.year], from: dob, to: Date())
-        guard let age = ageComponents.year else { return nil }
-        // Check if expired and if age is sufficient
+        let currentDate = Date()
+        let ageComponents = Calendar.current.dateComponents([.year, .month, .day], from: dob, to: currentDate)
+
+        // Check if the person is at least 21 years old
+        let isAtLeast21 = ageComponents.year! >= 21 ||
+                          (ageComponents.year! == 20 && ageComponents.month! > Calendar.current.component(.month, from: dob)) ||
+                          (ageComponents.year! == 20 && ageComponents.month! == Calendar.current.component(.month, from: dob) && ageComponents.day! >= Calendar.current.component(.day, from: dob))
+
+        // Check if expired
         let isExpired = exp < Date()
-        return age >= 21 && !isExpired
+
+        return isAtLeast21 && !isExpired
     }
 
     // Helper function to parse date strings to Date objects
@@ -246,8 +254,18 @@ public class PicIDRecognizer {
         if idInfo.dateOfBirth == nil || idInfo.expirationDate == nil {
             var dateFields: [Date] = []
             for text in cleanedTexts {
-                if let date = idInfo.parseDate(text) {
-                    dateFields.append(date)
+                // Regular expression to match common date formats
+                let dateRegex = try! NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})", options: [])
+
+                // Find all matches of date formats in the text
+                let matches = dateRegex.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+
+                // Extract and parse each match as a separate date
+                for match in matches {
+                    let dateMatch = String(text[Range(match.range, in: text)!])
+                    if let date = idInfo.parseDate(dateMatch) {
+                        dateFields.append(date)
+                    }
                 }
             }
 

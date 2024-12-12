@@ -146,6 +146,7 @@ extension HomeScreenViewController {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
             dateFormatter.timeStyle = .none
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             // Date of Birth
             if let dateOfBirth = idInformation.dateOfBirth {
                 let formattedDOB = dateFormatter.string(from: dateOfBirth)
