@@ -243,6 +243,10 @@ public class PicIDRecognizer {
                 // Updated prefixSkipping to match specific prefixes and allow any arbitrary characters before them
                 let prefixSkipping = ".*?(DL|DL#|Lic\\. No\\.|DLN|NO|[a-zA-Z0-9]+[.])?\\s*"  // Matches specific prefixes and any arbitrary characters
                 let idFormats = [
+                    "\\b[0-9]{13}\\b",           // Montana (13 digits) NOTE :- keep all digit checks at beginning in desc order
+                    "\\b[0-9]{12}\\b",           // North Carolina (12 digits)
+                    "\\b[0-9]{9}\\b",            // Montana (9 digits)
+                    "\\b[0-9]{8}\\b",            // South Dakota, Vermont (8 digits)
                     "[a-zA-Z]?\\d{7}",           // Alabama
                     "[a-zA-Z]?\\d{9}",           // Arizona
                     "[a-zA-Z]?\\d{10}",          // Nevada
@@ -264,17 +268,15 @@ public class PicIDRecognizer {
                     "[a-zA-Z]\\d{4} \\d{5} \\d{5}", // New Jersey formatted
                     "[a-zA-Z]\\d{14}",            // New Jersey unformatted
                     "\\b[0-9]{3} [0-9]{3} [0-9]{3}\\b", // New York formatted (### ### ###)
-                    "\\b[0-9]{12}\\b",             // North Carolina (12 digits)
                     "[a-zA-Z]{3}-[0-9]{2}-[0-9]{4}", // North Dakota
-                    "\\b[0-9]{8}\\b",              // South Dakota, Vermont (8 digits)
                     "[a-zA-Z]?\\b[0-9]{7}[a-zA-Z]\\b",   // Vermont alternative (7 digits + letter)
                     "[a-zA-Z] \\b[0-9]{3} \\b[0-9]{3} \\b[0-9]{3} \\b[0-9]{3}", // Michigan formatted (L ### ### ### ###)
                     "[a-zA-Z]\\b[0-9]{3}-[0-9]{4}-[0-9]{4}-[0-9]{2}\\b", // Wisconsin formatted (L###-####-####-##)
                     "\\b[0-9]{6}-[0-9]{3}\\b",     // Wyoming (######-###)
-                    "S\\\\s?\\\\d+(?:\\\\s?\\\\d+)*",     // S followed by digits with optional spaces
-                    "W\\\\d{6}",                   // W followed by 6 digits
-                    "NHL\\\\d{6}",                 // NHL followed by 6 digits
-                    "S\\\\d{6}"                    // S followed by 6 digits
+                    "S\\s?\\d+(?:\\s?\\d+)*",     // S followed by digits with optional spaces
+                    "W\\d{6}",                   // W followed by 6 digits
+                    "NHL\\d{6}",                 // NHL followed by 6 digits
+                    "S\\d{6}"                    // S followed by 6 digits
                 ].joined(separator: "|")
 
                 let idNumberRegexPattern = "\(prefixSkipping)(\(idFormats))"

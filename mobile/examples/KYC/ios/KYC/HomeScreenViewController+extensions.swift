@@ -186,12 +186,13 @@ extension HomeScreenViewController {
                     let match = similarityMatcher.cosineMatch()
                     if match {
                         var message: String = ""
+                        let idMessage:String = "ID#" + (idInformation.idNumber ?? "Not Found!")
                         if idInformation.isNotUnderAge == nil {
                             message = "ID could not be read - please rescan"
                         } else {
                             message = idInformation.isNotUnderAge ?? false ? 
-                               "User is above 21" :
-                               "User is below 21"
+                               "User is above 21 \n" + idMessage :
+                               "User is below 21 \n " + idMessage
                         }
                         self.displayMessage(message)
                     } else {
