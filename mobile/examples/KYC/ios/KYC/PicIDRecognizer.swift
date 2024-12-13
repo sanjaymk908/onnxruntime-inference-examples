@@ -7,6 +7,7 @@
 
 import CoreImage
 import CoreImage.CIFilterBuiltins
+import Foundation
 import Vision
 import UIKit
 
@@ -238,7 +239,7 @@ public class PicIDRecognizer {
         // Find the first non-date field of numbers (with or without dashes) as the idNumber
         if idInfo.idNumber == nil {
             do {
-                let dateRegex = try NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})", options: [])
+                let dateRegex = try NSRegularExpression(pattern: "\\b(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})\\b", options: [])
 
                 // Updated prefixSkipping to match specific prefixes and allow any arbitrary characters before them
                 let prefixSkipping = ".*?(DL|DL#|Lic\\. No\\.|DLN|NO|[a-zA-Z0-9]+[.])?\\s*"  // Matches specific prefixes and any arbitrary characters
@@ -281,17 +282,20 @@ public class PicIDRecognizer {
 
                 let idNumberRegexPattern = "\(prefixSkipping)(\(idFormats))"
                 let idNumberRegex = try NSRegularExpression(pattern: idNumberRegexPattern, options: [.anchorsMatchLines, .dotMatchesLineSeparators])
-
+                var hasFoundFirstIdNumber = false // Flag to ensure only the first ID number is picked.
                 let idNumberMatches = cleanedTexts.compactMap { text -> String? in
-                    if let _ = dateRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
-                        return nil // Skip if it's a date format
+                    if hasFoundFirstIdNumber {
+                        return nil // Skip processing further once the first ID number is found.
                     }
-
-                    if let match = idNumberRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
-                        if let range = Range(match.range(at: 2), in: text) {  // Capture group for ID number.
+                    // Check if the text matches a date format; if yes, delete date from text & proceed
+                    let processedText = processText(text, using: dateRegex)
+                    // Check for ID number regex match.
+                    if let match = idNumberRegex.firstMatch(in: processedText, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
+                        if let range = Range(match.range(at: 2), in: text) { // Capture group for ID number.
                             let idNumber = String(text[range]).trimmingCharacters(in: .whitespaces)
-                            print("Matched ID Number: \(idNumber)")  // Print when there's a match.
-                            return idNumber  // Return the matched ID number.
+                            hasFoundFirstIdNumber = true // Update the flag after the first valid ID number is found.
+                            print("Matched ID Number: \(idNumber)") // Log for debugging.
+                            return idNumber // Return the matched ID number.
                         } else {
                             print("No valid capture group found for ID number in text: \(text)")
                             return nil
@@ -346,6 +350,23 @@ public class PicIDRecognizer {
                 }
             }
         }
+    }
+    
+    private func processText(_ text: String, using dateRegex: NSRegularExpression) -> String {
+        // Check for a match
+        if let match = dateRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
+            // Create a mutable copy of the original text
+            var updatedText = text
+            // Extract the range of the matched date
+            if let range = Range(match.range, in: text) {
+                // Replace the matched date with an empty string
+                updatedText.removeSubrange(range)
+            }
+            // Continue with the rest of your ID processing here
+            return updatedText.trimmingCharacters(in: .whitespacesAndNewlines) // Optional: Trim whitespace
+        }
+        // If no match is found, return the original text
+        return text
     }
     
     private func extractProfilePicture(from ciImage: CIImage) -> CIImage? {
