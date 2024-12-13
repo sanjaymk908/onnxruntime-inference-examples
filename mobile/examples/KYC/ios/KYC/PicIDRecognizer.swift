@@ -237,30 +237,79 @@ public class PicIDRecognizer {
 
         // Find the first non-date field of numbers (with or without dashes) as the idNumber
         if idInfo.idNumber == nil {
-            // Regular expression to match common date formats
-            let dateRegex = try! NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})", options: [])
+            do {
+                let dateRegex = try NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})", options: [])
 
-            // Regular expression to match idNumber formats, including those starting with uppercase letters and ignoring prefixes
-            let idNumberRegex = try! NSRegularExpression(pattern: "[^\\dA-Z]*([A-Z]+\\d{1,}-?\\d{0,})", options: [])
+                let prefixSkipping = "(?:DL|DL#|Lic\\. No\\.|DLN|NO)\\s*"
+                let idFormats = [
+                    "[a-zA-Z]?\\d{7}",           // Alabama, Alaska, Delaware, Maine, West Virginia
+                    "[a-zA-Z]?\\d{9}",           // Arizona, Arkansas, Connecticut, Georgia, Iowa, Louisiana, Mississippi, Missouri, Montana, New Mexico, Oklahoma, South Carolina, Utah
+                    "[a-zA-Z]?\\d{10}",          // Nevada
+                    "[a-zA-Z]?\\d{2}-\\d{3}-\\d{4}", // Colorado
+                    "[a-zA-Z]\\d{8}",            // Arizona, Hawaii, Nebraska, Virginia
+                    "[a-zA-Z]\\d{7}",            // California
+                    "[a-zA-Z]?9\\d{8}",          // Arkansas
+                    "[a-zA-Z]\\d{12}",           // Florida, Maryland, Michigan, Minnesota
+                    "[a-zA-Z] \\d{3} \\d{3} \\d{3} \\d{3}", // Florida formatted
+                    "[a-zA-Z]\\d{3}-\\d{4}-\\d{4}", // Illinois formatted
+                    "[a-zA-Z]\\d{11}",           // Illinois unformatted
+                    "[a-zA-Z]?\\d{4}-\\d{2}-\\d{4}", // Indiana
+                    "[a-zA-Z]?\\d{3}[a-zA-Z]{2}\\d{4}", // Iowa alternative
+                    "[a-zA-Z]\\d{2}-\\d{2}-\\d{4}", // Kansas
+                    "[a-zA-Z]\\d{2}-\\d{3}-\\d{3}", // Kentucky
+                    "[a-zA-Z]?\\d{3}-\\d{2}-\\d{4}", // Mississippi Social Security number format
+                    "[a-zA-Z]\\d{9}",             // Missouri, Oklahoma
+                    "([0][1-9]|[1][0-2])[a-zA-Z]{3}\\\\d{2}(0[1-9]|[1-2][0-9]|3[0-1])\\\\d", // New Hampshire
+                    "[a-zA-Z]\\d{4} \\\\d{5} \\\\d{5}", // New Jersey formatted
+                    "[a-zA-Z]\\d{14}",            // New Jersey unformatted
+                    "[a-zA-Z]?\\\\d{3} \\\\d{3} \\\\d{3}", // New York formatted
+                    "[a-zA-Z]?\\\\d{12}",          // North Carolina
+                    "[a-zA-Z]{3}-\\\\d{2}-\\\\d{4}", // North Dakota
+                    "[a-zA-Z]?\\\\d{8}",           // South Dakota, Vermont
+                    "[a-zA-Z]?\\\\d{7}[a-zA-Z]",   // Vermont alternative
+                    "[a-zA-Z] \\\\d{3} \\\\d{3} \\\\d{3} \\\\d{3}", // Michigan formatted
+                    "[a-zA-Z]\\\\d{3}-\\\\d{4}-\\\\d{4}-\\\\d{2}", // Wisconsin
+                    "[a-zA-Z]?\\\\d{6}-\\\\d{3}", // Wyoming
+                    "[a-zA-Z]{2}\\\\d{6}[a-zA-Z]", // Idaho
+                    "[a-zA-Z]{1}[0-9]{4,8}", "[a-zA-Z]{2}[0-9]{3,7}", "[0-9]{8}", // Ohio
+                    "[a-zA-Z]{3}\\*\\*[a-zA-Z]{2}\\\\d{3}[a-zA-Z]\\\\d", // Washington
+                    "[1-9]{2}\\\\d{5}", // Rhode Island
+                    "[a-zA-Z]?\\\\d{7,9}", // Tennessee
+                    "[a-zA-Z]?\\\\d{8}", // Texas
+                    "[a-zA-Z]?\\\\d{7}", // Oregon, Washington D.C.
+                    "[a-zA-Z]?\\\\d{6}", "[a-zA-Z]?\\\\d{7}" // West Virginia
+                ].joined(separator: "|")
 
-            let idNumberMatches = cleanedTexts.compactMap { text -> String? in
-                // Check if the text matches a date format
-                if let _ = dateRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
-                    return nil // Skip if it's a date format
+                let idNumberRegexPattern = "\(prefixSkipping)(\(idFormats))"
+                let idNumberRegex = try NSRegularExpression(pattern: idNumberRegexPattern, options: [.anchorsMatchLines, .dotMatchesLineSeparators])
+
+                let idNumberMatches = cleanedTexts.compactMap { text -> String? in
+                    if let _ = dateRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
+                        return nil // Skip if it's a date format
+                    }
+
+                    if let match = idNumberRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
+                        if let range = Range(match.range, in: text) {
+                            let idNumber = String(text[range]).trimmingCharacters(in: .whitespaces)
+                            return idNumber
+                        } else {
+                            print("No valid capture group found for ID number in text: \(text)")
+                            return nil
+                        }
+                    } else {
+                        print("No match found for ID number in text: \(text)")
+                        return nil
+                    }
                 }
 
-                // Check if the text matches the idNumber format
-                if let _ = idNumberRegex.firstMatch(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
-                    return text
-                } else {
-                    return nil
+                if let idNumber = idNumberMatches.first {
+                    idInfo.idNumber = idNumber
                 }
-            }
-
-            if let idNumber = idNumberMatches.first {
-                idInfo.idNumber = idNumber
+            } catch {
+                print("Error creating regex: \(error)")
             }
         }
+
 
         // Extract date fields
         if idInfo.dateOfBirth == nil || idInfo.expirationDate == nil {
