@@ -130,9 +130,10 @@ public class PicIDRecognizer {
     }
 
     private func extractFieldsFromLic(results: [VNRecognizedTextObservation], idInfo: IDInformation) {
-        for observation in results {
-            guard let topCandidate = observation.topCandidates(1).first else { continue }
-            let text = topCandidate.string
+        // Extract all text observations
+        let allTexts = results.compactMap { $0.topCandidates(1).first?.string }
+        let splitTexts = allTexts.flatMap { splitTextWithMultipleColons($0) }
+        for text in splitTexts {
             print("Extracted field from ID: \(text)")
 
             // Define the keys to look for
@@ -230,9 +231,9 @@ public class PicIDRecognizer {
     private func extractUnknownFields(results: [VNRecognizedTextObservation], idInfo: IDInformation) {
         // Extract all text observations
         let allTexts = results.compactMap { $0.topCandidates(1).first?.string }
-
+        let splitTexts = allTexts.flatMap { splitTextWithMultipleColons($0) }
         // Clean the text to remove arbitrary characters, whitespaces, and colons before the actual value
-        let cleanedTexts = allTexts.map { text in
+        let cleanedTexts = splitTexts.map { text in
             text.replacingOccurrences(of: "^(?:.*?:\\s*)*", with: "", options: .regularExpression)
         }
 
@@ -290,7 +291,7 @@ public class PicIDRecognizer {
                     // Check if the text matches a date format; if yes, delete date from text & proceed
                     let processedText = processText(text, using: dateRegex)
                     // Check for ID number regex match.
-                    if let match = idNumberRegex.firstMatch(in: processedText, options: [], range: NSRange(location: 0, length: text.utf16.count)) {
+                    if let match = idNumberRegex.firstMatch(in: processedText, options: [], range: NSRange(location: 0, length: processedText.utf16.count)) {
                         if let range = Range(match.range(at: 2), in: text) { // Capture group for ID number.
                             let idNumber = String(text[range]).trimmingCharacters(in: .whitespaces)
                             hasFoundFirstIdNumber = true // Update the flag after the first valid ID number is found.
@@ -351,6 +352,31 @@ public class PicIDRecognizer {
             }
         }
     }
+    
+    private func splitTextWithMultipleColons(_ text: String) -> [String] {
+        var segments: [String] = []
+        var currentSegment = ""
+
+        let parts = text.components(separatedBy: " ")
+        for part in parts {
+            if part.contains(":") && !currentSegment.isEmpty {
+                // If we encounter a new key-value pair, push the current segment to the array
+                segments.append(currentSegment.trimmingCharacters(in: .whitespaces))
+                currentSegment = part
+            } else {
+                // Otherwise, continue building the current segment
+                currentSegment += " \(part)"
+            }
+        }
+        
+        // Add the last segment to the array
+        if !currentSegment.isEmpty {
+            segments.append(currentSegment.trimmingCharacters(in: .whitespaces))
+        }
+        
+        return segments
+    }
+
     
     private func processText(_ text: String, using dateRegex: NSRegularExpression) -> String {
         // Check for a match
