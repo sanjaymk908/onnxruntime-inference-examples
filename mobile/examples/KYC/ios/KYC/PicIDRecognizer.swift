@@ -264,6 +264,7 @@ public class PicIDRecognizer {
                     "[a-zA-Z]?\\d{3}[a-zA-Z]{2}\\d{4}", // Iowa alternative
                     "[a-zA-Z]\\d{2}-\\d{2}-\\d{4}", // Kansas
                     "[a-zA-Z]\\d{2}-\\d{3}-\\d{3}", // Kentucky
+                    "[a-zA-Z]\\d{3}-\\d{3}-\\d{3}-\\d{3}", // Minnesota
                     "[a-zA-Z]?\\d{3}-\\d{2}-\\d{4}", // Mississippi Social Security number format
                     "[a-zA-Z]\\d{9}",             // Missouri
                     "(0[1-9]|1[0-2])[a-zA-Z]{3}\\d{2}(0[1-9]|[12][0-9]|3[01])\\d", // New Hampshire
