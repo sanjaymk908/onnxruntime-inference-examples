@@ -249,15 +249,21 @@ public class PicIDRecognizer {
                     "\\b[0-9]{12}\\b",           // North Carolina (12 digits)
                     "\\b[0-9]{9}\\b",            // Montana (9 digits)
                     "\\b[0-9]{8}\\b",            // South Dakota, Vermont (8 digits)
-                    "[a-zA-Z]?\\d{7}",           // Alabama
-                    "[a-zA-Z]?\\d{9}",           // Arizona
+                    "\\b[0-9]{7}\\b",            // West Virginia, Vermont (7 digits)
+                    "\\b[A-FS][0-9]{6}\\b",      // West Virginia, Vermont (6 digits)
+                    "\\bX[0-9]{5}\\b",           // West Virginia, Vermont (5 digits)
+                    "\\b[A-Z]{2}[0-9]{5}\\b",    // West Virginia, Vermont (5 digits)
+                    "[a-zA-Z]\\d{14}",            // New Jersey unformatted
                     "[a-zA-Z]?\\d{10}",          // Nevada
-                    "[a-zA-Z]?\\d{2}-\\d{3}-\\d{4}", // Colorado
-                    "[a-zA-Z]\\d{8}",            // Hawaii
-                    "[a-zA-Z]\\d{7}",            // California
+                    "[a-zA-Z]?\\d{9}",           // Arizona
+                    "[a-zA-Z]\\d{9}",             // Missouri
                     "[a-zA-Z]?9\\d{8}",          // Arkansas
-                    "[a-zA-Z]\\d{12}",           // Florida
-                    "[a-zA-Z] \\d{3} \\d{3} \\d{3} \\d{3}", // Florida formatted
+                    "[a-zA-Z]\\d{8}",            // Hawaii
+                    "[a-zA-Z]?\\d{7}",           // Alabama
+                    "[a-zA-Z]\\d{7}",            // California
+                    "[a-zA-Z]?\\d{2}-\\d{3}-\\d{4}", // Colorado
+                    "[a-zA-Z]\\d{3}-\\d{3}-\\d{2}-\\d{3}-0", // Florida
+                    "[a-zA-Z]\\d{3}-\\d{3}-\\d{3}-\\d{3}", // Florida RealID
                     "[a-zA-Z]\\d{3}-\\d{4}-\\d{4}", // Illinois formatted (P###-####-####)
                     "[a-zA-Z]\\d{11}",           // Illinois unformatted (if applicable)
                     "[a-zA-Z]?\\d{4}-\\d{2}-\\d{4}", // Indiana
@@ -266,10 +272,8 @@ public class PicIDRecognizer {
                     "[a-zA-Z]\\d{2}-\\d{3}-\\d{3}", // Kentucky
                     "[a-zA-Z]\\d{3}-\\d{3}-\\d{3}-\\d{3}", // Minnesota
                     "[a-zA-Z]?\\d{3}-\\d{2}-\\d{4}", // Mississippi Social Security number format
-                    "[a-zA-Z]\\d{9}",             // Missouri
                     "(0[1-9]|1[0-2])[a-zA-Z]{3}\\d{2}(0[1-9]|[12][0-9]|3[01])\\d", // New Hampshire
                     "[a-zA-Z]\\d{4} \\d{5} \\d{5}", // New Jersey formatted
-                    "[a-zA-Z]\\d{14}",            // New Jersey unformatted
                     "\\b[0-9]{3} [0-9]{3} [0-9]{3}\\b", // New York formatted (### ### ###)
                     "[a-zA-Z]{3}-[0-9]{2}-[0-9]{4}", // North Dakota
                     "[a-zA-Z]?\\b[0-9]{7}[a-zA-Z]\\b",   // Vermont alternative (7 digits + letter)
