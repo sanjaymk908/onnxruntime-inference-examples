@@ -281,6 +281,13 @@ public class PicIDRecognizer {
                     "[a-zA-Z]\\b[0-9]{3}-[0-9]{4}-[0-9]{4}-[0-9]{2}\\b", // Wisconsin formatted (L###-####-####-##)
                     "\\b[0-9]{6}-[0-9]{3}\\b",     // Wyoming (######-###)
                     "S\\s?\\d+(?:\\s?\\d+)*",     // S followed by digits with optional spaces
+                    "\\b[A-Z]{2}[0-9]{6}",        // Ohio (6 digits)
+                    "\\b[A-Z][0-9]{4,8}",        // Ohio (4-8 digits)
+                    "\\b[0-9]{2} [0-9]{3} [0-9]{3}",  // Pennsylvania (8 digits)
+                    "\\b[0-9]{2}-[0-9]{3}-[0-9]{3}",  // Pennsylvania (8 digits)
+                    "\\b[A-Z][0-9]{12}",              // Maryland (12 digits)
+                    "\\b[A-Z]-[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}",// Maryland (12 digits)
+                    "\\bMD[0-9]{11}",            // Maryland (11 digits)
                     "W\\d{6}",                   // W followed by 6 digits
                     "NHL\\d{6}",                 // NHL followed by 6 digits
                     "S\\d{6}"                    // S followed by 6 digits
