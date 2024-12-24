@@ -36,8 +36,8 @@ class SimilarityMatcher {
         return baselineVec != nil && testVec != nil
     }
     
-    public func cosineMatch() -> Bool {
-        guard let baselineVec = baselineVec, let testVec = testVec else { return false }
+    public func cosineMatch() -> (Bool, Double) {
+        guard let baselineVec = baselineVec, let testVec = testVec else { return (false, 0.0) }
         
         // Calculate dot product in Double
         let dotProduct: Double = zip(baselineVec, testVec).reduce(0.0) { result, vecs in
@@ -56,9 +56,10 @@ class SimilarityMatcher {
         // Calculate cosine similarity and check against threshold
         let magnitude: Double = baselineMagnitude * testMagnitude
         let result: Double = dotProduct / magnitude
-        print("Cosine Matcher magnitude: \(result)")
+        let roundedResult = Double(round(100 * result) / 100)
+        print("Cosine Matcher magnitude: \(roundedResult)")
         
-        return result >= THRESHOLD
+        return (roundedResult >= THRESHOLD, roundedResult)
     }
 }
 

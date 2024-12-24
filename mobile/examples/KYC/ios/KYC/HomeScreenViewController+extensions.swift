@@ -183,7 +183,7 @@ extension HomeScreenViewController {
                 switch result {
                 case .success(let step2Embs):
                     similarityMatcher.storeTestVec(step2Embs)
-                    let match = similarityMatcher.cosineMatch()
+                    let (match, cosinematchResult) = similarityMatcher.cosineMatch()
                     if match {
                         var message: String = ""
                         let idMessage:String = "ID#" + (idInformation.idNumber ?? "Not Found!")
@@ -196,7 +196,9 @@ extension HomeScreenViewController {
                         }
                         self.displayMessage(message)
                     } else {
-                        self.displayMessage("Selfie & ID pictures do not match!")
+                        let message = "Selfie & ID pictures do not match! \n Cos match Value: " +
+                                      String(cosinematchResult)
+                        self.displayMessage(message)
                     }
                     self.position = .front
                 case .failure(let error):
