@@ -91,39 +91,27 @@ extension HomeScreenViewController {
         }
         return
     }
-    let result = picRecognizer.evaluate(bitmap: bitmap)
-    switch result {
-    case .success(let cloneCheckResult):
-        DispatchQueue.main.async {
-            self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
-            self.step1Embs = cloneCheckResult.1
-            self.updateLabels(HomeScreenViewController.ScanIDMessage)
-            self.position = .back
-        }
-    case .failure(let error):
-        DispatchQueue.main.async {
-            let message = "Error: \(error.localizedDescription)"
-            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
-        }
-    }
-      
     // Now get focused contour of face & embeddings for it
     let picIDRecognizer = PicIDRecognizer()
     picIDRecognizer.recognizeID(from: bitmap) { result in
         switch result {
         case .success(let idInformation):
             if let userProfilePic = idInformation.userProfilePic {
-//                DispatchQueue.main.async {
-//                    let message = "Profile picture extracted successfully"
-//                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic))
-//                }
                 let step1Image = userProfilePic
-                let result = picRecognizer.getEmbeddings(bitmap: step1Image)
+                let result = picRecognizer.evaluate(contour: step1Image, bitmap: bitmap)
                 switch result {
-                case .success(let step1Embs):
-                    self.step1Embs = step1Embs
+                case .success(let cloneCheckResult):
+                    DispatchQueue.main.async {
+                        self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
+                        self.step1Embs = cloneCheckResult.1
+                        self.updateLabels(HomeScreenViewController.ScanIDMessage)
+                        self.position = .back
+                    }
                 case .failure(let error):
-                    self.displayMessage(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        let message = "Error: \(error.localizedDescription)"
+                        self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                    }
                 }
             } else {
                 self.displayMessage("No profile picture found.")
@@ -164,10 +152,10 @@ extension HomeScreenViewController {
 
               
             if let userProfilePic = idInformation.userProfilePic {
-                DispatchQueue.main.async {
-                    let message = "Profile picture extracted successfully"
-                    self.displayMessageAndPic(message, capturedPic: withOriginalImage) // was withOriginalImage
-                }
+                // DispatchQueue.main.async {
+                //    let message = "Profile picture extracted successfully"
+                //    self.displayMessageAndPic(message, capturedPic: withOriginalImage) // was withOriginalImage
+                // }
                 let step2Image = userProfilePic
                 let similarityMatcher = SimilarityMatcher()
                 similarityMatcher.storeBaselineVec(self.step1Embs ?? [])
@@ -194,22 +182,34 @@ extension HomeScreenViewController {
                                "User is above 21 \n" + idMessage :
                                "User is below 21 \n " + idMessage
                         }
-                        self.displayMessage(message)
+                        DispatchQueue.main.async {
+                            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                        }
                     } else {
                         let message = "Selfie & ID pictures do not match! \n Cos match Value: " +
                                       String(cosinematchResult)
-                        self.displayMessage(message)
+                        DispatchQueue.main.async {
+                            self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                        }
                     }
                     self.position = .front
                 case .failure(let error):
-                    self.displayMessage(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        self.displayMessageAndPic(error.localizedDescription, capturedPic: withOriginalImage)
+                    }
                 }
             } else {
-                self.displayMessage("No profile picture found.")
+                DispatchQueue.main.async {
+                    let message = "No profile picture found."
+                    self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                }
             }
               
         case .failure(let error):
-            self.displayMessage("Failed to recognize ID with error: \(error)")
+            DispatchQueue.main.async {
+                let message = "Failed to recognize ID with error: \(error)"
+                self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+            }
         }
         self.resetInternalState()
     }

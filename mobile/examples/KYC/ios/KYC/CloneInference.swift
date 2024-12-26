@@ -13,7 +13,7 @@ class CloneInference {
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
   private let THRESHOLD: Double = 0.7 // Base threshold
-  private let CONFIDENCE_MARGIN:Double = 0.4 // Parameterized difference
+  private let CONFIDENCE_MARGIN:Double = 0.2 // Parameterized difference
 
   enum CloneInferenceError: Error {
     case Error(_ message: String)
@@ -109,7 +109,7 @@ class CloneInference {
                 }
             } else {
                 // difference is not large enough to justify decision
-                let message = "Inconclusive. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                let message = "Inconclusive - maybe real. \nProbs: " + String(realProb) + " " + String(fakeProb)
                 return message
             }
         }

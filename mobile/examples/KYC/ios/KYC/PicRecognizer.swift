@@ -48,19 +48,16 @@ class PicRecognizer {
         print("Loading ML Models time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
     }
 
-    func evaluate(bitmap: CIImage) -> Result<(String, [Double]), Error> {
+    func evaluate(contour: CIImage, bitmap: CIImage) -> Result<(String, [Double]), Error> {
         do {
             guard isRGBImage(bitmap) else {
                 throw PicRecognizerError.failedToNormalize // Or define a new error case
-            }
-            guard let normalizedBitmap = normalizeCIImage(inputImage: bitmap) else {
-                throw PicRecognizerError.failedToNormalize
             }
             if detectTextInCIImage(ciImage: bitmap) {
                 // NOTE :- above check uses un-normalized image
                 return fakeResultTemplate()
             }
-            let inputTensor = try createInputTensor(bitmap: normalizedBitmap)
+            let inputTensor = try createInputTensor(bitmap: bitmap)
             let outputs = try runModel(with: [inputName: inputTensor])
             guard let imageEmbeds = outputs[outputName] else {
                 throw PicRecognizerError.failedToRunModel
@@ -80,7 +77,13 @@ class PicRecognizer {
                 let clonedTestResult = cloneDetector.evaluate(inputData: doubleArray)
                 switch clonedTestResult {
                 case .success(let cloneResult):
-                    return .success((cloneResult, doubleArray))
+                    let contourResult = getEmbeddings(bitmap: contour)
+                    switch contourResult {
+                        case .success(let contourDoubleArray):
+                            return .success((cloneResult, contourDoubleArray))
+                        case .failure(let error):
+                        return .failure(error)
+                    }
                 case .failure(let error):
                     return .failure(error)
                 }
@@ -120,9 +123,14 @@ class PicRecognizer {
 
     private func bitmapToFloat(bitmap: CIImage) -> [Float] {
         let context = CIContext(options: nil)
-        guard let cgImage = context.createCGImage(bitmap, from: bitmap.extent) else {
+        // Resize the image to 224x224
+        let targetSize = CGSize(width: 224, height: 224)
+        let resizedImage = bitmap.transformed(by: CGAffineTransform(scaleX: targetSize.width / bitmap.extent.width, y: targetSize.height / bitmap.extent.height))
+        
+        guard let cgImage = context.createCGImage(resizedImage, from: resizedImage.extent) else {
             return []
         }
+        
         guard let pixelData = cgImage.dataProvider?.data else {
             return []
         }
@@ -131,56 +139,86 @@ class PicRecognizer {
             return []
         }
         
-        let width = Int(bitmap.extent.width)
-        let height = Int(bitmap.extent.height)
+        let width = Int(targetSize.width)
+        let height = Int(targetSize.height)
         
         var floatArray = [Float](repeating: 0.0, count: width * height * 3)
         var index = 0
         
         for y in 0..<height {
             for x in 0..<width {
-                let pixelIndex = (y * width + x) * 4
+                let pixelIndex = (y * width + x) * 4 // RGBA
                 
                 let r = Float(data[pixelIndex]) / 255.0
                 let g = Float(data[pixelIndex + 1]) / 255.0
                 let b = Float(data[pixelIndex + 2]) / 255.0
                 
-                floatArray[index] = (r - 0.485) / 0.229
-                floatArray[index + width * height] = (g - 0.456) / 0.224
-                floatArray[index + 2 * width * height] = (b - 0.406) / 0.225
+                // Normalize using mean and std values
+                floatArray[index] = (r - 0.48145466) / 0.26862954
+                floatArray[index + width * height] = (g - 0.4578275) / 0.26130258
+                floatArray[index + 2 * width * height] = (b - 0.40821073) / 0.27577711
+                
                 index += 1
             }
         }
         
         return floatArray
     }
+    
+    private func preprocessImage(bitmap: CIImage) -> [Float]? {
+        // Convert image data to a normalized float array
+        let floatArray = bitmapToFloat(bitmap: bitmap)
+        
+        // Ensure that the output array has the expected size
+        guard floatArray.count == 3 * 224 * 224 else {
+            print("Unexpected float array size: \(floatArray.count)")
+            return nil
+        }
+        
+        // Transpose the array from (H, W, C) to (C, H, W)
+        var transposedArray = [Float](repeating: 0.0, count: floatArray.count)
+        
+        for c in 0..<3 { // For each channel
+            for h in 0..<224 { // Height
+                for w in 0..<224 { // Width
+                    transposedArray[c * 224 * 224 + h * 224 + w] = floatArray[h * 224 + w + c * (224 * 224)]
+                }
+            }
+        }
+        
+        return transposedArray
+    }
 
     private func createInputTensor(bitmap: CIImage) throws -> ORTValue {
         // 1. Convert image data to a [Float] array
-        var floatArray = bitmapToFloat(bitmap: bitmap)
-        
-        // 2. Define expected input size
-        let expectedSize = 1 * 3 * 224 * 224  // = 150,528
-        
-        // 3. Adjust the float array size if necessary
-        if floatArray.count < expectedSize {
-            // Pad the array with zeros if it's too short
-            floatArray.append(contentsOf: Array(repeating: 0.0, count: expectedSize - floatArray.count))
-        } else if floatArray.count > expectedSize {
-            // Trim the array if it's too long
-            floatArray = Array(floatArray.prefix(expectedSize))
+        guard let floatArray = preprocessImage(bitmap: bitmap) else {
+            throw PicRecognizerError.failedToCreateInputTensor
         }
 
-        // 4. Create OrtValue for the CLIP model
-        let mutableData = NSMutableData(bytes: floatArray, length: floatArray.count * MemoryLayout<Float>.stride)
+        // 2. Define expected input size
+        let expectedSize = 1 * 3 * 224 * 224  // = 150,528
+
+        // 3. Adjust the float array size if necessary
+        var adjustedFloatArray = floatArray
+        if adjustedFloatArray.count < expectedSize {
+            // Pad the array with zeros if it's too short
+            adjustedFloatArray.append(contentsOf: Array(repeating: 0.0, count: expectedSize - adjustedFloatArray.count))
+        } else if adjustedFloatArray.count > expectedSize {
+            // Trim the array if it's too long
+            adjustedFloatArray = Array(adjustedFloatArray.prefix(expectedSize))
+        }
+
+        // 4. Create ORTValue for the CLIP model
+        let mutableData = NSMutableData(bytes: adjustedFloatArray, length: adjustedFloatArray.count * MemoryLayout<Float>.stride)
+        
         let inputShape: [NSNumber] = [1, 3, 224, 224]
+        
         return try ORTValue(
             tensorData: mutableData,
             elementType: .float,
             shape: inputShape
         )
     }
-
     
     private func rearrangeArray(_ floatArray: [Float]) throws -> [Float] {
         // use below for xgboost_liveness_quant_enh only; keep in sync with model used by CloneInference
@@ -215,36 +253,6 @@ class PicRecognizer {
         let endTime = DispatchTime.now()
         print("ORT session run time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
         return outputs
-    }
-    
-    private func normalizeCIImage(inputImage: CIImage) -> CIImage? {
-        // Define the normalization parameters
-        let meanRed: CGFloat = 0.48145466
-        let meanGreen: CGFloat = 0.4578275
-        let meanBlue: CGFloat = 0.40821073
-        let stdRed: CGFloat = 0.26862954
-        let stdGreen: CGFloat = 0.26130258
-        let stdBlue: CGFloat = 0.27577711
-
-        // Use CIColorMatrix filter to normalize the image
-        let colorMatrixFilter = CIFilter.colorMatrix()
-        colorMatrixFilter.inputImage = inputImage
-
-        // (pixel - mean) / std normalization for RGB channels
-        // Apply color matrix with mean subtraction and standard deviation scaling
-        // Subtract mean
-        colorMatrixFilter.rVector = CIVector(x: 1.0 / stdRed, y: 0, z: 0, w: -meanRed / stdRed)
-        colorMatrixFilter.gVector = CIVector(x: 0, y: 1.0 / stdGreen, z: 0, w: -meanGreen / stdGreen)
-        colorMatrixFilter.bVector = CIVector(x: 0, y: 0, z: 1.0 / stdBlue, w: -meanBlue / stdBlue)
-        colorMatrixFilter.aVector = CIVector(x: 0, y: 0, z: 0, w: 1)
-
-        // Get the output image
-        guard let normalizedImage = colorMatrixFilter.outputImage else {
-            print("Error: Failed to apply normalization filter")
-            return nil
-        }
-
-        return normalizedImage
     }
     
     private func isRGBImage(_ image: CIImage) -> Bool {
