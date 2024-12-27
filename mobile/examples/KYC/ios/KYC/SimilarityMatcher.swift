@@ -9,7 +9,7 @@ import Foundation
 
 class SimilarityMatcher {
     
-    private let THRESHOLD: Double = 0.72
+    private let THRESHOLD: Double = 0.70
     private var baselineVec: [Double]?
     private var testVec: [Double]?
     
