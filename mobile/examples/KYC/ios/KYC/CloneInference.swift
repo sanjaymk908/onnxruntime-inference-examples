@@ -109,8 +109,13 @@ class CloneInference {
                 }
             } else {
                 // difference is not large enough to justify decision
-                let message = "Inconclusive - maybe real. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                return message
+                if realProb > fakeProb {
+                    let message = "Inconclusive - maybe real. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                } else {
+                    let message = "Inconclusive - maybe fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                    return message
+                }
             }
         }
   }
