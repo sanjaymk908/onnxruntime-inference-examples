@@ -53,10 +53,10 @@ class PicRecognizer {
             guard isRGBImage(bitmap) else {
                 throw PicRecognizerError.failedToNormalize // Or define a new error case
             }
-            if detectTextInCIImage(ciImage: bitmap) {
-                // NOTE :- above check uses un-normalized image
-                return fakeResultTemplate()
-            }
+//            if detectTextInCIImage(ciImage: bitmap) {
+//                // NOTE :- above check uses un-normalized image
+//                return fakeResultTemplate()
+//            }
             let inputTensor = try createInputTensor(bitmap: bitmap)
             let outputs = try runModel(with: [inputName: inputTensor])
             guard let imageEmbeds = outputs[outputName] else {
