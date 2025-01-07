@@ -20,7 +20,7 @@ class CloneInference {
 
     required init() throws {
     ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "140kPlusCelebA-model", ofType: "ort") else {
+    guard let modelPath = Bundle.main.path(forResource: "140kPlusCelebA-model_no_zipmap", ofType: "onnx") else {
       throw CloneInferenceError.Error("Failed to find model file.")
     }
     ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
