@@ -17,8 +17,8 @@
 		C135635F2C18F1DA00FF9A99 /* assert_arc_enabled.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */; };
 		C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */; };
 		C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13AACDE2C17F683000C3411 /* CoreVideo.framework */; };
-		C148E8452D2D8DEC000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C148E8442D2D8B41000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */; };
-		C148E8462D2D8DED000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C148E8442D2D8B41000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */; };
+		C148E84B2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C148E84A2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */; };
+		C148E84C2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C148E84A2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */; };
 		C161D9882C2211AC00F60151 /* onnxruntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; };
 		C161D9892C2211AC00F60151 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C161D98E2C2D52FD00F60151 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
@@ -99,7 +99,7 @@
 		C13563692C18F1EF00FF9A99 /* ort_env.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort_env.h; sourceTree = "<group>"; };
 		C135636A2C18F1F000FF9A99 /* onnxruntime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onnxruntime.h; sourceTree = "<group>"; };
 		C13AACDE2C17F683000C3411 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		C148E8442D2D8B41000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "140kPlusCelebA-model_no_zipmap.onnx"; sourceTree = "<group>"; };
+		C148E84A2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "140kPlusCelebA-model_no_zipmap.onnx"; sourceTree = "<group>"; };
 		C161D9872C2211AC00F60151 /* onnxruntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = onnxruntime.framework; path = "../../../../../../../../../Downloads/onnx/onnxruntime/build/iOS/Release/Release-iphoneos/onnxruntime.framework"; sourceTree = "<group>"; };
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C19DC9392C33D9F9008023F3 /* PicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicCapture.swift; sourceTree = "<group>"; };
@@ -248,7 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				C19DC94D2C3A8D44008023F3 /* clip_image_encoder.onnx */,
-				C148E8442D2D8B41000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */,
+				C148E84A2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
 				EFE2380326855FC800234E2C /* PicRecognition-Bridging-Header.h */,
@@ -366,7 +366,7 @@
 			files = (
 				EFE237DE26855E4B00234E2C /* Preview Assets.xcassets in Resources */,
 				C19DC94E2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */,
-				C148E8452D2D8DEC000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */,
+				C148E84B2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */,
 				EFE237DB26855E4B00234E2C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,7 +375,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C148E8462D2D8DED000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */,
+				C148E84C2D3AD490000BF504 /* 140kPlusCelebA-model_no_zipmap.onnx in Resources */,
 				C19DC94F2C3A8D44008023F3 /* clip_image_encoder.onnx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
