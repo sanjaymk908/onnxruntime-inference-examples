@@ -91,6 +91,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     // MARK :- Private
     
+    private let DISPLAY_IMAGE_DURATION: TimeInterval = 3.0 // 3 seconds
     private var permissionManager = PermissionManager.shared
     private var faceOverlayView: FaceOverlayView?
     let transparentView = RoundedCornersView()
@@ -99,12 +100,16 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     static let ScanSelfieMessage = "Step 1 - take a selfie"
     static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
-    var step1Embs: [Double]?
+    @MainActor
+    var step1Embs: [Double]? {
+        didSet {
+            removeFaceOverlay()
+        }
+    }
     var step2Embs: [Double]?
     
     func setupFaceOverlay() {
-        // Remove existing overlay if any
-        faceOverlayView?.removeFromSuperview()
+        removeFaceOverlay()
         
         faceOverlayView = FaceOverlayView(frame: transparentView.bounds)
         faceOverlayView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -113,6 +118,12 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             transparentView.addSubview(faceOverlayView)
             transparentView.bringSubviewToFront(faceOverlayView)
         }
+    }
+    
+    @MainActor
+    private func removeFaceOverlay() {
+        faceOverlayView?.removeFromSuperview()
+        faceOverlayView = nil
     }
     
     func isStep1Complete() -> Bool {
@@ -170,9 +181,10 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         transparentView.addSubview(imageView)
         setupImageViewConstraints(imageView)
         
-        let dismissButton = createDismissButton()
-        transparentView.addSubview(dismissButton)
-        setupDismissButtonConstraints(dismissButton)
+        // Schedule auto-dismissal
+        DispatchQueue.main.asyncAfter(deadline: .now() + DISPLAY_IMAGE_DURATION) {
+            self.dismissCapturedPic()
+        }
     }
 
     private func createImageView(with image: UIImage) -> UIImageView {
@@ -191,26 +203,12 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         ])
     }
 
-    private func createDismissButton() -> UIButton {
-        let button = UIButton(type: .custom)
-        button.setTitle("X", for: .normal)
-        button.setTitleColor(.red, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(dismissCapturedPic), for: .touchUpInside)
-        return button
-    }
-
-    private func setupDismissButtonConstraints(_ button: UIButton) {
-        NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: transparentView.topAnchor, constant: 10),
-            button.trailingAnchor.constraint(equalTo: transparentView.trailingAnchor, constant: -10)
-        ])
-    }
-
-    @objc private func dismissCapturedPic() {
-        // Remove the imageView and dismiss button from the transparentView
+    @objc func dismissCapturedPic() {
+        // Remove the imageView from the transparentView
         for subview in transparentView.subviews {
-            subview.removeFromSuperview()
+            if subview is UIImageView {
+                subview.removeFromSuperview()
+            }
         }
         resetState(true) // force text prompt above pic to be reset
         // redraw oval silhouette for face
