@@ -100,7 +100,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     let transparentView = RoundedCornersView()
     private var scanPromptLabel: UILabel!
     private let GenericMLError = "Error identifying picture or audio"
-    static let ScanSelfieMessage = "Step 1 - take a selfie"
+    static let ScanSelfieMessage = "Step 1 - take a selfie with face inside green oval"
     static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
     var latestUIImage: UIImage?
