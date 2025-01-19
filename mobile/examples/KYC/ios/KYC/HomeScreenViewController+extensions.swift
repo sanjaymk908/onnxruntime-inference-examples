@@ -28,7 +28,7 @@ extension HomeScreenViewController {
     
   // capture pixelBuffers here
   func streamed(videoFrame: UIImage, from controller: LuminaViewController) {
-      let (resizedUIImage, croppedImage) = processCapturedImage(videoFrame, shouldRotate: false)
+      let (_, croppedImage) = processCapturedImage(videoFrame, shouldRotate: false)
       self.latestUIImage = croppedImage
   }
     

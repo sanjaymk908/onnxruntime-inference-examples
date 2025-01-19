@@ -14,7 +14,8 @@ class FaceOverlayView: UIView {
     private var silhouettePath: UIBezierPath?
     private var timer: Timer?
     private let checkInterval: TimeInterval = 0.4 // 400 milliseconds
-    var faceCoverageThreshold: CGFloat = 0.5 // 50% by default
+    private let faceCoverageThreshold: CGFloat = 0.5 // 50% lower limit
+    private let maxFaceCoverageThreshold: CGFloat = 0.75 // 75%  upper limit
     
     private var lastProcessedImage: CIImage?
     private let faceDetectionRequest = VNDetectFaceLandmarksRequest()
@@ -66,7 +67,7 @@ class FaceOverlayView: UIView {
         ovalPath = UIBezierPath(ovalIn: ovalRect)
         
         context.setStrokeColor(currentColor.cgColor)
-        context.setLineWidth(8) // Increase the thickness of the oval
+        context.setLineWidth(24)
         context.setLineDash(phase: 0, lengths: [10, 5]) // Dashed line pattern
         ovalPath?.stroke()
         
@@ -78,7 +79,7 @@ class FaceOverlayView: UIView {
         silhouettePath?.addLine(to: CGPoint(x: ovalRect.midX + neckWidth / 2, y: neckY))
         
         context.setStrokeColor(UIColor.white.cgColor) // Neck line color
-        context.setLineWidth(8) // Increase neck line thickness
+        context.setLineWidth(24)
         silhouettePath?.stroke()
         
         // Restore the initial state of the context
@@ -163,7 +164,8 @@ class FaceOverlayView: UIView {
     }
     
     private func updateOvalColor(for coverage: CGFloat) {
-        currentColor = coverage >= faceCoverageThreshold ? .green : .red
+        currentColor = (coverage >= faceCoverageThreshold &&
+                        coverage <= maxFaceCoverageThreshold)  ? .green : .red
         
         // Flash effect
         UIView.animate(withDuration: 0.2, animations: {
