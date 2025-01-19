@@ -34,8 +34,11 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         self.captureLivePhotos = false
         self.streamDepthData = false
         self.recordsVideo = false
-        self.streamFrames = false
+        self.streamFrames = true
         self.position = .front
+        // startCamera() was originally put in to capture video frames in LuminaDelegate (self ie)
+        // But doing it on the main thread here is not a good idea - it slows down initial load
+        //startCamera()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -100,6 +103,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     static let ScanSelfieMessage = "Step 1 - take a selfie"
     static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
+    var latestUIImage: UIImage?
+    
     @MainActor
     var step1Embs: [Double]? {
         didSet {
@@ -111,7 +116,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     func setupFaceOverlay() {
         removeFaceOverlay()
         
-        faceOverlayView = FaceOverlayView(frame: transparentView.bounds)
+        faceOverlayView = FaceOverlayView(frame: transparentView.bounds, homeScreenViewController: self)
         faceOverlayView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         if let faceOverlayView = faceOverlayView {

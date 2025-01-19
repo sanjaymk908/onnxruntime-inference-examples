@@ -5,20 +5,40 @@
 //  Created by Sanjay Krishnamurthy on 11/4/24.
 //
 
+import Lumina
 import UIKit
+import Vision
 
 class FaceOverlayView: UIView {
     private var ovalPath: UIBezierPath?
     private var silhouettePath: UIBezierPath?
+    private var timer: Timer?
+    private let checkInterval: TimeInterval = 0.4 // 400 milliseconds
+    var faceCoverageThreshold: CGFloat = 0.5 // 50% by default
     
-    override init(frame: CGRect) {
+    private var lastProcessedImage: CIImage?
+    private let faceDetectionRequest = VNDetectFaceLandmarksRequest()
+    private let sequenceHandler = VNSequenceRequestHandler()
+    private let homeScreenViewController: HomeScreenViewController?
+    
+    private var currentColor: UIColor = .white {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    init(frame: CGRect, homeScreenViewController: HomeScreenViewController) {
+        self.homeScreenViewController = homeScreenViewController
         super.init(frame: frame)
         setupView()
+        startFaceDetectionTimer()
     }
     
     required init?(coder: NSCoder) {
+        self.homeScreenViewController = nil
         super.init(coder: coder)
         setupView()
+        startFaceDetectionTimer()
     }
     
     private func setupView() {
@@ -32,32 +52,136 @@ class FaceOverlayView: UIView {
         
         guard let context = UIGraphicsGetCurrentContext() else { return }
         
+        // Save the initial state of the context
+        context.saveGState()
+        
         // Calculate oval dimensions
         let ovalWidth = bounds.width * 0.7 // 70% of the view width
         let ovalHeight = bounds.height * 0.8 // 80% of the view height
         let ovalX = (bounds.width - ovalWidth) / 2
         let ovalY: CGFloat = 20 // Top margin
         
-        // Draw oval
+        // Draw the oval
         let ovalRect = CGRect(x: ovalX, y: ovalY, width: ovalWidth, height: ovalHeight)
         ovalPath = UIBezierPath(ovalIn: ovalRect)
         
-        context.setStrokeColor(UIColor.white.cgColor)
-        context.setLineWidth(2)
-        context.setLineDash(phase: 0, lengths: [10, 5])
+        context.setStrokeColor(currentColor.cgColor)
+        context.setLineWidth(8) // Increase the thickness of the oval
+        context.setLineDash(phase: 0, lengths: [10, 5]) // Dashed line pattern
         ovalPath?.stroke()
         
-        // Draw face silhouette (only the neck)
+        // Draw the face silhouette (neck)
         silhouettePath = UIBezierPath()
-        
-        // Neck
         let neckY = ovalRect.maxY - 30
         let neckWidth: CGFloat = 30
-        silhouettePath?.move(to: CGPoint(x: ovalRect.midX - neckWidth/2, y: neckY))
-        silhouettePath?.addLine(to: CGPoint(x: ovalRect.midX + neckWidth/2, y: neckY))
+        silhouettePath?.move(to: CGPoint(x: ovalRect.midX - neckWidth / 2, y: neckY))
+        silhouettePath?.addLine(to: CGPoint(x: ovalRect.midX + neckWidth / 2, y: neckY))
         
-        context.setStrokeColor(UIColor.white.withAlphaComponent(0.5).cgColor)
-        context.setLineWidth(2)
+        context.setStrokeColor(UIColor.white.cgColor) // Neck line color
+        context.setLineWidth(8) // Increase neck line thickness
         silhouettePath?.stroke()
+        
+        // Restore the initial state of the context
+        context.restoreGState()
+    }
+    
+    private func startFaceDetectionTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: checkInterval, repeats: true) { [weak self] _ in
+            self?.checkFaceCoverage()
+        }
+    }
+    
+    private func checkFaceCoverage() {
+        guard let currentImage = getCurrentImage() else { return }
+        
+        // Only process if the image has changed
+        guard currentImage != lastProcessedImage else { return }
+        lastProcessedImage = currentImage
+
+        do {
+            try sequenceHandler.perform([faceDetectionRequest], on: currentImage)
+            
+            guard let results = faceDetectionRequest.results,
+                  let face = results.first else {
+                updateOvalColor(for: 0) // No face detected
+                return
+            }
+            
+            // Get the bounding box from the face observation
+            var faceBounds = face.boundingBox
+            
+            // Convert the normalized coordinates to the image's coordinate space
+            // NOTE :- the currentImage (croppedImage ie) has a messed up size. So,
+            //         we use transparentView's frame size instead.
+            faceBounds = convertToImageCoordinates(faceBounds: faceBounds,
+                                                   imageSize: homeScreenViewController?.transparentView.frame.size ??
+                                                                                      currentImage.extent.size)
+            
+            // Calculate the coverage
+            let coverage = calculateCoverage(faceBounds: faceBounds)
+            
+            // Update the oval color based on the coverage
+            updateOvalColor(for: coverage)
+        } catch {
+            print("Face detection failed: \(error)")
+            updateOvalColor(for: 0)
+        }
+    }
+
+    // Helper method to convert normalized face bounding box to image coordinates
+    private func convertToImageCoordinates(faceBounds: CGRect, imageSize: CGSize) -> CGRect {
+        // Flip the y-origin since the bounding box is in normalized coordinates (bottom-left)
+        let x = faceBounds.origin.x * imageSize.width
+        let y = (1 - faceBounds.origin.y - faceBounds.height) * imageSize.height // Flipping the y-coordinate
+        let width = faceBounds.size.width * imageSize.width
+        let height = faceBounds.size.height * imageSize.height
+        
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+
+    
+    private func getCurrentImage() -> CIImage? {
+        guard let latestImage = homeScreenViewController?.latestUIImage else {
+            print("No image frame available")
+            return nil
+        }
+        // Convert UIImage to CIImage
+        guard let ciImage = CIImage(image: latestImage) else {
+            print("Failed to convert UIImage to CIImage")
+            return nil
+        }
+        return ciImage
+    }
+
+    
+    private func calculateCoverage(faceBounds: CGRect) -> CGFloat {
+        guard let ovalPath = ovalPath else { return 0 }
+        let ovalBounds = ovalPath.bounds
+        let intersectionArea = ovalBounds.intersection(faceBounds).area
+        let ovalArea = ovalBounds.area
+        return intersectionArea / ovalArea
+    }
+    
+    private func updateOvalColor(for coverage: CGFloat) {
+        currentColor = coverage >= faceCoverageThreshold ? .green : .red
+        
+        // Flash effect
+        UIView.animate(withDuration: 0.2, animations: {
+            self.alpha = 0.5
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.alpha = 1.0
+            }
+        }
+    }
+    
+    deinit {
+        timer?.invalidate()
+    }
+}
+
+extension CGRect {
+    var area: CGFloat {
+        return width * height
     }
 }
