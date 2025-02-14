@@ -11,15 +11,15 @@ class VideoRecognizer {
     
     var picRecognizer: PicRecognizer?
     
-    init(_ completion: @escaping ((Bool) -> Void)) {
+    init(_ completion: @escaping ((Bool) -> Void), clientAPI: ClientAPI) {
         let dispatchGroup = DispatchGroup()
         var isSuccessful = true  // Track success status
         
         dispatchGroup.enter()
-        setupPicRecognizer { success in
-            if !success { isSuccessful = false }
-            dispatchGroup.leave()
-        }
+        setupPicRecognizer(completion: { success in
+                if !success { isSuccessful = false }
+                dispatchGroup.leave()
+        }, clientAPI: clientAPI)
         
         // Notify when both setup tasks are done
         dispatchGroup.notify(queue: .main) {
@@ -27,10 +27,10 @@ class VideoRecognizer {
         }
     }
 
-    private func setupPicRecognizer(completion: @escaping ((Bool) -> Void)) {
+    private func setupPicRecognizer(completion: @escaping ((Bool) -> Void), clientAPI: ClientAPI) {
         DispatchQueue.global().async {
             do {
-                let picRecognizer = try PicRecognizer()
+                let picRecognizer = try PicRecognizer(clientAPI)
                 DispatchQueue.main.async {
                     self.picRecognizer = picRecognizer
                     completion(true) // Success

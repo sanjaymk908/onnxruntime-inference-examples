@@ -10,6 +10,7 @@ import Foundation
 class CloneInference {
   typealias InputType = [Double]
     
+  private let clientAPI: ClientAPI
   private let ortEnv: ORTEnv
   private let ortSession: ORTSession
   private let THRESHOLD: Double = 0.7 // Base threshold
@@ -19,35 +20,36 @@ class CloneInference {
     case Error(_ message: String)
   }
 
-    required init() throws {
-    ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-    guard let modelPath = Bundle.main.path(forResource: "xgboost_liveness_quant_enh", ofType: "onnx") else {
-      throw CloneInferenceError.Error("Failed to find model file.")
-    }
-    ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
+    required init( _ clientAPI: ClientAPI) throws {
+        ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
+        guard let modelPath = Bundle.main.path(forResource: "xgboost_liveness_quant_enh", ofType: "onnx") else {
+            throw CloneInferenceError.Error("Failed to find model file.")
+        }
+        ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: nil)
+        self.clientAPI = clientAPI
   }
     
   private func createORTValueFromEmbeddings(_ embeddings: [Double]) throws -> ORTValue {
-    let expectedLength = 512
-    guard embeddings.count == expectedLength else {
-        throw NSError(domain: "PicProcessing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Embedding length mismatch. Expected \(expectedLength), but got \(embeddings.count)."])
-    }
+        let expectedLength = 512
+        guard embeddings.count == expectedLength else {
+            throw NSError(domain: "PicProcessing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Embedding length mismatch. Expected \(expectedLength), but got \(embeddings.count)."])
+        }
 
-    // Create the input shape
-    let inputShape: [NSNumber] = [NSNumber(value: 1), NSNumber(value: expectedLength)]
+        // Create the input shape
+        let inputShape: [NSNumber] = [NSNumber(value: 1), NSNumber(value: expectedLength)]
 
-    // Convert the Double array to NSMutableData
-    let dataSize = embeddings.count * MemoryLayout<Double>.stride
-    let mutableData = NSMutableData(bytes: embeddings, length: dataSize)
+        // Convert the Double array to NSMutableData
+        let dataSize = embeddings.count * MemoryLayout<Double>.stride
+        let mutableData = NSMutableData(bytes: embeddings, length: dataSize)
 
-    // Create the ORTValue tensor
-    let inputTensor = try ORTValue(
-        tensorData: mutableData,
-        elementType: ORTTensorElementDataType.float,
-        shape: inputShape
-    )
+        // Create the ORTValue tensor
+        let inputTensor = try ORTValue(
+            tensorData: mutableData,
+            elementType: ORTTensorElementDataType.float,
+            shape: inputShape
+        )
 
-    return inputTensor
+        return inputTensor
   }
 
   func evaluate(inputData: [Double]) -> Result<String, Error> {
@@ -85,37 +87,18 @@ class CloneInference {
                 return Array(float32Buffer)
             }
             print("True 0 or False 1: \(labelValue) Probabilities: \(probValues)")
-            let realProb = ceil(Double(probValues[0]) * 100) / 100
-            let fakeProb = ceil(Double(probValues[1]) * 100) / 100
-            let probDifference = abs(realProb - fakeProb)
-
-            if realProb > THRESHOLD || fakeProb > THRESHOLD {
-                // There's a large difference, so we can be more confident in the decision
-                if realProb > fakeProb {
-                    let message = "Pic is real. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                } else {
-                    let message = "Pic is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                }
-            } else if probDifference >= CONFIDENCE_MARGIN {
-                // Difference is large enough
-                if realProb > fakeProb {
-                    let message = "Pic is real. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                } else {
-                    let message = "Pic is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                }
+            if let realProb = clientAPI.realProb,
+               let fakeProb = clientAPI.fakeProb,
+               realProb > fakeProb {
+                let message = "Selfie is real. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                return message
+            } else if let realProb = clientAPI.realProb,
+                      let fakeProb = clientAPI.fakeProb {
+                let message = "Selfie is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
+                return message
             } else {
-                // difference is not large enough to justify decision
-                if realProb > fakeProb {
-                    let message = "Inconclusive - maybe real. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                } else {
-                    let message = "Inconclusive - maybe fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
-                    return message
-                }
+                let message = "Selfie was not centered in green Oval"
+                return message
             }
         }
   }

@@ -92,6 +92,10 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
     }
     
+    // MARK :- Public
+    
+    public var clientAPI: ClientAPI = ClientAPI()
+    
     // MARK :- Private
     
     private let DISPLAY_IMAGE_DURATION: TimeInterval = 3.0 // 3 seconds
@@ -109,14 +113,20 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     var step1Embs: [Double]? {
         didSet {
             removeFaceOverlay()
+            clientAPI.selfieEmbedding = step1Embs
         }
     }
-    var step2Embs: [Double]?
+    var step2Embs: [Double]? {
+        didSet {
+            clientAPI.idProfileEmbedding = step2Embs
+        }
+    }
     
     func setupFaceOverlay() {
         removeFaceOverlay()
         
-        faceOverlayView = FaceOverlayView(frame: transparentView.bounds, homeScreenViewController: self)
+        faceOverlayView = FaceOverlayView(frame: transparentView.bounds, homeScreenViewController: self,
+                                          clientAPI: clientAPI)
         faceOverlayView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         if let faceOverlayView = faceOverlayView {

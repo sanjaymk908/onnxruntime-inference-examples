@@ -19,10 +19,13 @@ class IDInformation {
     var issueDate: Date?
     var expirationDate: Date?
     var userProfilePic: CIImage?
-
+    var isExpired: Bool
     var isNotUnderAge: Bool? {
         // Ensure both dates are available and correctly formatted
-        guard let dob = dateOfBirth, let exp = expirationDate else { return nil }
+        guard let dob = dateOfBirth, let exp = expirationDate else {
+            clientAPI.failureReason = .failedToReadID
+            return nil
+        }
 
         // Calculate age from date of birth
         let currentDate = Date()
@@ -34,9 +37,10 @@ class IDInformation {
                           (ageComponents.year! == 20 && ageComponents.month! == Calendar.current.component(.month, from: dob) && ageComponents.day! >= Calendar.current.component(.day, from: dob))
 
         // Check if expired
-        let isExpired = exp < Date()
-
-        return isAtLeast21 && !isExpired
+        isExpired = exp < Date()
+        let ageCheck = (isAtLeast21 && !isExpired)
+        clientAPI.failureReason = (ageCheck ? .above21 : (isExpired ? .expiredID : .below21))
+        return ageCheck
     }
 
     // Helper function to parse date strings to Date objects
@@ -79,18 +83,24 @@ class IDInformation {
         return dateFormatter.string(from: date)
     }
 
-    init() {}
+    init(_ clientAPI: ClientAPI) {
+        self.clientAPI = clientAPI
+        self.isExpired = false
+    }
+    
+    private let clientAPI: ClientAPI
 }
 
 public class PicIDRecognizer {
-    func recognizeID(from ciImage: CIImage, completion: @escaping (Result<IDInformation, Error>) -> Void) {
+    func recognizeID(from ciImage: CIImage, clientAPI: ClientAPI,
+                     completion: @escaping (Result<IDInformation, Error>) -> Void) {
         let request = VNRecognizeTextRequest { request, error in
             guard error == nil else {
                 completion(.failure(error!))
                 return
             }
 
-            let idInfo = IDInformation()
+            let idInfo = IDInformation(clientAPI)
             if let results = request.results as? [VNRecognizedTextObservation] {
                 let firstFewLines = results.prefix(5).compactMap { $0.topCandidates(1).first?.string.uppercased() }
                 if firstFewLines.contains(where: { $0.contains("LICENSE") }) {

@@ -12,7 +12,7 @@ import UIKit
 extension HomeScreenViewController {
   
   func setupVideoProcessor(_ completion: @escaping ((Bool) -> Void)) {
-      videoRecognizer = VideoRecognizer(completion)
+      videoRecognizer = VideoRecognizer(completion, clientAPI: clientAPI)
   }
   
   func captured(stillImage: UIImage, livePhotoAt: URL?, depthData: Any?, from controller: LuminaViewController) {
@@ -115,14 +115,10 @@ extension HomeScreenViewController {
       
     // Now get focused contour of face & embeddings for it
     let picIDRecognizer = PicIDRecognizer()
-    picIDRecognizer.recognizeID(from: bitmap) { result in
+      picIDRecognizer.recognizeID(from: bitmap, clientAPI: clientAPI) { result in
         switch result {
         case .success(let idInformation):
             if let userProfilePic = idInformation.userProfilePic {
-//                DispatchQueue.main.async {
-//                    let message = "Profile picture extracted successfully"
-//                    self.displayMessageAndPic(message, capturedPic: UIImage(ciImage: userProfilePic))
-//                }
                 let step1Image = userProfilePic
                 let result = picRecognizer.getEmbeddings(bitmap: step1Image)
                 switch result {
@@ -133,6 +129,7 @@ extension HomeScreenViewController {
                 }
             } else {
                 self.displayMessage("No profile picture found.")
+                self.clientAPI.failureReason = .selfieInaccurate
             }
         case .failure(let error):
             self.displayMessage("Failed to recognize ID with error: \(error)")
@@ -142,7 +139,7 @@ extension HomeScreenViewController {
     
   private func step2Driver(with bitmap: CIImage, withOriginalImage: UIImage) {
     let picIDRecognizer = PicIDRecognizer()
-    picIDRecognizer.recognizeID(from: bitmap) { result in
+      picIDRecognizer.recognizeID(from: bitmap, clientAPI: clientAPI) { [self] result in
         switch result {
         case .success(let idInformation):
             print("ID Information:")
@@ -172,19 +169,21 @@ extension HomeScreenViewController {
                 switch result {
                 case .success(let step2Embs):
                     similarityMatcher.storeTestVec(step2Embs)
-                    let (match, _) = similarityMatcher.cosineMatch()
+                    let (match, prob) = similarityMatcher.cosineMatch()
+                    clientAPI.selfieIDprofileMatchProb = prob
                     if match {
                         var message: String = ""
                         if idInformation.isNotUnderAge == nil {
                             message = "ID could not be read - please rescan"
                         } else {
-                            message = idInformation.isNotUnderAge ?? false ?
-                               "User is above 21" :
-                               "User is below 21"
+                            message = (idInformation.isNotUnderAge ?? false) ?
+                                      "User is above 21" :
+                                      (idInformation.isExpired ? "ID has expired" : "User is below 21")
                         }
                         self.displayMessage(message)
                     } else {
                         self.displayMessage("Selfie & ID pictures do not match!")
+                        clientAPI.failureReason = .selfieIDProfileMismatch
                     }
                     self.position = .front
                 case .failure(let error):

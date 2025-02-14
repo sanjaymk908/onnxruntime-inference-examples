@@ -16,11 +16,16 @@ class FaceOverlayView: UIView {
     private let checkInterval: TimeInterval = 0.4 // 400 milliseconds
     private let faceCoverageThreshold: CGFloat = 0.5 // 50% lower limit
     private let maxFaceCoverageThreshold: CGFloat = 0.75 // 75%  upper limit
+    private let realProbForRealSelfie: Double = 0.99
+    private let fakeProbForRealSelfie: Double = 0.01
+    private let realProbForFakeSelfie: Double = 0.01
+    private let fakeProbForFakeSelfie: Double = 0.99
     
     private var lastProcessedImage: CIImage?
     private let faceDetectionRequest = VNDetectFaceLandmarksRequest()
     private let sequenceHandler = VNSequenceRequestHandler()
     private let homeScreenViewController: HomeScreenViewController?
+    private let clientAPI: ClientAPI
     
     private var currentColor: UIColor = .white {
         didSet {
@@ -28,8 +33,10 @@ class FaceOverlayView: UIView {
         }
     }
     
-    init(frame: CGRect, homeScreenViewController: HomeScreenViewController) {
+    init(frame: CGRect, homeScreenViewController: HomeScreenViewController,
+         clientAPI: ClientAPI) {
         self.homeScreenViewController = homeScreenViewController
+        self.clientAPI = clientAPI
         super.init(frame: frame)
         setupView()
         startFaceDetectionTimer()
@@ -37,6 +44,7 @@ class FaceOverlayView: UIView {
     
     required init?(coder: NSCoder) {
         self.homeScreenViewController = nil
+        self.clientAPI = ClientAPI() // expect to be unused
         super.init(coder: coder)
         setupView()
         startFaceDetectionTimer()
@@ -120,6 +128,8 @@ class FaceOverlayView: UIView {
             
             // Calculate the coverage
             let coverage = calculateCoverage(faceBounds: faceBounds)
+            // Update ClientAPI probabilities based on coverage
+            overrideClientAPIProbs(for: coverage)
             
             // Update the oval color based on the coverage
             updateOvalColor(for: coverage)
@@ -174,6 +184,19 @@ class FaceOverlayView: UIView {
             UIView.animate(withDuration: 0.2) {
                 self.alpha = 1.0
             }
+        }
+    }
+    
+    private func overrideClientAPIProbs(for coverage: CGFloat) {
+        let isRealImage = (coverage >= faceCoverageThreshold &&
+                           coverage <= maxFaceCoverageThreshold)  ? true : false
+        // update clientAPI real vs fake probabilities based on this check here
+        if isRealImage {
+            clientAPI.realProb = realProbForRealSelfie
+            clientAPI.fakeProb = fakeProbForRealSelfie
+        } else {
+            clientAPI.realProb = realProbForFakeSelfie
+            clientAPI.fakeProb = fakeProbForFakeSelfie
         }
     }
     

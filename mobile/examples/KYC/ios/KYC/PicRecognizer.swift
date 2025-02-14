@@ -22,6 +22,7 @@ class PicRecognizer {
     private let inputName = "pixel_values"
     private let outputName = "image_embeds"
     private let cloneDetector: CloneInference
+    private let clientAPI: ClientAPI
 
     enum PicRecognizerError: Error {
         case failedToLoadModel
@@ -33,7 +34,7 @@ class PicRecognizer {
         case failedToNormalize
     }
 
-    required init() throws {
+    required init( _ clientAPI: ClientAPI) throws {
         let startTime = DispatchTime.now()
         ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
         guard let modelPath = Bundle.main.path(forResource: "clip_image_encoder.quant", ofType: "onnx") else {
@@ -43,7 +44,8 @@ class PicRecognizer {
         try sessionOptions.setGraphOptimizationLevel(.basic)
         try sessionOptions.setIntraOpNumThreads(1)
         ortSession = try ORTSession(env: ortEnv, modelPath: modelPath, sessionOptions: sessionOptions)
-        cloneDetector = try CloneInference()
+        cloneDetector = try CloneInference(clientAPI)
+        self.clientAPI = clientAPI
         let endTime = DispatchTime.now()
         print("Loading ML Models time: \(Float(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1.0e6) ms")
     }
@@ -56,10 +58,6 @@ class PicRecognizer {
             guard let normalizedBitmap = normalizeCIImage(inputImage: bitmap) else {
                 throw PicRecognizerError.failedToNormalize
             }
-//            if detectTextInCIImage(ciImage: bitmap) {
-//                // NOTE :- above check uses un-normalized image
-//                return fakeResultTemplate()
-//            }
             let inputTensor = try createInputTensor(bitmap: normalizedBitmap)
             let outputs = try runModel(with: [inputName: inputTensor])
             guard let imageEmbeds = outputs[outputName] else {
@@ -299,15 +297,6 @@ class PicRecognizer {
         group.wait()
 
         return textDetected
-    }
-    
-    private func fakeResultTemplate() -> Result<(String, [Double]), Error> {
-        // mark as fake
-        let realProb = 0.01
-        let fakeProb = 0.99
-        let doubleArray = [realProb, fakeProb]
-        let message = "Pic is printout/fake. \nProbs: " + String(realProb) + " " + String(fakeProb)
-        return .success((message, doubleArray))
     }
     
 }
