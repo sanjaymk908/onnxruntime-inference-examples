@@ -174,7 +174,7 @@ extension HomeScreenViewController {
                     if match {
                         var message: String = ""
                         if idInformation.isNotUnderAge == nil {
-                            message = "ID could not be read - please rescan"
+                            message = "ID or Selfie inaccurate - please rescan"
                         } else {
                             message = (idInformation.isNotUnderAge ?? false) ?
                                       "User is above 21" :

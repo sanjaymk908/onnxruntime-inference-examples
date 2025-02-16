@@ -26,6 +26,11 @@ class IDInformation {
             clientAPI.failureReason = .failedToReadID
             return nil
         }
+        guard let realProb = clientAPI.realProb, let fakeProb = clientAPI.fakeProb,
+              realProb > fakeProb else {
+            clientAPI.failureReason = .selfieInaccurate
+            return nil
+        }
 
         // Calculate age from date of birth
         let currentDate = Date()
