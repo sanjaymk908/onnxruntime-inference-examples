@@ -6,8 +6,37 @@
 //
 
 import Foundation
+import SwiftUI
+
+public protocol ClientAPIDelegate: AnyObject {
+    func completedKYC(clientAPI: ClientAPI)
+}
 
 public class ClientAPI {
+    public static let shared = ClientAPI()
+    public weak var delegate: ClientAPIDelegate?
+        
+    private init() {
+        failureReason = .inDeterminate
+    }
+    
+    ///
+    /// Public method
+    ///
+        
+    // See below for possible client usage scenarios
+    public func start(fullScreen: Bool = true) -> UIViewController {
+        let contentView = ContentView()
+        let hostingController = UIHostingController(rootView: contentView)
+        if fullScreen {
+            hostingController.modalPresentationStyle = .fullScreen
+        }
+        return hostingController
+    }
+    
+    private func completedKYC() {
+        delegate?.completedKYC(clientAPI: self)
+    }
     
     ///
     ///   These are the properties exposed by the SDK for client integration
@@ -37,8 +66,62 @@ public class ClientAPI {
         case failedToReadID
         case selfieInaccurate
     }
-    
-    required init() {
-        failureReason = .inDeterminate
+}
+
+// Extension to make completedKYC() accessible within the TruKYC framework
+extension ClientAPI {
+    func internalCompletedKYC() {
+        completedKYC()
     }
 }
+
+///
+/// Possible client usage of the start() method in invoking the recommended TruKYC UI
+///
+
+//  In a UIKit app
+//let viewController = ClientAPI.shared.start()
+//present(viewController, animated: true)
+//
+
+// Or for embedded use
+//let embeddedViewController = ClientAPI.shared.start(fullScreen: false)
+//addChild(embeddedViewController)
+//view.addSubview(embeddedViewController.view)
+//embeddedViewController.didMove(toParent: self)
+//
+
+// Or in a SwiftUI app
+//struct ContentView: View {
+//    var body: some View {
+//        ClientViewControllerRepresentable()
+//    }
+//}
+//
+//struct ClientViewControllerRepresentable: UIViewControllerRepresentable {
+//    func makeUIViewController(context: Context) -> UIViewController {
+//        return ClientAPI.shared.start()
+//    }
+//    
+//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+//}
+
+///
+/// Complete sample client usage showing instantiation, start() & completedKYC() usage
+///
+
+//class ViewController: UIViewController, ClientAPIDelegate {
+//   override func viewDidLoad() {
+//       super.viewDidLoad()
+//       ClientAPI.shared.delegate = self
+//       let kycViewController = ClientAPI.shared.start()
+//       present(kycViewController, animated: true)
+//   }
+//
+//   func completedKYC(clientAPI: ClientAPI) {
+//       print("KYC completed!")
+//       // Handle KYC completion
+//   }
+//}
+
+

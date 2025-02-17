@@ -44,7 +44,7 @@ class FaceOverlayView: UIView {
     
     required init?(coder: NSCoder) {
         self.homeScreenViewController = nil
-        self.clientAPI = ClientAPI() // expect to be unused
+        self.clientAPI = ClientAPI.shared // expect to be unused
         super.init(coder: coder)
         setupView()
         startFaceDetectionTimer()

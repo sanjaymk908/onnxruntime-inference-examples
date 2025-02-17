@@ -9,8 +9,7 @@ import AVFoundation
 import Lumina
 import UIKit
 
-class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFieldDelegate {
-
+class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFieldDelegate, ClientAPIDelegate {
     var videoRecognizer: VideoRecognizer?
     let MLMODELLOADINGFAILED = "Internal error loading ML Models"
     
@@ -18,6 +17,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         super.init()
         // Add self as LuminaDelegate
         self.delegate = self
+        initKYC()
         LuminaViewController.loggingLevel = .critical
         startLoadingIndicator()
         self.setupVideoProcessor() { isSuccessful in
@@ -50,6 +50,10 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
                 self.setupFaceOverlay()
             }
         }
+    }
+    
+    func completedKYC(clientAPI: ClientAPI) {
+        print("Completed TruKYC Processing!")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -94,7 +98,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     // MARK :- Public
     
-    public var clientAPI: ClientAPI = ClientAPI()
+    public var clientAPI: ClientAPI = ClientAPI.shared
     
     // MARK :- Private
     

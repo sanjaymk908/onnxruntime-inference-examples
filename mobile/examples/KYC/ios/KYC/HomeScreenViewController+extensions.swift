@@ -51,6 +51,10 @@ extension HomeScreenViewController {
     step1Embs = []
     step2Embs = []
   }
+    
+  func initKYC() {
+    clientAPI.delegate = self
+  }
 
   private func processCapturedImage(_ inputImage: UIImage, shouldRotate: Bool = false) -> (UIImage, UIImage) {
     let screenSize: CGRect = self.view.frame
@@ -196,6 +200,7 @@ extension HomeScreenViewController {
         case .failure(let error):
             self.displayMessage("Failed to recognize ID with error: \(error)")
         }
+        clientAPI.internalCompletedKYC()  // execute BEFORE resetting any ClientAPI state
         self.resetInternalState()
     }
   }
