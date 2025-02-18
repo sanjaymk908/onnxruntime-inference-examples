@@ -42,22 +42,22 @@ public class ClientAPI {
     ///   These are the properties exposed by the SDK for client integration
     ///
     
-    var selfieEmbedding: [Double]?
-    var idProfileEmbedding: [Double]?
+    public internal(set) var selfieEmbedding: [Double]?
+    public internal(set) var idProfileEmbedding: [Double]?
     
     // Probability that user selfie is real or fake per Trusource's liveness check
-    var realProb: Double?
-    var fakeProb: Double?
+    public internal(set) var realProb: Double?
+    public internal(set) var fakeProb: Double?
     
     // Probability of match b/w user selfie & ID profile pic
-    var selfieIDprofileMatchProb: Double?
+    public internal(set) var selfieIDprofileMatchProb: Double?
     
     // Is user above age 21 with an unexpired ID?
-    var isUserAbove21: Bool?
+    public internal(set) var isUserAbove21: Bool?
     
     // When age verification fails (user is declared to be below 21), failure reason
-    var failureReason: ageVerificationResult?
-    enum ageVerificationResult: Error {
+    public internal(set) var failureReason: ageVerificationResult?
+    public enum ageVerificationResult: Error {
         case inDeterminate
         case above21
         case below21
