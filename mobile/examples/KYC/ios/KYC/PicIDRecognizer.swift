@@ -59,7 +59,7 @@ class IDInformation {
 
             // Parse the extracted date string
             let dateFormatter = DateFormatter()
-            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            dateFormatter.timeZone = TimeZone.current  // Use the current time zone
             let dateFormats = [
                 "MM/dd/yyyy",
                 "yyyy-MM-dd",

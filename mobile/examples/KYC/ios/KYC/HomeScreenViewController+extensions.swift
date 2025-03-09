@@ -151,7 +151,7 @@ extension HomeScreenViewController {
             print("Last Name: \(idInformation.lastName ?? "N/A")")
             print("Date of Birth: \(idInformation.dateOfBirth.map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none) } ?? "N/A")")
             print("ID Number: \(idInformation.idNumber ?? "N/A")")
-            print("Date of Birth: \(idInformation.expirationDate.map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none) } ?? "N/A")")
+            print("Expiry: \(idInformation.expirationDate.map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none) } ?? "N/A")")
               
             if let userProfilePic = idInformation.userProfilePic {
                 DispatchQueue.main.async {
