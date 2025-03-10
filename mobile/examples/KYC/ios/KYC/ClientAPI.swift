@@ -49,6 +49,10 @@ public class ClientAPI {
     public internal(set) var realProb: Double?
     public internal(set) var fakeProb: Double?
     
+    // Probability that user selfie is real or fake per Apple's APIs
+    public internal(set) var realProbAppleAPI: Double?
+    public internal(set) var fakeProbAppleAPI: Double?
+    
     // Probability of match b/w user selfie & ID profile pic
     public internal(set) var selfieIDprofileMatchProb: Double?
     

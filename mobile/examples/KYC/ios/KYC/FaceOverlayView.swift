@@ -190,13 +190,13 @@ class FaceOverlayView: UIView {
     private func overrideClientAPIProbs(for coverage: CGFloat) {
         let isRealImage = (coverage >= faceCoverageThreshold &&
                            coverage <= maxFaceCoverageThreshold)  ? true : false
-        // update clientAPI real vs fake probabilities based on this check here
+        // update clientAPI Apple API fields real vs fake probabilities
         if isRealImage {
-            clientAPI.realProb = realProbForRealSelfie
-            clientAPI.fakeProb = fakeProbForRealSelfie
+            clientAPI.realProbAppleAPI = realProbForRealSelfie
+            clientAPI.fakeProbAppleAPI = fakeProbForRealSelfie
         } else {
-            clientAPI.realProb = realProbForFakeSelfie
-            clientAPI.fakeProb = fakeProbForFakeSelfie
+            clientAPI.realProbAppleAPI = realProbForFakeSelfie
+            clientAPI.fakeProbAppleAPI = fakeProbForFakeSelfie
         }
     }
     
