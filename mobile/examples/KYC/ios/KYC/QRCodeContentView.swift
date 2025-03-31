@@ -31,8 +31,7 @@ struct QRCodeContentView: View {
                         Image(systemName: "gearshape.fill")
                             .font(.system(size: 60))
                             .foregroundColor(Color.gray.opacity(0.3))
-                        
-                        Image(systemName: isVerified ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        Image(systemName: isVerified ? "checkmark.circle.fill" : "octagon.fill")
                             .foregroundColor(isVerified ? .green : .red)
                             .font(.system(size: 30))
                     }

@@ -97,6 +97,7 @@ class CloneInference {
                realProb > THRESHOLD {
                 // Is strongly real asserted by custom & Apple liveness
                 let message = String(format: "Selfie is real. \nProbs: %.2f %.2f %.2f %.2f", realProb, fakeProb, realProbAppleAPI, fakeProbAppleAPI)
+                clientAPI.isSelfieReal = true
                 return message
             } else if let realProb = clientAPI.realProb,
                       let fakeProb = clientAPI.fakeProb,
@@ -121,6 +122,7 @@ class CloneInference {
                       realProb > fakeProb, (realProb - fakeProb) > CONFIDENCE_MARGIN {
                 // Is strongly real per custom liveness
                 let message = String(format: "Selfie is real. \nProbs: %.2f %.2f %.2f %.2f", realProb, fakeProb, realProbAppleAPI, fakeProbAppleAPI)
+                clientAPI.isSelfieReal = true
                 return message
             } else {
                 // Indeterminate per custom & Apple liveness

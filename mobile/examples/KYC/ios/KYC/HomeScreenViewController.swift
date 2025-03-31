@@ -148,7 +148,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         let qrCodeContentView = QRCodeContentView(
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
-            isVerified: clientAPI.isUserAbove21
+            isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal)
         )
 
         // Present the SwiftUI view directly

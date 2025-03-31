@@ -47,6 +47,7 @@ public class ClientAPI {
         fakeProbAppleAPI = nil
         selfieIDprofileMatchProb = nil
         isUserAbove21 = false
+        isSelfieReal = false
         failureReason = .inDeterminate
     }
     
@@ -70,6 +71,10 @@ public class ClientAPI {
     
     // Is user above age 21 with an unexpired ID?
     public internal(set) var isUserAbove21: Bool = false
+    
+    // Is selfie fake or real
+    // Is user above age 21 with an unexpired ID?
+    public internal(set) var isSelfieReal: Bool = false
     
     // When age verification fails (user is declared to be below 21), failure reason
     public internal(set) var failureReason: ageVerificationResult?
