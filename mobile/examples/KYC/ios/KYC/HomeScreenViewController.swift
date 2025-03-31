@@ -7,6 +7,7 @@
 import AVKit
 import AVFoundation
 import Lumina
+import SwiftUI
 import UIKit
 
 class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFieldDelegate, ClientAPIDelegate {
@@ -39,21 +40,46 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         // startCamera() was originally put in to capture video frames in LuminaDelegate (self ie)
         // But doing it on the main thread here is not a good idea - it slows down initial load
         //startCamera()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleQRCodeDismissal),
+            name: .qrCodeDismissed,
+            object: nil
+        )
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        createTransparentView(view)
-        if !isStep1Complete() {
-            self.updateLabels(HomeScreenViewController.ScanSelfieMessage)
-            DispatchQueue.main.async {
-                self.setupFaceOverlay()
-            }
+        // Always reload overlays on reappearance
+        DispatchQueue.main.async {
+            self.resetOverlayViews()
         }
+    }
+    
+    @objc private func handleQRCodeDismissal() {
+        // Reset KYC state if needed
+        clientAPI.resetKYCState()
+        self.resetInternalState()
+        
+        // Force reload overlays
+        DispatchQueue.main.async {
+            self.resetOverlayViews()
+        }
+    }
+    
+    private func resetOverlayViews() {
+        self.createTransparentView(self.view)
+        self.setupFaceOverlay()
+        self.updateLabels(HomeScreenViewController.ScanSelfieMessage)
+        self.view.bringSubviewToFront(self.transparentView)
     }
     
     func completedKYC(clientAPI: ClientAPI) {
         print("Completed TruKYC Processing!")
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {return}
+            self.presentQRVerification(clientAPI: self.clientAPI)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,7 +90,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
        addDoubleTapHandler()
         if (scanPromptLabel == nil) {
             transparentView.translatesAutoresizingMaskIntoConstraints = false
-            parent.addSubview(transparentView)
+            if !parent.subviews.contains(transparentView) {
+                parent.addSubview(transparentView)
+            }
             if let widthConstraint = self.view.constraints.first(where: { $0.firstAnchor == self.view.widthAnchor }) {
                 // Get the constant value of the width constraint
                 let widthValue = widthConstraint.constant
@@ -96,6 +124,40 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
     }
     
+    private func presentQRVerification(clientAPI: ClientAPI) {
+        // Calculate QR code size based on view dimensions
+        let viewSize = view.bounds.size
+        let qrCodeSize = CGSize(
+            width: viewSize.width * 0.8,  // 80% of view width
+            height: viewSize.height * 0.4 // 40% of view height
+        )
+
+        // Generate QR code using KYCQRCodeGenerator
+        guard let qrCodeImage = KYCQRCodeGenerator.generateQRCode(from: clientAPI, size: qrCodeSize) else {
+            print("Failed to generate QR code")
+            return
+        }
+
+        // Assume selfieImage is available in clientAPI (replace with actual logic)
+        guard let selfieImage = self.selfieImage else {
+            print("Selfie image is missing")
+            return
+        }
+
+        // Create the SwiftUI view
+        let qrCodeContentView = QRCodeContentView(
+            selfieImage: selfieImage,
+            qrCodeImage: qrCodeImage,
+            isVerified: clientAPI.isUserAbove21
+        )
+
+        // Present the SwiftUI view directly
+        let hostingController = UIHostingController(rootView: qrCodeContentView)
+        hostingController.modalPresentationStyle = .fullScreen // Ensures viewDidAppear is called on dismissal
+        hostingController.modalTransitionStyle = .crossDissolve
+        self.present(hostingController, animated: true, completion: nil)
+    }
+    
     // MARK :- Public
     
     public var clientAPI: ClientAPI = ClientAPI.shared
@@ -112,6 +174,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     static let ScanIDMessage = "Step 2 - scan your DL/passport/State ID"
     private let loadingLine = UIView()
     var latestUIImage: UIImage?
+    var selfieImage: UIImage?
     
     @MainActor
     var step1Embs: [Double]? {
@@ -126,6 +189,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
     }
     
+    @MainActor
     func setupFaceOverlay() {
         removeFaceOverlay()
         

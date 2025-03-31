@@ -20,6 +20,10 @@ public class ClientAPI {
         failureReason = .inDeterminate
     }
     
+    private func completedKYC() {
+        delegate?.completedKYC(clientAPI: self)
+    }
+    
     ///
     /// Public method
     ///
@@ -34,8 +38,16 @@ public class ClientAPI {
         return hostingController
     }
     
-    private func completedKYC() {
-        delegate?.completedKYC(clientAPI: self)
+    public func resetKYCState() {
+        selfieEmbedding = nil
+        idProfileEmbedding = nil
+        realProb = nil
+        fakeProb = nil
+        realProbAppleAPI = nil
+        fakeProbAppleAPI = nil
+        selfieIDprofileMatchProb = nil
+        isUserAbove21 = false
+        failureReason = .inDeterminate
     }
     
     ///
@@ -57,7 +69,7 @@ public class ClientAPI {
     public internal(set) var selfieIDprofileMatchProb: Double?
     
     // Is user above age 21 with an unexpired ID?
-    public internal(set) var isUserAbove21: Bool?
+    public internal(set) var isUserAbove21: Bool = false
     
     // When age verification fails (user is declared to be below 21), failure reason
     public internal(set) var failureReason: ageVerificationResult?
@@ -69,6 +81,7 @@ public class ClientAPI {
         case selfieIDProfileMismatch
         case failedToReadID
         case selfieInaccurate
+        case internalError
     }
 }
 

@@ -107,6 +107,7 @@ extension HomeScreenViewController {
         DispatchQueue.main.async {
             self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
             self.step1Embs = cloneCheckResult.1
+            self.selfieImage = withOriginalImage
             self.updateLabels(HomeScreenViewController.ScanIDMessage)
             self.position = .back
         }
@@ -126,8 +127,8 @@ extension HomeScreenViewController {
                 let step1Image = userProfilePic
                 let result = picRecognizer.getEmbeddings(bitmap: step1Image)
                 switch result {
-                case .success(let step1Embs):
-                    self.step1Embs = step1Embs
+                case .success(let step1LocalEmbs):
+                    self.step1Embs = step1LocalEmbs
                 case .failure(let error):
                     self.displayMessage(error.localizedDescription)
                 }
@@ -136,7 +137,8 @@ extension HomeScreenViewController {
                 self.clientAPI.failureReason = .selfieInaccurate
             }
         case .failure(let error):
-            self.displayMessage("Failed to recognize ID with error: \(error)")
+            self.displayMessage("Failed to extract selfie profile: \(error)")
+            self.clientAPI.failureReason = .selfieInaccurate
         }
       }
   }
@@ -165,24 +167,35 @@ extension HomeScreenViewController {
                     DispatchQueue.main.async {
                         let message = "Error: PicRecognizer is not initialized"
                         self.displayMessageAndPic(message, capturedPic: withOriginalImage)
+                        self.clientAPI.failureReason = .internalError
                     }
                     self.resetInternalState()
                     return
                 }
                 let result = picRecognizer.getEmbeddings(bitmap: step2Image)
                 switch result {
-                case .success(let step2Embs):
-                    similarityMatcher.storeTestVec(step2Embs)
+                case .success(let step2LocalEmbs):
+                    similarityMatcher.storeTestVec(step2LocalEmbs)
+                    self.step2Embs = step2LocalEmbs
                     let (match, prob) = similarityMatcher.cosineMatch()
                     clientAPI.selfieIDprofileMatchProb = prob
                     if match {
                         var message: String = ""
                         if idInformation.isNotUnderAge == nil {
                             message = "ID or Selfie inaccurate - please rescan"
+                            self.clientAPI.failureReason = .selfieInaccurate
                         } else {
-                            message = (idInformation.isNotUnderAge ?? false) ?
-                                      "User is above 21" :
-                                      (idInformation.isExpired ? "ID has expired" : "User is below 21")
+                            if idInformation.isNotUnderAge ?? false {
+                                message = "User is above 21"
+                                self.clientAPI.failureReason = .above21
+                                self.clientAPI.isUserAbove21 = true
+                            } else if idInformation.isExpired {
+                                message = "ID has expired"
+                                self.clientAPI.failureReason = .expiredID
+                            } else {
+                                message = "User is below 21"
+                                self.clientAPI.failureReason = .below21
+                            }
                         }
                         self.displayMessage(message)
                     } else {
@@ -192,16 +205,18 @@ extension HomeScreenViewController {
                     self.position = .front
                 case .failure(let error):
                     self.displayMessage(error.localizedDescription)
+                    clientAPI.failureReason = .internalError
                 }
             } else {
                 self.displayMessage("No profile picture found.")
+                clientAPI.failureReason = .selfieInaccurate
             }
               
         case .failure(let error):
             self.displayMessage("Failed to recognize ID with error: \(error)")
+            clientAPI.failureReason = .failedToReadID
         }
         clientAPI.internalCompletedKYC()  // execute BEFORE resetting any ClientAPI state
-        self.resetInternalState()
     }
   }
 
