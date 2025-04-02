@@ -90,7 +90,7 @@ class PicRecognizer {
         }
     }
     
-    func getEmbeddings(bitmap: CIImage) -> Result<[Double], Error> {
+    public func getEmbeddings(bitmap: CIImage) -> Result<[Double], Error> {
         do {
             let inputTensor = try createInputTensor(bitmap: bitmap)
             let outputs = try runModel(with: [inputName: inputTensor])

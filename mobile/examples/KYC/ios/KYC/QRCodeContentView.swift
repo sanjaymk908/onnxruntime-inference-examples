@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QRCodeContentView: View {
     let selfieImage: UIImage
-    let qrCodeImage: UIImage
+    let qrCodeImage: UIImage? // Make qrCodeImage optional
     let isVerified: Bool
     
     // Access presentation mode for dismissing the view
@@ -38,11 +38,13 @@ struct QRCodeContentView: View {
                     .padding(8)
                 }
                 
-                // QR code image
-                Image(uiImage: qrCodeImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: UIScreen.main.bounds.height * 0.4)
+                // Conditionally display QR code image if it exists
+                if let qrCodeImage = qrCodeImage {
+                    Image(uiImage: qrCodeImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: UIScreen.main.bounds.height * 0.4)
+                }
             }
             .frame(width: UIScreen.main.bounds.width * 0.9)
             .background(Color.white)

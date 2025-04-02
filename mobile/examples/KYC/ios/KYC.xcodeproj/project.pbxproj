@@ -25,6 +25,8 @@
 		C169768E2D972FF200A06BDA /* KYCQRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C169768C2D972FF200A06BDA /* KYCQRCodeGenerator.swift */; };
 		C16976902D97327000A06BDA /* QRCodeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C169768F2D97327000A06BDA /* QRCodeContentView.swift */; };
 		C16976912D97327000A06BDA /* QRCodeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C169768F2D97327000A06BDA /* QRCodeContentView.swift */; };
+		C16976932D9C548F00A06BDA /* FacialCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16976922D9C548F00A06BDA /* FacialCheck.swift */; };
+		C16976942D9C548F00A06BDA /* FacialCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16976922D9C548F00A06BDA /* FacialCheck.swift */; };
 		C195825F2C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
 		C19582602C6609D8004B8934 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
 		C19582622C660AB5004B8934 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
@@ -117,6 +119,8 @@
 		C161D98D2C2D52FD00F60151 /* CloneInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloneInference.swift; sourceTree = "<group>"; };
 		C169768C2D972FF200A06BDA /* KYCQRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCQRCodeGenerator.swift; sourceTree = "<group>"; };
 		C169768F2D97327000A06BDA /* QRCodeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeContentView.swift; sourceTree = "<group>"; };
+		C16976922D9C548F00A06BDA /* FacialCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacialCheck.swift; sourceTree = "<group>"; };
+		C16976952D9C922E00A06BDA /* KYC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KYC.entitlements; sourceTree = "<group>"; };
 		C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 		C19582612C660AB5004B8934 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRecognizer.swift; sourceTree = "<group>"; };
@@ -269,6 +273,7 @@
 		EFE237D526855E4600234E2C /* KYC */ = {
 			isa = PBXGroup;
 			children = (
+				C16976952D9C922E00A06BDA /* KYC.entitlements */,
 				C1A3081C2D6578B20076F4C9 /* clip_image_encoder.quant.onnx */,
 				C1A3081E2D6578C30076F4C9 /* xgboost_liveness_quant_enh.onnx */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
@@ -291,6 +296,7 @@
 				C1C0F2FB2D5E590500D45589 /* ClientAPI.swift */,
 				C169768C2D972FF200A06BDA /* KYCQRCodeGenerator.swift */,
 				C169768F2D97327000A06BDA /* QRCodeContentView.swift */,
+				C16976922D9C548F00A06BDA /* FacialCheck.swift */,
 			);
 			path = KYC;
 			sourceTree = "<group>";
@@ -438,6 +444,7 @@
 				C195826B2C6C7DDF004B8934 /* VideoRecognizer.swift in Sources */,
 				C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */,
 				C13563602C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm in Sources */,
+				C16976932D9C548F00A06BDA /* FacialCheck.swift in Sources */,
 				C135635D2C18F1DA00FF9A99 /* ort_session.mm in Sources */,
 				C1DB80792CD031C1006431BE /* PicIDRecognizer.swift in Sources */,
 				C169768D2D972FF200A06BDA /* KYCQRCodeGenerator.swift in Sources */,
@@ -450,6 +457,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C16976942D9C548F00A06BDA /* FacialCheck.swift in Sources */,
 				EFE237E926855E4B00234E2C /* SpeechRecognitionTests.swift in Sources */,
 				C19DC94C2C3A69E4008023F3 /* ContentView.swift in Sources */,
 				C19DC93E2C33E11F008023F3 /* PicRecognizer.swift in Sources */,
@@ -602,6 +610,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CODE_SIGN_ENTITLEMENTS = KYC/KYC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"KYC/Preview Content\"";
 				DEVELOPMENT_TEAM = 33BJ727SMS;
@@ -651,6 +660,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CODE_SIGN_ENTITLEMENTS = KYC/KYC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"KYC/Preview Content\"";
 				DEVELOPMENT_TEAM = 33BJ727SMS;

@@ -7,6 +7,7 @@
 import AVKit
 import AVFoundation
 import Lumina
+import SwiftUI
 import UIKit
 
 extension HomeScreenViewController {
@@ -86,7 +87,21 @@ extension HomeScreenViewController {
     
   private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
       if !self.isStep1Complete() {
-          step1Driver(with: bitmap, withOriginalImage: withOriginalImage)
+          // iff both embeddings have been stored locally, then just do an auth check
+          if self.facialCheck.areBothEmbeddingsStored(),
+             let picRecognizer = videoRecognizer?.picRecognizer,
+             let selfieImage = bitmap.toUIImage() {
+              facialCheck.performAuth(inputSelfie: bitmap, clientAPI: clientAPI, picRecognizer: picRecognizer) { (authResult, score) in
+                  // Create the SwiftUI view
+                  self.presentQRCodeContent(
+                        selfieImage: selfieImage,
+                        qrCodeImage: nil,
+                        isVerified: authResult
+                  )
+              }
+          } else {
+              step1Driver(with: bitmap, withOriginalImage: withOriginalImage)
+          }
       } else {
           step2Driver(with: bitmap, withOriginalImage: withOriginalImage)
       }

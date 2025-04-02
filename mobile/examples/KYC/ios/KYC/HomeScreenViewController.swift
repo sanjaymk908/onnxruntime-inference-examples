@@ -6,6 +6,7 @@
 
 import AVKit
 import AVFoundation
+import CoreImage
 import Lumina
 import SwiftUI
 import UIKit
@@ -46,6 +47,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             name: .qrCodeDismissed,
             object: nil
         )
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        doubleTapGesture.numberOfTapsRequired = 2 // Configure for double taps
+        view.addGestureRecognizer(doubleTapGesture)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +61,20 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     }
     
     @objc private func handleQRCodeDismissal() {
+        // If KYC successful, store biometrics securely
+        if (clientAPI.isSelfieReal && clientAPI.isUserAbove21) {
+            if let selfieEmbedding = clientAPI.selfieEmbedding,
+               let idProfileEmbedding = clientAPI.idProfileEmbedding {
+                do {
+                    try facialCheck.storeBiometrics(selfieEmbedding, key: SELFIE_EMBEDDING_STORE_KEY)
+                    try facialCheck.storeBiometrics(idProfileEmbedding, key: IDPROFILE_EMBEDDING_STORE_KEY)
+                    displayMessage("Selfie,id profile stored securely!")
+                } catch {
+                    print("Error occurred storing embeddings securely: \(error)")
+                }
+            }
+        }
+        
         // Reset KYC state if needed
         clientAPI.resetKYCState()
         self.resetInternalState()
@@ -64,6 +82,15 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         // Force reload overlays
         DispatchQueue.main.async {
             self.resetOverlayViews()
+        }
+    }
+    
+    @objc private func handleDoubleTap() {
+        do {
+            try facialCheck.clearAll() // Clear all locally stored biometrics
+            displayMessage("Stored biometrics cleared.")
+        } catch {
+            displayMessage("Failed to clear biometrics: \(error.localizedDescription)")
         }
     }
     
@@ -145,10 +172,18 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
 
         // Create the SwiftUI view
-        let qrCodeContentView = QRCodeContentView(
+        presentQRCodeContent(
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
             isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal)
+        )
+    }
+    
+    func presentQRCodeContent(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool) {
+        let qrCodeContentView = QRCodeContentView(
+            selfieImage: selfieImage,
+            qrCodeImage: qrCodeImage,
+            isVerified: isVerified
         )
 
         // Present the SwiftUI view directly
@@ -165,6 +200,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     // MARK :- Private
     
     private let DISPLAY_IMAGE_DURATION: TimeInterval = 3.0 // 3 seconds
+    private let SELFIE_EMBEDDING_STORE_KEY: String = "selfieEmbedding"
+    private let IDPROFILE_EMBEDDING_STORE_KEY: String = "idProfileEmbedding"
     private var permissionManager = PermissionManager.shared
     private var faceOverlayView: FaceOverlayView?
     let transparentView = RoundedCornersView()
@@ -175,6 +212,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     private let loadingLine = UIView()
     var latestUIImage: UIImage?
     var selfieImage: UIImage?
+    let facialCheck: FacialCheck = FacialCheck()
     
     @MainActor
     var step1Embs: [Double]? {
@@ -375,3 +413,15 @@ class RoundedCornersView: UIView {
         corner4Path.stroke()
     }
 }
+
+extension CIImage {
+    /// Converts the CIImage into a UIImage
+    func toUIImage() -> UIImage? {
+        let context = CIContext(options: nil) // Create a Core Image context
+        if let cgImage = context.createCGImage(self, from: self.extent) {
+            return UIImage(cgImage: cgImage) // Create UIImage from CGImage
+        }
+        return nil // Return nil if conversion fails
+    }
+}
+
