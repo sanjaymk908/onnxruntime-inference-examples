@@ -5,7 +5,6 @@
 //  Created by Sanjay Krishnamurthy on 4/1/25.
 //
 
-import LocalAuthentication
 import Security
 import UIKit
 
@@ -16,29 +15,17 @@ class FacialCheck {
     
     // MARK: - Secure Storage Methods
     
-    /// Securely stores a biometric embedding using the Secure Enclave
+    /// Securely stores a biometric embedding without authentication checks
     public func storeBiometrics(_ embedding: [Double], key: String) throws {
         guard let data = try? JSONSerialization.data(withJSONObject: embedding) else {
             throw KeychainError.encodingError
         }
         
-        let accessControl = SecAccessControlCreateWithFlags(
-            kCFAllocatorDefault,
-            kSecAttrAccessibleWhenUnlocked,
-            [.privateKeyUsage, .userPresence],
-            nil
-        )!
-        
-        let context = LAContext()
-        context.localizedReason = "Authenticate to store biometric data securely"
-        
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecAttrService as String: serviceName,
-            kSecAttrAccessControl as String: accessControl,
-            kSecValueData as String: data,
-            kSecUseAuthenticationContext as String: context
+            kSecValueData as String: data
         ]
         
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -47,18 +34,14 @@ class FacialCheck {
         }
     }
     
-    /// Retrieves a stored biometric embedding
+    /// Retrieves a stored biometric embedding without authentication checks
     public func retrieveBiometrics(key: String) throws -> [Double]? {
-        let context = LAContext()
-        context.localizedReason = "Authenticate to access biometric data"
-        
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecAttrService as String: serviceName,
             kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecUseAuthenticationContext as String: context
+            kSecMatchLimit as String: kSecMatchLimitOne
         ]
         
         var item: CFTypeRef?
@@ -77,20 +60,7 @@ class FacialCheck {
         return embedding
     }
     
-    /// Check if both embeddings exist in storage
-    public func areBothEmbeddingsStored() -> Bool {
-        do {
-            let selfieEmbeddingExists = try retrieveBiometrics(key: "selfieEmbedding") != nil
-            let idProfileEmbeddingExists = try retrieveBiometrics(key: "idProfileEmbedding") != nil
-            
-            return selfieEmbeddingExists && idProfileEmbeddingExists
-        } catch {
-            print("Error checking embeddings storage status: \(error)")
-            return false
-        }
-    }
-    
-    /// Clears all stored biometric data
+    /// Clears all stored biometric data without authentication checks
     public func clearAll() throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -103,9 +73,38 @@ class FacialCheck {
         }
     }
     
+    /// Removes specific biometric data without authentication checks
+    func clearBiometrics(key: String) throws {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecAttrService as String: serviceName
+        ]
+        
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw KeychainError.unhandledError(status: status)
+        }
+    }
+
+    // MARK: - Status Check Method
+    
+    /// Check if both embeddings exist in storage without authentication checks
+    public func areBothEmbeddingsStored() -> Bool {
+        do {
+            let selfieEmbeddingExists = try retrieveBiometrics(key: "selfieEmbedding") != nil
+            let idProfileEmbeddingExists = try retrieveBiometrics(key: "idProfileEmbedding") != nil
+            
+            return selfieEmbeddingExists && idProfileEmbeddingExists
+        } catch {
+            print("Error checking embeddings storage status: \(error)")
+            return false
+        }
+    }
+
     // MARK: - Authentication Logic
     
-    /// Performs biometric authentication with live selfie
+    /// Performs biometric authentication with live selfie (no security checks)
     public func performAuth(inputSelfie: CIImage, clientAPI: ClientAPI, picRecognizer: PicRecognizer, completion: @escaping (Bool, Double?) -> Void) {
         picIDRecognizer.recognizeID(from: inputSelfie, clientAPI: clientAPI) { [weak self] result in
             switch result {
@@ -125,23 +124,7 @@ class FacialCheck {
             }
         }
     }
-    
-    // MARK: - Management Methods
-    
-    /// Removes specific biometric data
-    func clearBiometrics(key: String) throws {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
-            kSecAttrService as String: serviceName
-        ]
-        
-        let status = SecItemDelete(query as CFDictionary)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw KeychainError.unhandledError(status: status)
-        }
-    }
-    
+
     // MARK: - Private Helpers
     
     private func processEmbedding(for image: CIImage, clientAPI: ClientAPI, picRecognizer: PicRecognizer, completion: @escaping ([Double]) -> Void) {
@@ -202,3 +185,4 @@ enum KeychainError: Error {
         }
     }
 }
+

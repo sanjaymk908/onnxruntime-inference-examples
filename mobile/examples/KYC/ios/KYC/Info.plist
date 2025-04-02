@@ -50,7 +50,5 @@
 	<string>Camera is used to take selfie pic &amp; ID pic</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>NSFaceIDUsageDescription</key>
-	<string>This app uses Face ID for secure authentication and access to sensitive data</string>
 </dict>
 </plist>
