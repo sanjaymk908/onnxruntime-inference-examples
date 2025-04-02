@@ -47,9 +47,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             name: .qrCodeDismissed,
             object: nil
         )
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
-        doubleTapGesture.numberOfTapsRequired = 2 // Configure for double taps
-        view.addGestureRecognizer(doubleTapGesture)
+        // Make the view controller the first responder to detect motion events
+        self.becomeFirstResponder()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -85,7 +84,18 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
     }
     
-    @objc private func handleDoubleTap() {
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+        
+    // Respond to shake gestures
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            handleShake()
+        }
+    }
+    
+    @objc private func handleShake() {
         do {
             try facialCheck.clearAll() // Clear all locally stored biometrics
             displayMessage("Stored biometrics cleared.")
