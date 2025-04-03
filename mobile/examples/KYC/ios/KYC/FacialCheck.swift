@@ -105,24 +105,8 @@ class FacialCheck {
     // MARK: - Authentication Logic
     
     /// Performs biometric authentication with live selfie (no security checks)
-    public func performAuth(inputSelfie: CIImage, clientAPI: ClientAPI, picRecognizer: PicRecognizer, completion: @escaping (Bool, Double?) -> Void) {
-        picIDRecognizer.recognizeID(from: inputSelfie, clientAPI: clientAPI) { [weak self] result in
-            switch result {
-            case .success(let idInfo):
-                guard let profilePic = idInfo.userProfilePic else {
-                    completion(false, nil)
-                    return
-                }
-                
-                self?.processEmbedding(for: profilePic, clientAPI: clientAPI, picRecognizer: picRecognizer) { inputEmbedding in
-                    self?.validateAgainstStoredEmbeddings(inputEmbedding, completion: completion)
-                }
-                
-            case .failure(let error):
-                print("Authentication failed: \(error.localizedDescription)")
-                completion(false, nil)
-            }
-        }
+    public func performAuth(inputEmbedding: [Double], completion: @escaping (Bool, Double?) -> Void) {
+        validateAgainstStoredEmbeddings(inputEmbedding, completion: completion)
     }
 
     // MARK: - Private Helpers

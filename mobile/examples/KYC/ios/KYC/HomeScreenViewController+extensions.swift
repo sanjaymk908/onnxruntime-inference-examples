@@ -88,16 +88,18 @@ extension HomeScreenViewController {
   private func imageRecognize(with bitmap: CIImage, withOriginalImage: UIImage) {
       if !self.isStep1Complete() {
           // iff both embeddings have been stored locally, then just do an auth check
-          if self.facialCheck.areBothEmbeddingsStored(),
-             let picRecognizer = videoRecognizer?.picRecognizer,
-             let selfieImage = bitmap.toUIImage() {
-              facialCheck.performAuth(inputSelfie: bitmap, clientAPI: clientAPI, picRecognizer: picRecognizer) { (authResult, score) in
-                  // Create the SwiftUI view
-                  self.presentQRCodeContent(
-                        selfieImage: selfieImage,
-                        qrCodeImage: nil,
-                        isVerified: authResult
-                  )
+          if self.facialCheck.areBothEmbeddingsStored() {
+              step1Driver(with: bitmap, withOriginalImage: withOriginalImage) {
+                  if let selfieEmbedding = self.step1Embs,
+                     let selfieImage = self.selfieImage {
+                      self.facialCheck.performAuth(inputEmbedding: selfieEmbedding) { (authResult, score) in
+                          // Create the SwiftUI view
+                          self.presentQRCodeContent(
+                            selfieImage: selfieImage,
+                            qrCodeImage: nil,
+                            isVerified: (authResult && self.clientAPI.isSelfieReal)
+                          )}
+                  }
               }
           } else {
               step1Driver(with: bitmap, withOriginalImage: withOriginalImage)
@@ -107,7 +109,7 @@ extension HomeScreenViewController {
       }
   }
     
-  private func step1Driver(with bitmap: CIImage, withOriginalImage: UIImage) {
+  private func step1Driver(with bitmap: CIImage, withOriginalImage: UIImage, completion: @escaping () -> Void = {}) {
     // Do normal Step 1 processing to check for real selfie vs printed fake
     guard let picRecognizer = videoRecognizer?.picRecognizer else {
         DispatchQueue.main.async {
@@ -119,10 +121,10 @@ extension HomeScreenViewController {
     let result = picRecognizer.evaluate(bitmap: bitmap)
     switch result {
     case .success(let cloneCheckResult):
+        self.step1Embs = cloneCheckResult.1
+        self.selfieImage = withOriginalImage
         DispatchQueue.main.async {
             self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
-            self.step1Embs = cloneCheckResult.1
-            self.selfieImage = withOriginalImage
             self.updateLabels(HomeScreenViewController.ScanIDMessage)
             self.position = .back
         }
@@ -155,6 +157,7 @@ extension HomeScreenViewController {
             self.displayMessage("Failed to extract selfie profile: \(error)")
             self.clientAPI.failureReason = .selfieInaccurate
         }
+        completion()
       }
   }
     
@@ -217,7 +220,10 @@ extension HomeScreenViewController {
                         self.displayMessage("Selfie & ID pictures do not match!")
                         clientAPI.failureReason = .selfieIDProfileMismatch
                     }
-                    self.position = .front
+                    DispatchQueue.main.async {
+                        // should always be done on main thread - else you get error in AVCaptureSession
+                        self.position = .front
+                    }
                 case .failure(let error):
                     self.displayMessage(error.localizedDescription)
                     clientAPI.failureReason = .internalError
