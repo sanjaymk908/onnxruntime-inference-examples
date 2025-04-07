@@ -11,11 +11,10 @@ import Vision
 
 class FaceOverlayView: UIView {
     private var ovalPath: UIBezierPath?
-    private var silhouettePath: UIBezierPath?
     private var timer: Timer?
     private let checkInterval: TimeInterval = 0.4 // 400 milliseconds
     private let faceCoverageThreshold: CGFloat = 0.5 // 50% lower limit
-    private let maxFaceCoverageThreshold: CGFloat = 0.75 // 75%  upper limit
+    private let maxFaceCoverageThreshold: CGFloat = 0.75 // 75% upper limit
     private let realProbForRealSelfie: Double = 0.99
     private let fakeProbForRealSelfie: Double = 0.01
     private let realProbForFakeSelfie: Double = 0.01
@@ -29,9 +28,14 @@ class FaceOverlayView: UIView {
     
     private var currentColor: UIColor = .white {
         didSet {
+            updateTransparentViewCorners()
             setNeedsDisplay()
         }
     }
+    
+    // Debounce variables for steady color changes
+    private var lastUpdatedColor: UIColor = .white
+    private var lastColorChangeTime: Date = Date()
     
     init(frame: CGRect, homeScreenViewController: HomeScreenViewController,
          clientAPI: ClientAPI) {
@@ -53,7 +57,7 @@ class FaceOverlayView: UIView {
     private func setupView() {
         backgroundColor = .clear
         isOpaque = false
-        isUserInteractionEnabled = false  // Allow touch events to pass through
+        isUserInteractionEnabled = false // Allow touch events to pass through
     }
     
     override func draw(_ rect: CGRect) {
@@ -70,25 +74,14 @@ class FaceOverlayView: UIView {
         let ovalX = (bounds.width - ovalWidth) / 2
         let ovalY: CGFloat = 20 // Top margin
         
-        // Draw the oval
+        // Draw the oval with thicker dashed lines
         let ovalRect = CGRect(x: ovalX, y: ovalY, width: ovalWidth, height: ovalHeight)
         ovalPath = UIBezierPath(ovalIn: ovalRect)
         
         context.setStrokeColor(currentColor.cgColor)
-        context.setLineWidth(24)
+        context.setLineWidth(48) // Increased thickness for dashed lines (2x original)
         context.setLineDash(phase: 0, lengths: [10, 5]) // Dashed line pattern
         ovalPath?.stroke()
-        
-        // Draw the face silhouette (neck)
-        silhouettePath = UIBezierPath()
-        let neckY = ovalRect.maxY - 30
-        let neckWidth: CGFloat = 30
-        silhouettePath?.move(to: CGPoint(x: ovalRect.midX - neckWidth / 2, y: neckY))
-        silhouettePath?.addLine(to: CGPoint(x: ovalRect.midX + neckWidth / 2, y: neckY))
-        
-        context.setStrokeColor(UIColor.white.cgColor) // Neck line color
-        context.setLineWidth(24)
-        silhouettePath?.stroke()
         
         // Restore the initial state of the context
         context.restoreGState()
@@ -103,94 +96,100 @@ class FaceOverlayView: UIView {
     private func checkFaceCoverage() {
         guard let currentImage = getCurrentImage() else { return }
         
-        // Only process if the image has changed
-        guard currentImage != lastProcessedImage else { return }
+        guard currentImage != lastProcessedImage else { return } // Only process if image has changed
+        
         lastProcessedImage = currentImage
-
+        
         do {
             try sequenceHandler.perform([faceDetectionRequest], on: currentImage)
             
             guard let results = faceDetectionRequest.results,
-                  let face = results.first else {
-                updateOvalColor(for: 0) // No face detected
+                  let faceObservation = results.first else {
+                updateOvalColor(forCoveragePercentage: 0) // No face detected
                 return
             }
             
-            // Get the bounding box from the face observation
-            var faceBounds = face.boundingBox
+            var faceBoundsNormalized = faceObservation.boundingBox
             
-            // Convert the normalized coordinates to the image's coordinate space
-            // NOTE :- the currentImage (croppedImage ie) has a messed up size. So,
-            //         we use transparentView's frame size instead.
-            faceBounds = convertToImageCoordinates(faceBounds: faceBounds,
-                                                   imageSize: homeScreenViewController?.transparentView.frame.size ??
-                                                                                      currentImage.extent.size)
+            faceBoundsNormalized = convertToImageCoordinates(faceBoundsNormalized,
+                                                              imageSize:
+                                                              homeScreenViewController?.transparentView.frame.size ??
+                                                              currentImage.extent.size)
             
-            // Calculate the coverage
-            let coverage = calculateCoverage(faceBounds: faceBounds)
-            // Update ClientAPI probabilities based on coverage
-            overrideClientAPIProbs(for: coverage)
+            let coveragePercentage = calculateCoverage(faceBoundsNormalized)
             
-            // Update the oval color based on the coverage
-            updateOvalColor(for: coverage)
+            overrideClientAPIProbs(forCoveragePercentage: coveragePercentage)
+            updateOvalColor(forCoveragePercentage: coveragePercentage)
+            
         } catch {
-            print("Face detection failed: \(error)")
-            updateOvalColor(for: 0)
+            print("Face detection failed with error \(error)")
+            updateOvalColor(forCoveragePercentage: 0)
         }
     }
 
-    // Helper method to convert normalized face bounding box to image coordinates
-    private func convertToImageCoordinates(faceBounds: CGRect, imageSize: CGSize) -> CGRect {
-        // Flip the y-origin since the bounding box is in normalized coordinates (bottom-left)
-        let x = faceBounds.origin.x * imageSize.width
-        let y = (1 - faceBounds.origin.y - faceBounds.height) * imageSize.height // Flipping the y-coordinate
-        let width = faceBounds.size.width * imageSize.width
-        let height = faceBounds.size.height * imageSize.height
+    private func convertToImageCoordinates(_ normalizedBounds: CGRect, imageSize: CGSize) -> CGRect {
+        let x = normalizedBounds.origin.x * imageSize.width
+        let y = (1 - normalizedBounds.origin.y - normalizedBounds.height) * imageSize.height // Flip y-axis
+        let width = normalizedBounds.width * imageSize.width
+        let height = normalizedBounds.height * imageSize.height
         
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
-    
     private func getCurrentImage() -> CIImage? {
-        guard let latestImage = homeScreenViewController?.latestUIImage else {
-            print("No image frame available")
-            return nil
-        }
-        // Convert UIImage to CIImage
-        guard let ciImage = CIImage(image: latestImage) else {
-            print("Failed to convert UIImage to CIImage")
-            return nil
-        }
-        return ciImage
+        guard let latestImage = homeScreenViewController?.latestUIImage else { return nil }
+        
+        return CIImage(image: latestImage)
     }
 
-    
-    private func calculateCoverage(faceBounds: CGRect) -> CGFloat {
-        guard let ovalPath = ovalPath else { return 0 }
-        let ovalBounds = ovalPath.bounds
-        let intersectionArea = ovalBounds.intersection(faceBounds).area
-        let ovalArea = ovalBounds.area
-        return intersectionArea / ovalArea
-    }
-    
-    private func updateOvalColor(for coverage: CGFloat) {
-        currentColor = (coverage >= faceCoverageThreshold &&
-                        coverage <= maxFaceCoverageThreshold)  ? .green : .red
+    private func calculateCoverage(_ faceBoundsNormalized: CGRect) -> CGFloat {
+        guard let ovalPathBounds = ovalPath?.bounds else { return 0 }
         
-        // Flash effect
-        UIView.animate(withDuration: 0.2, animations: {
-            self.alpha = 0.5
-        }) { _ in
-            UIView.animate(withDuration: 0.2) {
-                self.alpha = 1.0
+        let intersectionArea = ovalPathBounds.intersection(faceBoundsNormalized).area
+        return intersectionArea / ovalPathBounds.area
+    }
+
+    // Updated debounce logic for holding color steady longer (800ms instead of changing too frequently)
+    private func updateOvalColor(forCoveragePercentage coveragePercentage: CGFloat) {
+        let now = Date()
+        
+        // Debounce logic: Update color only if 800ms have passed since the last change
+        if now.timeIntervalSince(lastColorChangeTime) >= 0.8 {
+            lastColorChangeTime = now
+            
+            // Determine the new color based on coverage percentage
+            let newColor: UIColor = (coveragePercentage >= faceCoverageThreshold &&
+                                     coveragePercentage <= maxFaceCoverageThreshold) ? .green : .red
+            
+            // Only update if the color has actually changed
+            if newColor != lastUpdatedColor {
+                lastUpdatedColor = newColor
+                currentColor = newColor
+                
+                // Flash effect to indicate the change
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.alpha = 0.5
+                }) { _ in
+                    UIView.animate(withDuration: 0.2) {
+                        self.alpha = 1.0
+                    }
+                }
             }
         }
     }
     
-    private func overrideClientAPIProbs(for coverage: CGFloat) {
-        let isRealImage = (coverage >= faceCoverageThreshold &&
-                           coverage <= maxFaceCoverageThreshold)  ? true : false
-        // update clientAPI Apple API fields real vs fake probabilities
+    private func updateTransparentViewCorners() {
+        guard let transparentView = homeScreenViewController?.transparentView as? RoundedCornersView else { return }
+        
+        // Update the corners' color dynamically
+        transparentView.setCornerColor(currentColor)
+    }
+    
+    private func overrideClientAPIProbs(forCoveragePercentage coveragePercentage: CGFloat) {
+        let isRealImage = (coveragePercentage >= faceCoverageThreshold &&
+                           coveragePercentage <= maxFaceCoverageThreshold)
+        
+        // Update clientAPI Apple API fields real vs fake probabilities
         if isRealImage {
             clientAPI.realProbAppleAPI = realProbForRealSelfie
             clientAPI.fakeProbAppleAPI = fakeProbForRealSelfie
@@ -210,3 +209,4 @@ extension CGRect {
         return width * height
     }
 }
+

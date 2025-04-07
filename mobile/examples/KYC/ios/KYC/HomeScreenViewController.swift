@@ -368,31 +368,30 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     }
 }
 
-
 class RoundedCornersView: UIView {
+    private var cornerColor: UIColor = .white // Default corner color
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        //layer.cornerRadius = 10 // Adjust the value to change the corner radius
         self.clipsToBounds = true
-        
-        // Set the background color to clear
         self.backgroundColor = UIColor.clear
     }
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        // Set the white stroke color
-        UIColor.white.setStroke()
+        // Use the dynamic corner color
+        cornerColor.setStroke()
         
         // Create a UIBezierPath for each corner border
+        let lineWidth: CGFloat = 12.0 // Keep thicker lines
+        
         let corner1Path = UIBezierPath()
         corner1Path.move(to: CGPoint(x: 0, y: 0))
         corner1Path.addLine(to: CGPoint(x: 0, y: 20))
         corner1Path.move(to: CGPoint(x: 0, y: 0))
         corner1Path.addLine(to: CGPoint(x: 20, y: 0))
-        // Set the line width to make it bolder
-        corner1Path.lineWidth = 8.0
+        corner1Path.lineWidth = lineWidth
         corner1Path.stroke()
         
         let corner2Path = UIBezierPath()
@@ -400,8 +399,7 @@ class RoundedCornersView: UIView {
         corner2Path.addLine(to: CGPoint(x: rect.width - 20, y: 0))
         corner2Path.move(to: CGPoint(x: rect.width, y: 0))
         corner2Path.addLine(to: CGPoint(x: rect.width, y: 20))
-        // Set the line width to make it bolder
-        corner2Path.lineWidth = 8.0
+        corner2Path.lineWidth = lineWidth
         corner2Path.stroke()
         
         let corner3Path = UIBezierPath()
@@ -409,8 +407,7 @@ class RoundedCornersView: UIView {
         corner3Path.addLine(to: CGPoint(x: rect.width, y: rect.height - 20))
         corner3Path.move(to: CGPoint(x: rect.width, y: rect.height))
         corner3Path.addLine(to: CGPoint(x: rect.width - 20, y: rect.height))
-        // Set the line width to make it bolder
-        corner3Path.lineWidth = 8.0
+        corner3Path.lineWidth = lineWidth
         corner3Path.stroke()
         
         let corner4Path = UIBezierPath()
@@ -418,9 +415,13 @@ class RoundedCornersView: UIView {
         corner4Path.addLine(to: CGPoint(x: 0, y: rect.height - 20))
         corner4Path.move(to: CGPoint(x: 0, y: rect.height))
         corner4Path.addLine(to: CGPoint(x: 20, y: rect.height))
-        // Set the line width to make it bolder
-        corner4Path.lineWidth = 8.0
+        corner4Path.lineWidth = lineWidth
         corner4Path.stroke()
+    }
+    
+    func setCornerColor(_ color: UIColor) {
+        self.cornerColor = color
+        setNeedsDisplay() // Trigger a redraw with the new color
     }
 }
 
