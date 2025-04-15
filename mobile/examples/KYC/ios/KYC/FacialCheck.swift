@@ -12,6 +12,7 @@ class FacialCheck {
     private let serviceName = "com.yella.kyc"
     private let picIDRecognizer = PicIDRecognizer()
     private let similarityMatcher = SimilarityMatcher()
+    private let THRESHOLD: Double = 0.82  // NOTE :- distinct from SimilarityMatch.THRESHOLD
     
     // MARK: - Secure Storage Methods
     
@@ -145,7 +146,7 @@ class FacialCheck {
         }
         
         checkGroup.notify(queue: .main) {
-            let success = maxSimilarity >= self.similarityMatcher.THRESHOLD
+            let success = maxSimilarity >= self.THRESHOLD
             completion(success, maxSimilarity)
         }
     }
