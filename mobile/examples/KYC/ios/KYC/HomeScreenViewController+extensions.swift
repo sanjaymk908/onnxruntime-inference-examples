@@ -133,6 +133,7 @@ extension HomeScreenViewController {
             let message = "Error: \(error.localizedDescription)"
             self.displayMessageAndPic(message, capturedPic: withOriginalImage)
         }
+        return
     }
       
     // Now get focused contour of face & embeddings for it
