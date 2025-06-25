@@ -125,8 +125,13 @@ extension HomeScreenViewController {
         self.selfieImage = withOriginalImage
         DispatchQueue.main.async {
             self.displayMessageAndPic(cloneCheckResult.0, capturedPic: withOriginalImage)
-            self.updateLabels(HomeScreenViewController.ScanIDMessage)
-            self.position = .back
+            // If this is just an auth check, don't update labels & camera position
+            if !self.facialCheck.areBothEmbeddingsStored()  {
+                self.updateLabels(HomeScreenViewController.ScanIDMessage)
+                self.position = .back
+            } else {
+                self.updateLabels(HomeScreenViewController.ScanSelfieMessage)
+            }
         }
     case .failure(let error):
         DispatchQueue.main.async {
