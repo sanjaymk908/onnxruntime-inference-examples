@@ -105,6 +105,14 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     }
     
     private func resetOverlayViews() {
+        // When QR Code view is presented (or any new view) & flow returns from that new view,
+        // viewDidAppear() triggers this method. For some reason scanPromptLabel doesnt appear.
+        // So, we force it to reappear by deleting it here. It will be added fresh in
+        // createTransparentView()
+        if scanPromptLabel != nil {
+            scanPromptLabel.removeFromSuperview()
+            scanPromptLabel = nil
+        }
         self.createTransparentView(self.view)
         self.setupFaceOverlay()
         self.updateLabels(HomeScreenViewController.ScanSelfieMessage)

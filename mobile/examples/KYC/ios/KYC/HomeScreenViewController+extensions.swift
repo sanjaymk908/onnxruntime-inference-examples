@@ -40,7 +40,11 @@ extension HomeScreenViewController {
   func resetState(_ force: Bool = false) {
     DispatchQueue.main.async { [weak self] in
         guard let self = self else {return}
-        self.updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
+        if !self.facialCheck.areBothEmbeddingsStored() {
+            self.updateLabels(isStep1Complete() ? HomeScreenViewController.ScanIDMessage : HomeScreenViewController.ScanSelfieMessage)
+        } else {
+            self.updateLabels(HomeScreenViewController.ScanSelfieMessage)
+        }
         // This causes initial display to disapper-why??
         if  force {
             self.displayMessage("")
