@@ -76,6 +76,9 @@ public class ClientAPI {
     // Is user above age 21 with an unexpired ID?
     public internal(set) var isSelfieReal: Bool = false
     
+    // What was the similarity prob?
+    public internal(set) var similarity: Double = 0.0
+    
     // When age verification fails (user is declared to be below 21), failure reason
     public internal(set) var failureReason: ageVerificationResult?
     public enum ageVerificationResult: Error {

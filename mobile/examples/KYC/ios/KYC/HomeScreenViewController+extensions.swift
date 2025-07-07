@@ -101,7 +101,8 @@ extension HomeScreenViewController {
                           self.presentQRCodeContent(
                             selfieImage: selfieImage,
                             qrCodeImage: nil,
-                            isVerified: (authResult && self.clientAPI.isSelfieReal)
+                            isVerified: (authResult && self.clientAPI.isSelfieReal),
+                            similarity: score ?? 0.0
                           )}
                   }
               }
@@ -141,7 +142,7 @@ extension HomeScreenViewController {
         DispatchQueue.main.async {
             let message = "Error: \(error.localizedDescription)"
             self.displayMessageAndPic(message, capturedPic: withOriginalImage)
-        }
+        }   
         return
     }
       
@@ -207,6 +208,7 @@ extension HomeScreenViewController {
                     self.step2Embs = step2LocalEmbs
                     let (match, prob) = similarityMatcher.cosineMatch()
                     clientAPI.selfieIDprofileMatchProb = prob
+                    clientAPI.similarity = prob
                     if match {
                         var message: String = ""
                         if idInformation.isNotUnderAge == nil {

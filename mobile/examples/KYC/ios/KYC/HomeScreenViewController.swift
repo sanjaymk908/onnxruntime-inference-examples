@@ -193,15 +193,17 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         presentQRCodeContent(
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
-            isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal)
+            isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal),
+            similarity: clientAPI.similarity
         )
     }
     
-    func presentQRCodeContent(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool) {
+    func presentQRCodeContent(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool, similarity: Double) {
         let qrCodeContentView = QRCodeContentView(
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
-            isVerified: isVerified
+            isVerified: isVerified,
+            similarity: similarity
         )
 
         // Present the SwiftUI view directly

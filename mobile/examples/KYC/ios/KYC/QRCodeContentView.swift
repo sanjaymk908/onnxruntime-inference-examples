@@ -1,32 +1,33 @@
-//
-//  QRCodeContentView.swift
-//  KYC
-//
-//  Created by Sanjay Krishnamurthy on 3/28/25.
-//
-
 import SwiftUI
 
 struct QRCodeContentView: View {
     let selfieImage: UIImage
-    let qrCodeImage: UIImage? // Make qrCodeImage optional
+    let qrCodeImage: UIImage?
     let isVerified: Bool
-    
-    // Access presentation mode for dismissing the view
+    let similarity: Double  // Already in [0.0 ... 100.0]
+
     @Environment(\.presentationMode) var presentationMode
-    
+
+    init(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool, similarity: Double = 0.0) {
+        self.selfieImage = selfieImage
+        self.qrCodeImage = qrCodeImage
+        self.isVerified = isVerified
+        self.similarity = similarity
+    }
+
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
-                // Selfie image with verification status overlay
+            Color.black.opacity(0.6)
+
+            VStack(spacing: 12) {
+                // Selfie image with verification icon overlay (bottom-right)
                 ZStack(alignment: .bottomTrailing) {
                     Image(uiImage: selfieImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: UIScreen.main.bounds.height * 0.4)
-                        .clipped()
-                    
-                    // Gear icon with checkmark or X mark
+                        .scaledToFit()
+                        .cornerRadius(16)
+                        .frame(maxHeight: UIScreen.main.bounds.height * 0.4)
+
                     ZStack {
                         Image(systemName: "gearshape.fill")
                             .font(.system(size: 60))
@@ -37,21 +38,33 @@ struct QRCodeContentView: View {
                     }
                     .padding(8)
                 }
-                
-                // Conditionally display QR code image if it exists
+
+                // Similarity label below image
+                Text("Similarity: \(String(format: "%.0f", similarity * 100))%")
+                    .font(.subheadline)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.black.opacity(0.6))
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+
+                // QR code (if present)
                 if let qrCodeImage = qrCodeImage {
                     Image(uiImage: qrCodeImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: UIScreen.main.bounds.height * 0.4)
+                        .scaledToFit()
+                        .cornerRadius(12)
+                        .frame(maxHeight: UIScreen.main.bounds.height * 0.3)
+                        .padding(.top, 8)
                 }
             }
-            .frame(width: UIScreen.main.bounds.width * 0.9)
+            .padding()
             .background(Color.white)
             .cornerRadius(20)
             .shadow(radius: 10)
-            
-            // Dismiss button in the upper-right corner
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
+
+            // Dismiss button (top-right)
             VStack {
                 HStack {
                     Spacer()
@@ -62,15 +75,19 @@ struct QRCodeContentView: View {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 30))
                             .foregroundColor(.gray)
-                            .padding(16)
+                            .padding(.top, 60)
+                            .padding(.trailing, 20)
+
                     }
                 }
                 Spacer()
             }
         }
+        .ignoresSafeArea()
     }
 }
 
+// Notification extension
 extension Notification.Name {
     static let qrCodeDismissed = Notification.Name("qrCodeDismissed")
 }
