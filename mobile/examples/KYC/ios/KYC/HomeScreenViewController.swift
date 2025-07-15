@@ -194,16 +194,21 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
             isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal),
-            similarity: clientAPI.similarity
+            similarity: clientAPI.similarity,
+            realProb: clientAPI.realProb ?? 0.0,
+            realProbAppleAPI: clientAPI.realProbAppleAPI ?? 0.0
         )
     }
     
-    func presentQRCodeContent(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool, similarity: Double) {
+    func presentQRCodeContent(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool, similarity: Double,
+                              realProb: Double, realProbAppleAPI: Double) {
         let qrCodeContentView = QRCodeContentView(
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
             isVerified: isVerified,
-            similarity: similarity
+            similarity: similarity,
+            realProb: realProb,
+            realProbAppleAPI: realProbAppleAPI
         )
 
         // Present the SwiftUI view directly
@@ -314,6 +319,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     }
     
     func displayMessage(_ message: String) {
+        // No need to display prompts for debugging after labels were added
+        // in QRContentView fo Similarity & Real/API Prob
+        //
         textPrompt = message
     }
     

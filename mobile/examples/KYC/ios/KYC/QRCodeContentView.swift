@@ -4,15 +4,26 @@ struct QRCodeContentView: View {
     let selfieImage: UIImage
     let qrCodeImage: UIImage?
     let isVerified: Bool
-    let similarity: Double  // Already in [0.0 ... 100.0]
+    let similarity: Double  // Already in [0.0 ... 1.0] or [0...100] depending on usage
+    let realProb: Double
+    let realProbAppleAPI: Double
 
     @Environment(\.presentationMode) var presentationMode
 
-    init(selfieImage: UIImage, qrCodeImage: UIImage?, isVerified: Bool, similarity: Double = 0.0) {
+    init(
+        selfieImage: UIImage,
+        qrCodeImage: UIImage?,
+        isVerified: Bool,
+        similarity: Double = 0.0,
+        realProb: Double = 0.0,
+        realProbAppleAPI: Double = 0.0
+    ) {
         self.selfieImage = selfieImage
         self.qrCodeImage = qrCodeImage
         self.isVerified = isVerified
         self.similarity = similarity
+        self.realProb = realProb
+        self.realProbAppleAPI = realProbAppleAPI
     }
 
     var body: some View {
@@ -39,14 +50,14 @@ struct QRCodeContentView: View {
                     .padding(8)
                 }
 
-                // Similarity label below image
-                Text("Similarity: \(String(format: "%.0f", similarity * 100))%")
-                    .font(.subheadline)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(Color.black.opacity(0.6))
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                // HStack with Similarity, Real, and API labels side-by-side
+                HStack(spacing: 16) {
+                    infoLabel(title: "Similarity", value: similarity)
+                    infoLabel(title: "Real", value: realProb)
+                    infoLabel(title: "API", value: realProbAppleAPI)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 10)
 
                 // QR code (if present)
                 if let qrCodeImage = qrCodeImage {
@@ -75,15 +86,26 @@ struct QRCodeContentView: View {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 30))
                             .foregroundColor(.gray)
-                            .padding(.top, 60)
-                            .padding(.trailing, 20)
-
                     }
+                    .padding(.top, 60)
+                    .padding(.trailing, 20)
                 }
                 Spacer()
             }
         }
         .ignoresSafeArea()
+    }
+
+    // Helper view for labeled values
+    @ViewBuilder
+    private func infoLabel(title: String, value: Double) -> some View {
+        Text("\(title): \(String(format: "%.0f", value * 100))%")
+            .font(.subheadline)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Color.black.opacity(0.6))
+            .foregroundColor(.white)
+            .cornerRadius(8)
     }
 }
 
