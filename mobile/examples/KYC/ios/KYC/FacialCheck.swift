@@ -8,7 +8,7 @@
 import Security
 import UIKit
 
-class FacialCheck {
+@objc public class FacialCheck: NSObject {
     private let serviceName = "com.yella.kyc"
     private let picIDRecognizer = PicIDRecognizer()
     private let similarityMatcher = SimilarityMatcher()
@@ -62,7 +62,7 @@ class FacialCheck {
     }
     
     /// Clears all stored biometric data without authentication checks
-    public func clearAll() throws {
+    @objc public func clearAll() throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceName

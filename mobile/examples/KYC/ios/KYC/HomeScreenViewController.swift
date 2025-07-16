@@ -195,8 +195,8 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             qrCodeImage: qrCodeImage,
             isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal),
             similarity: clientAPI.similarity,
-            realProb: clientAPI.realProb ?? 0.0,
-            realProbAppleAPI: clientAPI.realProbAppleAPI ?? 0.0
+            realProb: clientAPI.realProb,
+            realProbAppleAPI: clientAPI.realProbAppleAPI
         )
     }
     

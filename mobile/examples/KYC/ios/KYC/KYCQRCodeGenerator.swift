@@ -26,16 +26,15 @@ class KYCQRCodeGenerator {
         //    params["id_profile_embedding"] = idProfileEmbedding.map { String($0) }.joined(separator: ",")
         //}
         
-        params["real_prob"] = String(clientAPI.realProb ?? 0)
-        params["fake_prob"] = String(clientAPI.fakeProb ?? 0)
-        params["real_prob_apple"] = String(clientAPI.realProbAppleAPI ?? 0)
-        params["fake_prob_apple"] = String(clientAPI.fakeProbAppleAPI ?? 0)
-        params["selfie_id_match"] = String(clientAPI.selfieIDprofileMatchProb ?? 0)
+        params["real_prob"] = String(clientAPI.realProb)
+        params["fake_prob"] = String(clientAPI.fakeProb)
+        params["real_prob_apple"] = String(clientAPI.realProbAppleAPI)
+        params["fake_prob_apple"] = String(clientAPI.fakeProbAppleAPI)
+        params["selfie_id_match"] = String(clientAPI.selfieIDprofileMatchProb)
         params["age_verified"] = String(clientAPI.isUserAbove21)
         params["selfie_real"] = String(clientAPI.isSelfieReal)
-        if let failureReason = clientAPI.failureReason {
-            params["failure_reason"] = String(describing: failureReason)
-        }
+        let failureReason = clientAPI.failureReason
+        params["failure_reason"] = String(describing: failureReason)
         
         // Convert params to URL-encoded string
         let queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }

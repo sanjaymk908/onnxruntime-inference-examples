@@ -89,37 +89,25 @@ class CloneInference {
             print("True 0 or False 1: \(labelValue) Probabilities: \(probValues)")
             clientAPI.realProb = Double(probValues[0])
             clientAPI.fakeProb = Double(probValues[1])
-            if let realProb = clientAPI.realProb,
-               let fakeProb = clientAPI.fakeProb,
-               let realProbAppleAPI = clientAPI.realProbAppleAPI,
-               let fakeProbAppleAPI = clientAPI.fakeProbAppleAPI,
-               realProb > fakeProb, realProbAppleAPI > fakeProbAppleAPI,
+            let realProb = clientAPI.realProb
+            let fakeProb = clientAPI.fakeProb
+            let realProbAppleAPI = clientAPI.realProbAppleAPI
+            let fakeProbAppleAPI = clientAPI.fakeProbAppleAPI
+            if realProb > fakeProb, realProbAppleAPI > fakeProbAppleAPI,
                realProb > THRESHOLD {
                 // Is strongly real asserted by custom & Apple liveness
                 let message = String(format: "Selfie is real. \nProbs: %.2f %.2f %.2f %.2f", realProb, fakeProb, realProbAppleAPI, fakeProbAppleAPI)
                 clientAPI.isSelfieReal = true
                 return message
-            } else if let realProb = clientAPI.realProb,
-                      let fakeProb = clientAPI.fakeProb,
-                      let realProbAppleAPI = clientAPI.realProbAppleAPI,
-                      let fakeProbAppleAPI = clientAPI.fakeProbAppleAPI,
-                      fakeProbAppleAPI > realProbAppleAPI {
+            } else if fakeProbAppleAPI > realProbAppleAPI {
                 // Is strongly fake per Apple liveness
                 let message = String(format: "Selfie is printout/fake. \nProbs: %.2f %.2f %.2f %.2f", realProb, fakeProb, realProbAppleAPI, fakeProbAppleAPI)
                 return message
-            } else if let realProb = clientAPI.realProb,
-                      let fakeProb = clientAPI.fakeProb,
-                      let realProbAppleAPI = clientAPI.realProbAppleAPI,
-                      let fakeProbAppleAPI = clientAPI.fakeProbAppleAPI,
-                      fakeProb > realProb, (fakeProb - realProb) > CONFIDENCE_MARGIN {
+            } else if fakeProb > realProb, (fakeProb - realProb) > CONFIDENCE_MARGIN {
                 // Is strongly fake per custom liveness
                 let message = String(format: "Selfie is printout/fake. \nProbs: %.2f %.2f %.2f %.2f", realProb, fakeProb, realProbAppleAPI, fakeProbAppleAPI)
                 return message
-            } else if let realProb = clientAPI.realProb,
-                      let fakeProb = clientAPI.fakeProb,
-                      let realProbAppleAPI = clientAPI.realProbAppleAPI,
-                      let fakeProbAppleAPI = clientAPI.fakeProbAppleAPI,
-                      realProb > fakeProb, (realProb - fakeProb) > CONFIDENCE_MARGIN {
+            } else if realProb > fakeProb, (realProb - fakeProb) > CONFIDENCE_MARGIN {
                 // Is strongly real per custom liveness
                 let message = String(format: "Selfie is real. \nProbs: %.2f %.2f %.2f %.2f", realProb, fakeProb, realProbAppleAPI, fakeProbAppleAPI)
                 clientAPI.isSelfieReal = true

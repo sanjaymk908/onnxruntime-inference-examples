@@ -8,19 +8,20 @@
 import Foundation
 import SwiftUI
 
-public protocol ClientAPIDelegate: AnyObject {
+@objc public protocol ClientAPIDelegate: AnyObject {
     func completedKYC(clientAPI: ClientAPI)
 }
 
-public class ClientAPI {
-    public static let shared = ClientAPI()
-    public weak var delegate: ClientAPIDelegate?
+@objc public class ClientAPI: NSObject {
+    @objc public static let shared = ClientAPI()
+    @objc public weak var delegate: ClientAPIDelegate?
         
-    private init() {
+    override private init() {
+        super.init()
         failureReason = .inDeterminate
     }
     
-    private func completedKYC() {
+    @objc private func completedKYC() {
         delegate?.completedKYC(clientAPI: self)
     }
     
@@ -29,7 +30,7 @@ public class ClientAPI {
     ///
         
     // See below for possible client usage scenarios
-    public func start(fullScreen: Bool = true) -> UIViewController {
+    @objc public func start(fullScreen: Bool = true) -> UIViewController {
         let contentView = ContentView()
         let hostingController = UIHostingController(rootView: contentView)
         if fullScreen {
@@ -38,17 +39,27 @@ public class ClientAPI {
         return hostingController
     }
     
-    public func resetKYCState() {
+    @objc public func resetKYCState() {
         selfieEmbedding = nil
         idProfileEmbedding = nil
-        realProb = nil
-        fakeProb = nil
-        realProbAppleAPI = nil
-        fakeProbAppleAPI = nil
-        selfieIDprofileMatchProb = nil
+        realProb = 0.0
+        fakeProb = 0.0
+        realProbAppleAPI = 0.0
+        fakeProbAppleAPI = 0.0
+        selfieIDprofileMatchProb = 0.0
         isUserAbove21 = false
         isSelfieReal = false
         failureReason = .inDeterminate
+    }
+    
+    @objc public func clearBiometrics() {
+        let facialCheck = FacialCheck()
+        do {
+            try facialCheck.clearAll() // Clear all locally stored biometrics
+            failureReason = .inDeterminate
+        } catch {
+            failureReason = .internalError
+        }
     }
     
     ///
@@ -59,29 +70,29 @@ public class ClientAPI {
     public internal(set) var idProfileEmbedding: [Double]?
     
     // Probability that user selfie is real or fake per Trusource's liveness check
-    public internal(set) var realProb: Double?
-    public internal(set) var fakeProb: Double?
+    @objc public internal(set) var realProb: Double = 0.0
+    @objc public internal(set) var fakeProb: Double = 0.0
     
     // Probability that user selfie is real or fake per Apple's APIs
-    public internal(set) var realProbAppleAPI: Double?
-    public internal(set) var fakeProbAppleAPI: Double?
+    @objc public internal(set) var realProbAppleAPI: Double = 0.0
+    @objc public internal(set) var fakeProbAppleAPI: Double = 0.0
     
     // Probability of match b/w user selfie & ID profile pic
-    public internal(set) var selfieIDprofileMatchProb: Double?
+    @objc public internal(set) var selfieIDprofileMatchProb: Double = 0.0
     
     // Is user above age 21 with an unexpired ID?
-    public internal(set) var isUserAbove21: Bool = false
+    @objc public internal(set) var isUserAbove21: Bool = false
     
     // Is selfie fake or real
     // Is user above age 21 with an unexpired ID?
-    public internal(set) var isSelfieReal: Bool = false
+    @objc public internal(set) var isSelfieReal: Bool = false
     
     // What was the similarity prob?
-    public internal(set) var similarity: Double = 0.0
+    @objc public internal(set) var similarity: Double = 0.0
     
     // When age verification fails (user is declared to be below 21), failure reason
-    public internal(set) var failureReason: ageVerificationResult?
-    public enum ageVerificationResult: Error {
+    @objc public internal(set) var failureReason: AgeVerificationResult = .inDeterminate
+    @objc public enum AgeVerificationResult: Int {
         case inDeterminate
         case above21
         case below21

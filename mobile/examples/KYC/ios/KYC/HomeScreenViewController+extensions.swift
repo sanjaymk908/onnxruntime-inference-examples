@@ -103,8 +103,8 @@ extension HomeScreenViewController {
                             qrCodeImage: nil,
                             isVerified: (authResult && self.clientAPI.isSelfieReal),
                             similarity: score ?? 0.0,
-                            realProb: self.clientAPI.realProb ?? 0.0,
-                            realProbAppleAPI: self.clientAPI.realProbAppleAPI ?? 0.0
+                            realProb: self.clientAPI.realProb,
+                            realProbAppleAPI: self.clientAPI.realProbAppleAPI
                           )}
                   }
               }

@@ -26,8 +26,9 @@ class IDInformation {
             clientAPI.failureReason = .failedToReadID
             return nil
         }
-        guard let realProb = clientAPI.realProb, let fakeProb = clientAPI.fakeProb,
-              realProb > fakeProb else {
+        let realProb = clientAPI.realProb
+        let fakeProb = clientAPI.fakeProb
+        guard realProb > fakeProb else {
             clientAPI.failureReason = .selfieInaccurate
             return nil
         }
