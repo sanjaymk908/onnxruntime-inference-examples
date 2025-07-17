@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -45,6 +45,39 @@
 		C1AFAA5A2C65DCE8003668C1 /* Lumina in Frameworks */ = {isa = PBXBuildFile; productRef = C1AFAA592C65DCE8003668C1 /* Lumina */; };
 		C1C0F2FC2D5E590500D45589 /* ClientAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0F2FB2D5E590500D45589 /* ClientAPI.swift */; };
 		C1C0F2FD2D5E590500D45589 /* ClientAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0F2FB2D5E590500D45589 /* ClientAPI.swift */; };
+		C1C1CA392E2958BD0023F149 /* xgboost_liveness_quant_enh.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1A3081E2D6578C30076F4C9 /* xgboost_liveness_quant_enh.onnx */; };
+		C1C1CA3A2E2958BD0023F149 /* clip_image_encoder.quant.onnx in Resources */ = {isa = PBXBuildFile; fileRef = C1A3081C2D6578B20076F4C9 /* clip_image_encoder.quant.onnx */; };
+		C1C1CA3B2E2958C70023F149 /* assert_arc_enabled.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563562C18F1DA00FF9A99 /* assert_arc_enabled.mm */; };
+		C1C1CA3C2E2958CC0023F149 /* cxx_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563442C18F1D800FF9A99 /* cxx_utils.mm */; };
+		C1C1CA3D2E2958D20023F149 /* error_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563412C18F1D700FF9A99 /* error_utils.mm */; };
+		C1C1CA3E2E2958DA0023F149 /* ort_coreml_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563572C18F1DA00FF9A99 /* ort_coreml_execution_provider.mm */; };
+		C1C1CA3F2E2958DF0023F149 /* ort_enums.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135634F2C18F1D800FF9A99 /* ort_enums.mm */; };
+		C1C1CA402E2958E50023F149 /* ort_env.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135633F2C18F1D700FF9A99 /* ort_env.mm */; };
+		C1C1CA412E2958EB0023F149 /* ort_session.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563512C18F1D900FF9A99 /* ort_session.mm */; };
+		C1C1CA422E2958F20023F149 /* ort_xnnpack_execution_provider.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563552C18F1DA00FF9A99 /* ort_xnnpack_execution_provider.mm */; };
+		C1C1CA432E2958F20023F149 /* ort_value.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563402C18F1D700FF9A99 /* ort_value.mm */; };
+		C1C1CA442E29590E0023F149 /* PicRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE237D626855E4600234E2C /* PicRecognitionApp.swift */; };
+		C1C1CA452E2959140023F149 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DD26855E4B00234E2C /* Preview Assets.xcassets */; };
+		C1C1CA462E29591B0023F149 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFE237DA26855E4B00234E2C /* Assets.xcassets */; };
+		C1C1CA472E2959260023F149 /* PicRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC93C2C33E11F008023F3 /* PicRecognizer.swift */; };
+		C1C1CA482E2959260023F149 /* QRCodeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C169768F2D97327000A06BDA /* QRCodeContentView.swift */; };
+		C1C1CA492E2959260023F149 /* FaceOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB807B2CD925B0006431BE /* FaceOverlayView.swift */; };
+		C1C1CA4A2E2959260023F149 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19582612C660AB5004B8934 /* PermissionManager.swift */; };
+		C1C1CA4B2E2959260023F149 /* FacialCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16976922D9C548F00A06BDA /* FacialCheck.swift */; };
+		C1C1CA4C2E2959260023F149 /* VideoRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826A2C6C7DDF004B8934 /* VideoRecognizer.swift */; };
+		C1C1CA4D2E2959260023F149 /* KYCQRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C169768C2D972FF200A06BDA /* KYCQRCodeGenerator.swift */; };
+		C1C1CA4E2E2959260023F149 /* ClientAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0F2FB2D5E590500D45589 /* ClientAPI.swift */; };
+		C1C1CA4F2E2959260023F149 /* SimilarityMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB80752CD02DCE006431BE /* SimilarityMatcher.swift */; };
+		C1C1CA502E2959260023F149 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19DC94A2C3A69E4008023F3 /* ContentView.swift */; };
+		C1C1CA512E2959260023F149 /* HomeScreenViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195826D2C6C814E004B8934 /* HomeScreenViewController+extensions.swift */; };
+		C1C1CA522E2959260023F149 /* PicIDRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB80782CD031C1006431BE /* PicIDRecognizer.swift */; };
+		C1C1CA532E2959260023F149 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C195825E2C6609D8004B8934 /* HomeScreenViewController.swift */; };
+		C1C1CA542E2959260023F149 /* CloneInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161D98D2C2D52FD00F60151 /* CloneInference.swift */; };
+		C1C1CA552E2959340023F149 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13AACDE2C17F683000C3411 /* CoreVideo.framework */; };
+		C1C1CA562E2959340023F149 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C19DC9452C35463C008023F3 /* Metal.framework */; };
+		C1C1CA582E2959520023F149 /* onnxruntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; };
+		C1C1CA592E2959520023F149 /* onnxruntime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C161D9872C2211AC00F60151 /* onnxruntime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C1C1CA5C2E2959570023F149 /* Lumina in Frameworks */ = {isa = PBXBuildFile; productRef = C1C1CA5B2E2959570023F149 /* Lumina */; };
 		C1DB80762CD02DCE006431BE /* SimilarityMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB80752CD02DCE006431BE /* SimilarityMatcher.swift */; };
 		C1DB80772CD02DCE006431BE /* SimilarityMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB80752CD02DCE006431BE /* SimilarityMatcher.swift */; };
 		C1DB80792CD031C1006431BE /* PicIDRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DB80782CD031C1006431BE /* PicIDRecognizer.swift */; };
@@ -68,6 +101,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		C1C1CA5A2E2959520023F149 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C1C1CA592E2959520023F149 /* onnxruntime.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1F2C81A2C1788A2001AE4F8 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -131,6 +175,7 @@
 		C1A3081C2D6578B20076F4C9 /* clip_image_encoder.quant.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = clip_image_encoder.quant.onnx; sourceTree = "<group>"; };
 		C1A3081E2D6578C30076F4C9 /* xgboost_liveness_quant_enh.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = xgboost_liveness_quant_enh.onnx; sourceTree = "<group>"; };
 		C1C0F2FB2D5E590500D45589 /* ClientAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAPI.swift; sourceTree = "<group>"; };
+		C1C1CA322E2958B20023F149 /* Dist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Dist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1DB80752CD02DCE006431BE /* SimilarityMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarityMatcher.swift; sourceTree = "<group>"; };
 		C1DB80782CD031C1006431BE /* PicIDRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicIDRecognizer.swift; sourceTree = "<group>"; };
 		C1DB807B2CD925B0006431BE /* FaceOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOverlayView.swift; sourceTree = "<group>"; };
@@ -145,7 +190,22 @@
 		EFE237EA26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		C1C1CA332E2958B20023F149 /* Dist */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Dist; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		C1C1CA2F2E2958B20023F149 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1C1CA5C2E2959570023F149 /* Lumina in Frameworks */,
+				C1C1CA582E2959520023F149 /* onnxruntime.framework in Frameworks */,
+				C1C1CA552E2959340023F149 /* CoreVideo.framework in Frameworks */,
+				C1C1CA562E2959340023F149 /* Metal.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFE237D026855E4600234E2C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -254,6 +314,7 @@
 			children = (
 				EFE237D526855E4600234E2C /* KYC */,
 				EFE237E726855E4B00234E2C /* KYCTests */,
+				C1C1CA332E2958B20023F149 /* Dist */,
 				EFE237D426855E4600234E2C /* Products */,
 				BE5303DF73A9410AA3E0E0EA /* Pods */,
 				C1F2C80D2C17872C001AE4F8 /* Frameworks */,
@@ -265,6 +326,7 @@
 			children = (
 				EFE237D326855E4600234E2C /* TruKYC.app */,
 				EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */,
+				C1C1CA322E2958B20023F149 /* Dist.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -318,7 +380,42 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		C1C1CA2D2E2958B20023F149 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		C1C1CA312E2958B20023F149 /* Dist */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C1C1CA382E2958B20023F149 /* Build configuration list for PBXNativeTarget "Dist" */;
+			buildPhases = (
+				C1C1CA2D2E2958B20023F149 /* Headers */,
+				C1C1CA2E2E2958B20023F149 /* Sources */,
+				C1C1CA2F2E2958B20023F149 /* Frameworks */,
+				C1C1CA302E2958B20023F149 /* Resources */,
+				C1C1CA5A2E2959520023F149 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C1C1CA332E2958B20023F149 /* Dist */,
+			);
+			name = Dist;
+			packageProductDependencies = (
+				C1C1CA5B2E2959570023F149 /* Lumina */,
+			);
+			productName = Dist;
+			productReference = C1C1CA322E2958B20023F149 /* Dist.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		EFE237D226855E4600234E2C /* KYC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EFE237F826855E4B00234E2C /* Build configuration list for PBXNativeTarget "KYC" */;
@@ -364,9 +461,12 @@
 		EFE237CB26855E4600234E2C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					C1C1CA312E2958B20023F149 = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					EFE237D226855E4600234E2C = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -394,11 +494,23 @@
 			targets = (
 				EFE237D226855E4600234E2C /* KYC */,
 				EFE237E326855E4B00234E2C /* KYCTests */,
+				C1C1CA312E2958B20023F149 /* Dist */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C1C1CA302E2958B20023F149 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1C1CA392E2958BD0023F149 /* xgboost_liveness_quant_enh.onnx in Resources */,
+				C1C1CA452E2959140023F149 /* Preview Assets.xcassets in Resources */,
+				C1C1CA462E29591B0023F149 /* Assets.xcassets in Resources */,
+				C1C1CA3A2E2958BD0023F149 /* clip_image_encoder.quant.onnx in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFE237D126855E4600234E2C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -420,6 +532,37 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C1C1CA2E2E2958B20023F149 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1C1CA422E2958F20023F149 /* ort_xnnpack_execution_provider.mm in Sources */,
+				C1C1CA432E2958F20023F149 /* ort_value.mm in Sources */,
+				C1C1CA3D2E2958D20023F149 /* error_utils.mm in Sources */,
+				C1C1CA3E2E2958DA0023F149 /* ort_coreml_execution_provider.mm in Sources */,
+				C1C1CA3B2E2958C70023F149 /* assert_arc_enabled.mm in Sources */,
+				C1C1CA442E29590E0023F149 /* PicRecognitionApp.swift in Sources */,
+				C1C1CA3C2E2958CC0023F149 /* cxx_utils.mm in Sources */,
+				C1C1CA3F2E2958DF0023F149 /* ort_enums.mm in Sources */,
+				C1C1CA472E2959260023F149 /* PicRecognizer.swift in Sources */,
+				C1C1CA482E2959260023F149 /* QRCodeContentView.swift in Sources */,
+				C1C1CA492E2959260023F149 /* FaceOverlayView.swift in Sources */,
+				C1C1CA4A2E2959260023F149 /* PermissionManager.swift in Sources */,
+				C1C1CA4B2E2959260023F149 /* FacialCheck.swift in Sources */,
+				C1C1CA4C2E2959260023F149 /* VideoRecognizer.swift in Sources */,
+				C1C1CA4D2E2959260023F149 /* KYCQRCodeGenerator.swift in Sources */,
+				C1C1CA4E2E2959260023F149 /* ClientAPI.swift in Sources */,
+				C1C1CA4F2E2959260023F149 /* SimilarityMatcher.swift in Sources */,
+				C1C1CA502E2959260023F149 /* ContentView.swift in Sources */,
+				C1C1CA512E2959260023F149 /* HomeScreenViewController+extensions.swift in Sources */,
+				C1C1CA522E2959260023F149 /* PicIDRecognizer.swift in Sources */,
+				C1C1CA532E2959260023F149 /* HomeScreenViewController.swift in Sources */,
+				C1C1CA542E2959260023F149 /* CloneInference.swift in Sources */,
+				C1C1CA412E2958EB0023F149 /* ort_session.mm in Sources */,
+				C1C1CA402E2958E50023F149 /* ort_env.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFE237CF26855E4600234E2C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -484,6 +627,117 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		C1C1CA362E2958B20023F149 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 33BJ727SMS;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include",
+				);
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.Dist;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C1C1CA372E2958B20023F149 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 33BJ727SMS;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+				);
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yella.Dist;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		EFE237F626855E4B00234E2C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -611,6 +865,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_ENTITLEMENTS = KYC/KYC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_ASSET_PATHS = "\"KYC/Preview Content\"";
 				DEVELOPMENT_TEAM = 33BJ727SMS;
 				ENABLE_PREVIEWS = YES;
@@ -664,14 +919,15 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_ENTITLEMENTS = KYC/KYC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_ASSET_PATHS = "\"KYC/Preview Content\"";
 				DEVELOPMENT_TEAM = 33BJ727SMS;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/**",
-					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**";
 				HEADER_SEARCH_PATHS = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include";
@@ -764,6 +1020,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C1C1CA382E2958B20023F149 /* Build configuration list for PBXNativeTarget "Dist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C1C1CA362E2958B20023F149 /* Debug */,
+				C1C1CA372E2958B20023F149 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EFE237CE26855E4600234E2C /* Build configuration list for PBXProject "KYC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -806,6 +1071,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		C1AFAA592C65DCE8003668C1 /* Lumina */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1AFAA582C65D57D003668C1 /* XCRemoteSwiftPackageReference "Lumina" */;
+			productName = Lumina;
+		};
+		C1C1CA5B2E2959570023F149 /* Lumina */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C1AFAA582C65D57D003668C1 /* XCRemoteSwiftPackageReference "Lumina" */;
 			productName = Lumina;
