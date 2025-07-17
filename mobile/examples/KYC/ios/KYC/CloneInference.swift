@@ -6,6 +6,7 @@
 
 
 import Foundation
+import onnxruntime
 
 class CloneInference {
   typealias InputType = [Double]

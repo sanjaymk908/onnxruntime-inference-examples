@@ -10,6 +10,7 @@ import CoreGraphics
 import CoreImage
 import CoreVideo
 import Foundation
+import onnxruntime
 import UIKit
 import Vision
 

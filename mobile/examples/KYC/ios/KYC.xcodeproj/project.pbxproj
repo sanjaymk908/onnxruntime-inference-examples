@@ -143,7 +143,6 @@
 		EFE237E426855E4B00234E2C /* ai.framer.yella.MatcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ai.framer.yella.MatcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFE237E826855E4B00234E2C /* SpeechRecognitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionTests.swift; sourceTree = "<group>"; };
 		EFE237EA26855E4B00234E2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EFE2380326855FC800234E2C /* KYC-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KYC-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,7 +277,6 @@
 				C1A3081E2D6578C30076F4C9 /* xgboost_liveness_quant_enh.onnx */,
 				C13563612C18F1EA00FF9A99 /* onnxruntime-objc */,
 				C135634D2C18F1D800FF9A99 /* include */,
-				EFE2380326855FC800234E2C /* KYC-Bridging-Header.h */,
 				EFE237D626855E4600234E2C /* PicRecognitionApp.swift */,
 				EFE237DA26855E4B00234E2C /* Assets.xcassets */,
 				EFE237DF26855E4B00234E2C /* Info.plist */,
@@ -609,6 +607,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_ENTITLEMENTS = KYC/KYC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -621,10 +620,11 @@
 					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include",
 				);
 				INFOPLIST_FILE = KYC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -633,6 +633,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
+				MODULEMAP_FILE = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include/module.modulemap";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
@@ -643,7 +644,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "KYC/KYC-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
@@ -659,6 +660,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_ENTITLEMENTS = KYC/KYC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -672,10 +674,11 @@
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64_x86_64-simulator/onnxruntime.framework/Headers",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include",
 				);
 				INFOPLIST_FILE = KYC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -684,6 +687,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
+				MODULEMAP_FILE = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include/module.modulemap";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
@@ -694,7 +698,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "KYC/KYC-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
