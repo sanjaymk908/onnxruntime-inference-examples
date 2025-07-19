@@ -5,40 +5,176 @@
 //  Created by Sanjay Krishnamurthy on 2/13/25.
 //
 
+//
+//  ClientAPI.swift
+//  KYC
+//
+//  Created by Sanjay Krishnamurthy on 2/13/25.
+//
+
+//
+// MARK: - Example: Using TruKYC in your App
+//
+
+/// =======================================================================================
+/// ▶️ How to Invoke the TruKYC Flow
+///
+/// Call `ClientAPI.shared.start()` to launch the TruKYC onboarding UI.
+/// The returned `UIViewController` should be presented or embedded in your app's UI.
+/// Assign a `ClientAPIDelegate` beforehand to receive completion results.
+///
+///
+/// --- UIKit Example (Full-Screen Modal Presentation) ---
+///
+///     class ViewController: UIViewController, ClientAPIDelegate {
+///         override func viewDidLoad() {
+///             super.viewDidLoad()
+///
+///             // Register delegate
+///             ClientAPI.shared.delegate = self
+///
+///             // Launch TruKYC flow
+///             let kycVC = ClientAPI.shared.start()
+///             present(kycVC, animated: true)
+///         }
+///
+///         // Called when KYC is complete
+///         func completedKYC(result: KYCResult) {
+///             print("📬 KYC Completed")
+///             print("✅ Real score: \(result.realProb)")
+///             print("🔗 Match score: \(result.selfieIDprofileMatchProb)")
+///             print("👤 Selfie real: \(result.isSelfieReal)")
+///             print("🍷 Over 21: \(result.isUserAbove21)")
+///             print("❌ Failure Reason: \(result.failureReason)")
+///         }
+///     }
+///
+///
+/// --- UIKit Embedded Example (Non-Fullscreen) ---
+///
+///     let embeddedViewController = ClientAPI.shared.start(fullScreen: false)
+///     addChild(embeddedViewController)
+///     view.addSubview(embeddedViewController.view)
+///     embeddedViewController.didMove(toParent: self)
+///
+///
+/// --- SwiftUI Wrapper Example ---
+///
+///     struct TruKYCView: View {
+///         var body: some View {
+///             TruKYCRepresentable()
+///         }
+///     }
+///
+///     struct TruKYCRepresentable: UIViewControllerRepresentable {
+///         func makeUIViewController(context: Context) -> UIViewController {
+///             return ClientAPI.shared.start()
+///         }
+///
+///         func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+///     }
+///
+/// =======================================================================================
+/// 📌 Notes:
+/// - The `KYCResult` passed to your delegate is an immutable snapshot of all KYC output.
+/// - Avoid accessing properties from `ClientAPI.shared`—they are now internal-only.
+/// - Call `ClientAPI.shared.clearBiometrics()` to delete any stored biometrics locally.
+/// =======================================================================================
+
+
 import Foundation
 import SwiftUI
 
+// MARK: - Delegate Protocol
+
 @objc public protocol ClientAPIDelegate: AnyObject {
-    func completedKYC(clientAPI: ClientAPI)
+    func completedKYC(result: KYCResult)
 }
 
+// MARK: - Final KYC Result
+
+@objc public class KYCResult: NSObject {
+    public let selfieEmbedding: [Double]?
+    public let idProfileEmbedding: [Double]?
+
+    public let realProb: Double
+    public let fakeProb: Double
+
+    public let realProbAppleAPI: Double
+    public let fakeProbAppleAPI: Double
+
+    public let selfieIDprofileMatchProb: Double
+
+    public let isUserAbove21: Bool
+    public let is2StepKYC: Bool
+    public let isSelfieReal: Bool
+
+    public let failureReason: ClientAPI.AgeVerificationResult
+
+    init(
+        selfieEmbedding: [Double]?,
+        idProfileEmbedding: [Double]?,
+        realProb: Double,
+        fakeProb: Double,
+        realProbAppleAPI: Double,
+        fakeProbAppleAPI: Double,
+        selfieIDprofileMatchProb: Double,
+        isUserAbove21: Bool,
+        is2StepKYC: Bool,
+        isSelfieReal: Bool,
+        failureReason: ClientAPI.AgeVerificationResult
+    ) {
+        self.selfieEmbedding = selfieEmbedding
+        self.idProfileEmbedding = idProfileEmbedding
+        self.realProb = realProb
+        self.fakeProb = fakeProb
+        self.realProbAppleAPI = realProbAppleAPI
+        self.fakeProbAppleAPI = fakeProbAppleAPI
+        self.selfieIDprofileMatchProb = selfieIDprofileMatchProb
+        self.isUserAbove21 = isUserAbove21
+        self.is2StepKYC = is2StepKYC
+        self.isSelfieReal = isSelfieReal
+        self.failureReason = failureReason
+    }
+}
+
+// MARK: - Public API
+
 @objc public class ClientAPI: NSObject {
+    
+    // Singleton instance
     @objc public static let shared = ClientAPI()
+    
+    // Client delegate
     @objc public weak var delegate: ClientAPIDelegate?
-        
+    
+    // Internal delegate (used by TruKYC internally)
+    @objc weak var internalDelegate: ClientAPIDelegate?
+
+    // MARK: - Lifecycle
+    
     override private init() {
         super.init()
         failureReason = .inDeterminate
     }
-    
-    @objc private func completedKYC() {
-        delegate?.completedKYC(clientAPI: self)
-    }
-    
-    ///
-    /// Public method
-    ///
-        
-    // See below for possible client usage scenarios
+
+    // MARK: - Public Methods
+
+    /// Launch the TruKYC flow
     @objc public func start(fullScreen: Bool = true) -> UIViewController {
+        resetKYCState()
+        
         let contentView = ContentView()
         let hostingController = UIHostingController(rootView: contentView)
+        
         if fullScreen {
             hostingController.modalPresentationStyle = .fullScreen
         }
+        
         return hostingController
     }
-    
+
+    /// Clear all KYC state (manually callable)
     @objc public func resetKYCState() {
         selfieEmbedding = nil
         idProfileEmbedding = nil
@@ -48,50 +184,70 @@ import SwiftUI
         fakeProbAppleAPI = 0.0
         selfieIDprofileMatchProb = 0.0
         isUserAbove21 = false
+        is2StepKYC = false
         isSelfieReal = false
         failureReason = .inDeterminate
     }
-    
+
+    /// Clear on-device biometrics
     @objc public func clearBiometrics() {
         let facialCheck = FacialCheck()
         do {
-            try facialCheck.clearAll() // Clear all locally stored biometrics
+            try facialCheck.clearAll()
             failureReason = .inDeterminate
         } catch {
             failureReason = .internalError
         }
     }
-    
-    ///
-    ///   These are the properties exposed by the SDK for client integration
-    ///
-    
-    public internal(set) var selfieEmbedding: [Double]?
-    public internal(set) var idProfileEmbedding: [Double]?
-    
-    // Probability that user selfie is real or fake per Trusource's liveness check
-    @objc public internal(set) var realProb: Double = 0.0
-    @objc public internal(set) var fakeProb: Double = 0.0
-    
-    // Probability that user selfie is real or fake per Apple's APIs
-    @objc public internal(set) var realProbAppleAPI: Double = 0.0
-    @objc public internal(set) var fakeProbAppleAPI: Double = 0.0
-    
-    // Probability of match b/w user selfie & ID profile pic
-    @objc public internal(set) var selfieIDprofileMatchProb: Double = 0.0
-    
-    // Is user above age 21 with an unexpired ID?
-    @objc public internal(set) var isUserAbove21: Bool = false
-    
-    // Is selfie fake or real
-    // Is user above age 21 with an unexpired ID?
-    @objc public internal(set) var isSelfieReal: Bool = false
-    
-    // What was the similarity prob?
-    @objc public internal(set) var similarity: Double = 0.0
-    
-    // When age verification fails (user is declared to be below 21), failure reason
-    @objc public internal(set) var failureReason: AgeVerificationResult = .inDeterminate
+
+    // MARK: - Internal Completion Flow
+
+    /// Internal method to invoke the completion callback
+    func internalCompletedKYC() {
+        completedKYC()
+    }
+
+    private func completedKYC() {
+        let result = generateKYCResult()
+        internalDelegate?.completedKYC(result: result)
+        delegate?.completedKYC(result: result)
+    }
+
+    /// Create a snapshot of the current KYC result
+    private func generateKYCResult() -> KYCResult {
+        return KYCResult(
+            selfieEmbedding: selfieEmbedding,
+            idProfileEmbedding: idProfileEmbedding,
+            realProb: realProb,
+            fakeProb: fakeProb,
+            realProbAppleAPI: realProbAppleAPI,
+            fakeProbAppleAPI: fakeProbAppleAPI,
+            selfieIDprofileMatchProb: selfieIDprofileMatchProb,
+            isUserAbove21: isUserAbove21,
+            is2StepKYC: is2StepKYC,
+            isSelfieReal: isSelfieReal,
+            failureReason: failureReason
+        )
+    }
+
+    // MARK: - Internal State (now private to framework)
+
+    internal var selfieEmbedding: [Double]? // or just: var selfieEmbedding: [Double]?
+    internal var idProfileEmbedding: [Double]?
+
+    internal var realProb: Double = 0.0
+    internal var fakeProb: Double = 0.0
+
+    internal var realProbAppleAPI: Double = 0.0
+    internal var fakeProbAppleAPI: Double = 0.0
+
+    internal var selfieIDprofileMatchProb: Double = 0.0
+
+    internal var isUserAbove21: Bool = false
+    internal var is2StepKYC: Bool = false
+    internal var isSelfieReal: Bool = false
+    internal var failureReason: AgeVerificationResult = .inDeterminate
+
     @objc public enum AgeVerificationResult: Int {
         case inDeterminate
         case above21
@@ -103,61 +259,4 @@ import SwiftUI
         case internalError
     }
 }
-
-// Extension to make completedKYC() accessible within the TruKYC framework
-extension ClientAPI {
-    func internalCompletedKYC() {
-        completedKYC()
-    }
-}
-
-///
-/// Possible client usage of the start() method in invoking the recommended TruKYC UI
-///
-
-//  In a UIKit app
-//let viewController = ClientAPI.shared.start()
-//present(viewController, animated: true)
-//
-
-// Or for embedded use
-//let embeddedViewController = ClientAPI.shared.start(fullScreen: false)
-//addChild(embeddedViewController)
-//view.addSubview(embeddedViewController.view)
-//embeddedViewController.didMove(toParent: self)
-//
-
-// Or in a SwiftUI app
-//struct ContentView: View {
-//    var body: some View {
-//        ClientViewControllerRepresentable()
-//    }
-//}
-//
-//struct ClientViewControllerRepresentable: UIViewControllerRepresentable {
-//    func makeUIViewController(context: Context) -> UIViewController {
-//        return ClientAPI.shared.start()
-//    }
-//    
-//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-//}
-
-///
-/// Complete sample client usage showing instantiation, start() & completedKYC() usage
-///
-
-//class ViewController: UIViewController, ClientAPIDelegate {
-//   override func viewDidLoad() {
-//       super.viewDidLoad()
-//       ClientAPI.shared.delegate = self
-//       let kycViewController = ClientAPI.shared.start()
-//       present(kycViewController, animated: true)
-//   }
-//
-//   func completedKYC(clientAPI: ClientAPI) {
-//       print("KYC completed!")
-//       // Handle KYC completion
-//   }
-//}
-
 

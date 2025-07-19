@@ -893,6 +893,7 @@
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
 				);
+				OTHER_SWIFT_FLAGS = "-DSTANDALONE_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yella.kyc;
 				PRODUCT_NAME = TruKYC;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -948,6 +949,7 @@
 					"$(OTHER_CFLAGS)",
 					"-stdlib=libc++",
 				);
+				OTHER_SWIFT_FLAGS = "-DSTANDALONE_APP";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yella.kyc;
 				PRODUCT_NAME = TruKYC;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -73,11 +73,11 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
                 }
             }
         }
-        
-        // Reset KYC state if needed
+#if STANDALONE_APP
+        // DO NOT DO BELOW CODE FOR SDK - let consumer do it by start()
         clientAPI.resetKYCState()
+#endif
         self.resetInternalState()
-        
         // Force reload overlays
         DispatchQueue.main.async {
             self.resetOverlayViews()
@@ -119,11 +119,13 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         self.view.bringSubviewToFront(self.transparentView)
     }
     
-    func completedKYC(clientAPI: ClientAPI) {
+    func completedKYC(result: KYCResult) {
         print("Completed TruKYC Processing!")
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {return}
-            self.presentQRVerification(clientAPI: self.clientAPI)
+        if clientAPI.is2StepKYC {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {return}
+                self.presentQRVerification(clientAPI: self.clientAPI)
+            }
         }
     }
     
@@ -194,7 +196,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
             selfieImage: selfieImage,
             qrCodeImage: qrCodeImage,
             isVerified: (clientAPI.isUserAbove21 && clientAPI.isSelfieReal),
-            similarity: clientAPI.similarity,
+            similarity: clientAPI.selfieIDprofileMatchProb,
             realProb: clientAPI.realProb,
             realProbAppleAPI: clientAPI.realProbAppleAPI
         )

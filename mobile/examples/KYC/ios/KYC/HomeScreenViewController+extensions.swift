@@ -38,6 +38,7 @@ extension HomeScreenViewController {
   ///
 
   func resetState(_ force: Bool = false) {
+    // Reset UI state now (async)
     DispatchQueue.main.async { [weak self] in
         guard let self = self else {return}
         if !self.facialCheck.areBothEmbeddingsStored() {
@@ -58,7 +59,7 @@ extension HomeScreenViewController {
   }
     
   func initKYC() {
-    clientAPI.delegate = self
+    clientAPI.internalDelegate = self
   }
 
   private func processCapturedImage(_ inputImage: UIImage, shouldRotate: Bool = false) -> (UIImage, UIImage) {
@@ -97,19 +98,27 @@ extension HomeScreenViewController {
                   if let selfieEmbedding = self.step1Embs,
                      let selfieImage = self.selfieImage {
                       self.facialCheck.performAuth(inputEmbedding: selfieEmbedding) { (authResult, score) in
+                          self.clientAPI.selfieIDprofileMatchProb = score ?? 0.0
+                          let isVerified = (authResult && self.clientAPI.isSelfieReal)
+                          self.clientAPI.isUserAbove21 = isVerified
+                          self.clientAPI.failureReason = (isVerified ? .above21 : .below21)
                           // Create the SwiftUI view
                           self.presentQRCodeContent(
                             selfieImage: selfieImage,
                             qrCodeImage: nil,
-                            isVerified: (authResult && self.clientAPI.isSelfieReal),
+                            isVerified: isVerified,
                             similarity: score ?? 0.0,
                             realProb: self.clientAPI.realProb,
-                            realProbAppleAPI: self.clientAPI.realProbAppleAPI
-                          )}
+                            realProbAppleAPI: self.clientAPI.realProbAppleAPI)
+                          // Below should be mandatorily eecuted before innermost ie performAuth closure completes
+                          self.clientAPI.is2StepKYC = false
+                          self.clientAPI.internalCompletedKYC()  // execute BEFORE resetting any ClientAPI state
+                      }
                   }
               }
           } else {
               step1Driver(with: bitmap, withOriginalImage: withOriginalImage)
+              // Don't call internalCompletedKYC() here coz client is not done w/ KYC yet
           }
       } else {
           step2Driver(with: bitmap, withOriginalImage: withOriginalImage)
@@ -210,7 +219,6 @@ extension HomeScreenViewController {
                     self.step2Embs = step2LocalEmbs
                     let (match, prob) = similarityMatcher.cosineMatch()
                     clientAPI.selfieIDprofileMatchProb = prob
-                    clientAPI.similarity = prob
                     if match {
                         var message: String = ""
                         if idInformation.isNotUnderAge == nil {
@@ -251,6 +259,7 @@ extension HomeScreenViewController {
             self.displayMessage("Failed to recognize ID with error: \(error)")
             clientAPI.failureReason = .failedToReadID
         }
+        clientAPI.is2StepKYC = true
         clientAPI.internalCompletedKYC()  // execute BEFORE resetting any ClientAPI state
     }
   }

@@ -38,7 +38,8 @@ class PicRecognizer {
     required init( _ clientAPI: ClientAPI) throws {
         let startTime = DispatchTime.now()
         ortEnv = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
-        guard let modelPath = Bundle.main.path(forResource: "clip_image_encoder.quant", ofType: "onnx") else {
+        let bundle = Bundle(for: PicRecognizer.self)
+        guard let modelPath = bundle.path(forResource: "clip_image_encoder.quant", ofType: "onnx") else {
             throw PicRecognizerError.failedToLoadModel
         }
         let sessionOptions = try ORTSessionOptions()
