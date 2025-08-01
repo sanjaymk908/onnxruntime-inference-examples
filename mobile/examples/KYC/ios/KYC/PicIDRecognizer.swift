@@ -21,33 +21,39 @@ class IDInformation {
     var userProfilePic: CIImage?
     var isExpired: Bool
     var isNotUnderAge: Bool? {
-        // Ensure both dates are available and correctly formatted
         guard let dob = dateOfBirth, let exp = expirationDate else {
             clientAPI.failureReason = .failedToReadID
             return nil
         }
+
         let realProb = clientAPI.realProb
         let fakeProb = clientAPI.fakeProb
+
         guard realProb > fakeProb else {
             clientAPI.failureReason = .selfieInaccurate
             return nil
         }
 
-        // Calculate age from date of birth
+        // Check if user is at least 21 years old
+        let calendar = Calendar.current
+        guard let age21Date = calendar.date(byAdding: .year, value: 21, to: dob) else {
+            clientAPI.failureReason = .failedToReadID
+            return nil
+        }
+
         let currentDate = Date()
-        let ageComponents = Calendar.current.dateComponents([.year, .month, .day], from: dob, to: currentDate)
+        let isAtLeast21 = currentDate >= age21Date
 
-        // Check if the person is at least 21 years old
-        let isAtLeast21 = ageComponents.year! >= 21 ||
-                          (ageComponents.year! == 20 && ageComponents.month! > Calendar.current.component(.month, from: dob)) ||
-                          (ageComponents.year! == 20 && ageComponents.month! == Calendar.current.component(.month, from: dob) && ageComponents.day! >= Calendar.current.component(.day, from: dob))
+        // Check if the ID is expired
+        isExpired = exp < currentDate
 
-        // Check if expired
-        isExpired = exp < Date()
-        let ageCheck = (isAtLeast21 && !isExpired)
-        clientAPI.failureReason = (ageCheck ? .above21 : (isExpired ? .expiredID : .below21))
+        // Final decision and failure reason
+        let ageCheck = isAtLeast21 && !isExpired
+        clientAPI.failureReason = ageCheck ? .above21 : (isExpired ? .expiredID : .below21)
+        
         return ageCheck
     }
+
 
     // Helper function to parse date strings to Date objects
     func parseDate(_ dateString: String) -> Date? {
