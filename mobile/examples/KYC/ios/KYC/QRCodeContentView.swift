@@ -4,7 +4,7 @@ struct QRCodeContentView: View {
     let selfieImage: UIImage
     let qrCodeImage: UIImage?
     let isVerified: Bool
-    let similarity: Double  // Already in [0.0 ... 1.0] or [0...100] depending on usage
+    let similarity: Double  // Expecting [0.0 ... 1.0]
     let realProb: Double
     let realProbAppleAPI: Double
 
@@ -80,7 +80,7 @@ struct QRCodeContentView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        NotificationCenter.default.post(name: .qrCodeDismissed, object: nil)
+                        // Just dismiss the view here
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Image(systemName: "xmark.circle.fill")
@@ -94,6 +94,14 @@ struct QRCodeContentView: View {
             }
         }
         .ignoresSafeArea()
+        // Run this on any dismissal (user or programmatic)
+        .onDisappear {
+            // Post notification to trigger biometric secure enclave storage
+            NotificationCenter.default.post(name: .qrCodeDismissed, object: nil)
+
+            // Place secure enclave biometric storage calls here to guarantee running on ANY dismiss
+            // storeBiometricsToSecureEnclave()
+        }
     }
 
     // Helper view for labeled values

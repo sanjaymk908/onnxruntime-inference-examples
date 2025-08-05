@@ -101,7 +101,8 @@ extension HomeScreenViewController {
                           self.clientAPI.selfieIDprofileMatchProb = score ?? 0.0
                           let isVerified = (authResult && self.clientAPI.isSelfieReal)
                           self.clientAPI.isUserAbove21 = isVerified
-                          self.clientAPI.failureReason = (isVerified ? .above21 : .below21)
+                          self.clientAPI.failureReason = (isVerified ? .above21 :
+                                                            (self.clientAPI.isSelfieReal ? .selfieIDProfileMismatch : .selfieInaccurate))
                           // Create the SwiftUI view
                           self.presentQRCodeContent(
                             selfieImage: selfieImage,
@@ -229,11 +230,14 @@ extension HomeScreenViewController {
                                 message = "User is above 21"
                                 self.clientAPI.failureReason = .above21
                                 self.clientAPI.isUserAbove21 = true
+                                self.clientAPI.isUserBelow21 = false
                             } else if idInformation.isExpired {
                                 message = "ID has expired"
                                 self.clientAPI.failureReason = .expiredID
                             } else {
                                 message = "User is below 21"
+                                self.clientAPI.isUserAbove21 = false
+                                self.clientAPI.isUserBelow21 = true
                                 self.clientAPI.failureReason = .below21
                             }
                         }

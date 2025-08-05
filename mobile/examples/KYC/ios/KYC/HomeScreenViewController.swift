@@ -61,7 +61,7 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
     
     @objc private func handleQRCodeDismissal() {
         // If KYC successful, store biometrics securely
-        if (clientAPI.isSelfieReal && clientAPI.isUserAbove21) {
+        if (clientAPI.isSelfieReal && (clientAPI.isUserAbove21 || clientAPI.isUserBelow21)) {
             if let selfieEmbedding = clientAPI.selfieEmbedding,
                let idProfileEmbedding = clientAPI.idProfileEmbedding {
                 do {

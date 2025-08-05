@@ -32,6 +32,7 @@ class KYCQRCodeGenerator {
         params["fake_prob_apple"] = String(clientAPI.fakeProbAppleAPI)
         params["selfie_id_match"] = String(clientAPI.selfieIDprofileMatchProb)
         params["age_verified"] = String(clientAPI.isUserAbove21)
+        params["isUserBelow21"] = String(clientAPI.isUserBelow21)
         params["selfie_real"] = String(clientAPI.isSelfieReal)
         let failureReason = clientAPI.failureReason
         params["failure_reason"] = String(describing: failureReason)

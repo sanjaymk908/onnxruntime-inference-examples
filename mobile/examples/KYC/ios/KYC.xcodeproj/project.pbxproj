@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C12F91EB2E416A57006D4589 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = C12F91EA2E416A57006D4589 /* Logging */; };
+		C12F91ED2E416A63006D4589 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = C12F91EC2E416A63006D4589 /* Logging */; };
 		C13563582C18F1DA00FF9A99 /* ort_env.mm in Sources */ = {isa = PBXBuildFile; fileRef = C135633F2C18F1D700FF9A99 /* ort_env.mm */; };
 		C13563592C18F1DA00FF9A99 /* ort_value.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563402C18F1D700FF9A99 /* ort_value.mm */; };
 		C135635A2C18F1DA00FF9A99 /* error_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = C13563412C18F1D700FF9A99 /* error_utils.mm */; };
@@ -194,6 +196,7 @@
 				C1C1CA552E2959340023F149 /* CoreVideo.framework in Frameworks */,
 				C1BE0BD92E3C3D50000CD7F5 /* Lumina.framework in Frameworks */,
 				C1C1CA562E2959340023F149 /* Metal.framework in Frameworks */,
+				C12F91ED2E416A63006D4589 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +208,7 @@
 				C19DC9462C35463C008023F3 /* Metal.framework in Frameworks */,
 				C1BE0BDB2E3C3D5A000CD7F5 /* Lumina.framework in Frameworks */,
 				C13AACDF2C17F684000C3411 /* CoreVideo.framework in Frameworks */,
+				C12F91EB2E416A57006D4589 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +405,7 @@
 			);
 			name = Dist;
 			packageProductDependencies = (
+				C12F91EC2E416A63006D4589 /* Logging */,
 			);
 			productName = Dist;
 			productReference = C1C1CA322E2958B20023F149 /* Dist.framework */;
@@ -421,6 +426,7 @@
 			);
 			name = KYC;
 			packageProductDependencies = (
+				C12F91EA2E416A57006D4589 /* Logging */,
 			);
 			productName = SpeechRecognition;
 			productReference = EFE237D326855E4600234E2C /* TruKYC.app */;
@@ -475,6 +481,7 @@
 			);
 			mainGroup = EFE237CA26855E4600234E2C;
 			packageReferences = (
+				C12F91E92E416A57006D4589 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = EFE237D426855E4600234E2C /* Products */;
 			projectDirPath = "";
@@ -1047,6 +1054,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C12F91E92E416A57006D4589 /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-log";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C12F91EA2E416A57006D4589 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C12F91E92E416A57006D4589 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
+		C12F91EC2E416A63006D4589 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C12F91E92E416A57006D4589 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EFE237CB26855E4600234E2C /* Project object */;
 }

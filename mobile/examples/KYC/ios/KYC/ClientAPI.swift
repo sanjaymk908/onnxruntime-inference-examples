@@ -106,6 +106,7 @@ import SwiftUI
     public let selfieIDprofileMatchProb: Double
 
     public let isUserAbove21: Bool
+    public let isUserBelow21: Bool
     public let is2StepKYC: Bool
     public let isSelfieReal: Bool
 
@@ -120,6 +121,7 @@ import SwiftUI
         fakeProbAppleAPI: Double,
         selfieIDprofileMatchProb: Double,
         isUserAbove21: Bool,
+        isUserBelow21:Bool,
         is2StepKYC: Bool,
         isSelfieReal: Bool,
         failureReason: ClientAPI.AgeVerificationResult
@@ -132,6 +134,7 @@ import SwiftUI
         self.fakeProbAppleAPI = fakeProbAppleAPI
         self.selfieIDprofileMatchProb = selfieIDprofileMatchProb
         self.isUserAbove21 = isUserAbove21
+        self.isUserBelow21 = isUserBelow21
         self.is2StepKYC = is2StepKYC
         self.isSelfieReal = isSelfieReal
         self.failureReason = failureReason
@@ -184,6 +187,7 @@ import SwiftUI
         fakeProbAppleAPI = 0.0
         selfieIDprofileMatchProb = 0.0
         isUserAbove21 = false
+        isUserBelow21 = false
         is2StepKYC = false
         isSelfieReal = false
         failureReason = .inDeterminate
@@ -224,6 +228,7 @@ import SwiftUI
             fakeProbAppleAPI: fakeProbAppleAPI,
             selfieIDprofileMatchProb: selfieIDprofileMatchProb,
             isUserAbove21: isUserAbove21,
+            isUserBelow21: isUserBelow21,
             is2StepKYC: is2StepKYC,
             isSelfieReal: isSelfieReal,
             failureReason: failureReason
@@ -244,6 +249,7 @@ import SwiftUI
     internal var selfieIDprofileMatchProb: Double = 0.0
 
     internal var isUserAbove21: Bool = false
+    internal var isUserBelow21: Bool = false
     internal var is2StepKYC: Bool = false
     internal var isSelfieReal: Bool = false
     internal var failureReason: AgeVerificationResult = .inDeterminate
