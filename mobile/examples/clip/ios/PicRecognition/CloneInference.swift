@@ -79,9 +79,9 @@ class CloneInference {
             }
 
             if labelValue == 0 {
-                return "Pic is real"
+                return "Pic is Real"
             } else {
-                return "Pic is cloned"
+                return "Pic is Fake"
             }
         }
   }

@@ -64,49 +64,59 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            // Black area covering the entire background
             Color.black
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                // Reduced black space at the top
+                // Reduced top space above the rounded rectangle
                 Spacer()
-                    .frame(height: UIScreen.main.bounds.height * 0.05)
+                    .frame(height: UIScreen.main.bounds.height * 0.025) // 50% of original
 
-                // Centering the rounded rectangle with the image and button inside
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(red: 0.9, green: 0.9, blue: 0.9))
-                    .frame(width: UIScreen.main.bounds.width * 0.85, height: UIScreen.main.bounds.height * 0.6)
+                    .frame(width: UIScreen.main.bounds.width * 0.85,
+                           height: UIScreen.main.bounds.height * 0.6)
                     .shadow(radius: 10)
                     .overlay(
                         VStack {
-                            Spacer()
-
+                            // Input image
                             if let photo = viewModel.capturedPhoto {
                                 Image(uiImage: photo)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: UIScreen.main.bounds.width * 0.75, height: UIScreen.main.bounds.height * 0.4)
+                                    .frame(width: UIScreen.main.bounds.width * 0.75,
+                                           height: UIScreen.main.bounds.height * 0.4)
+                                    .padding(.bottom, 4) // small gap to result text
                             }
 
-                            Spacer()
+                            // Recognition result text
+                            if !viewModel.recognitionResult.isEmpty {
+                                Text(viewModel.recognitionResult)
+                                    .font(.system(
+                                        size: UIFont.preferredFont(forTextStyle: .body).pointSize * 1.5, // 50% taller
+                                        weight: .bold
+                                    ))
+                                    .foregroundColor(
+                                        viewModel.recognitionResult.lowercased().contains("real") ? .green : .red
+                                    )
+                                    .padding(.bottom, 8)
+                            }
 
+                            Spacer() // pushes button to bottom
+
+                            // Select Image button (always at bottom)
                             Button("Select Image") {
                                 selectImageAndRecognize()
                             }
-                            .padding()
+                            .padding(.top, 4)
+                            .padding(.horizontal)
                         }
                         .padding()
                     )
 
-                // Reduced black space at the bottom
+                // Bottom black space
                 Spacer()
                     .frame(height: UIScreen.main.bounds.height * 0.05)
-                
-                // Recognition result text at the bottom
-                Text("\(viewModel.recognitionResult)")
-                    .foregroundColor(viewModel.recognitionResult.isEmpty ? .white : .red)
-                    .padding()
             }
 
             // Show a ProgressView while processing
@@ -131,5 +141,4 @@ struct ContentView: View {
             }
         }
     }
-    
 }
