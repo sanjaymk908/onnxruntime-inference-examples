@@ -1,9 +1,10 @@
 //
 //  PicIDRecognizer.swift
-//  KYC
+//  PicRecognition
 //
-//  Created by Sanjay Krishnamurthy on 10/28/24.
+//  Created by Sanjay Krishnamurthy on 7/2/24.
 //
+
 
 import CoreImage
 import CoreImage.CIFilterBuiltins
@@ -34,7 +35,6 @@ class IDInformation {
             return nil
         }
 
-        // Check if user is at least 21 years old
         let calendar = Calendar.current
         guard let age21Date = calendar.date(byAdding: .year, value: 21, to: dob) else {
             clientAPI.failureReason = .failedToReadID
@@ -44,83 +44,113 @@ class IDInformation {
         let currentDate = Date()
         let isAtLeast21 = currentDate >= age21Date
 
-        // Check if the ID is expired
         isExpired = exp < currentDate
 
-        // Final decision and failure reason
         let ageCheck = isAtLeast21 && !isExpired
         clientAPI.failureReason = ageCheck ? .above21 : (isExpired ? .expiredID : .below21)
-        
+
         return ageCheck
     }
 
-
-    // Helper function to parse date strings to Date objects
     func parseDate(_ dateString: String) -> Date? {
-        // Regular expression to match common date formats at the end of the string
-        let dateRegex = try! NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})$", options: [])
+        let cleaned = dateString.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Find the last occurrence of a date format in the string
-        if let match = dateRegex.firstMatch(in: dateString, options: [], range: NSRange(location: 0, length: dateString.utf16.count)) {
-            let dateMatch = String(dateString[Range(match.range, in: dateString)!])
+        let dateRegexPattern = #"""
+        (?x)
+        (
+            \d{1,4}[./\-年][ \d{1,2}]*[./\-月]?[ \d{1,2}]*日? 
+            |
+            \d{1,2}[ ./-]\d{1,2}[ ./-]\d{2,4}
+            |
+            \d{4}-\d{1,2}-\d{1,2}
+            |
+            \d{1,2} [A-Za-z]{3,9} \d{4}
+        )
+        """#
 
-            // Parse the extracted date string
-            let dateFormatter = DateFormatter()
-            dateFormatter.timeZone = TimeZone.current  // Use the current time zone
-            let dateFormats = [
-                "MM/dd/yyyy",
-                "yyyy-MM-dd",
-                "dd-MM-yyyy",
-                "MM-dd-yyyy",
-                "dd MMM yyyy", // Added for formats like "08 Sep 1966"
-                "d MMM yyyy"  // Added for single-digit days
-            ]
-            for format in dateFormats {
-                dateFormatter.dateFormat = format
-                if let date = dateFormatter.date(from: dateMatch) {
+        let dateRegex = try! NSRegularExpression(pattern: dateRegexPattern, options: [.allowCommentsAndWhitespace])
+
+        guard let match = dateRegex.firstMatch(in: cleaned, options: [], range: NSRange(location: 0, length: cleaned.utf16.count)) else {
+            return nil
+        }
+
+        let dateMatch = String(cleaned[Range(match.range, in: cleaned)!])
+
+        let dateFormatsByLocale: [(locale: Locale, calendar: Calendar?, formats: [String])] = [
+            (Locale(identifier: "en_GB"), nil, [
+                "dd/MM/yyyy", "dd-MM-yyyy", "dd.MM.yyyy", "dd MMM yyyy", "d MMM yyyy", "dd MM yyyy"
+            ]),
+            (Locale(identifier: "en_US_POSIX"), nil, [
+                "MM/dd/yyyy", "MM-dd-yyyy", "yyyy-MM-dd"
+            ]),
+            (Locale(identifier: "ja_JP"), Calendar(identifier: .japanese), [
+                "yyyy年M月d日", "yy年M月d日", "yyyy/MM/dd", "yy/MM/dd"
+            ]),
+            (Locale(identifier: "pt_BR"), nil, [
+                "dd/MM/yyyy", "d/M/yyyy"
+            ]),
+            (Locale(identifier: "en_SG"), nil, [
+                "dd/MM/yyyy", "d/MM/yyyy"
+            ]),
+            (Locale(identifier: "zh_CN"), Calendar(identifier: .gregorian), [
+                "yyyy年M月d日", "yyyy/M/d", "yyyy-MM-dd"
+            ]),
+            (Locale(identifier: "ar-AE"), nil, [
+                "dd/MM/yyyy", "yyyy-MM-dd"
+            ]),
+            (Locale(identifier: "ar-SA"), nil, [
+                "dd/MM/yyyy", "yyyy-MM-dd"
+            ]),
+        ]
+
+        for (locale, calendar, formats) in dateFormatsByLocale {
+            let formatter = DateFormatter()
+            formatter.locale = locale
+            formatter.timeZone = TimeZone.current
+            if let cal = calendar {
+                formatter.calendar = cal
+            }
+            for format in formats {
+                formatter.dateFormat = format
+                if let date = formatter.date(from: dateMatch) {
                     return date
                 }
             }
         }
 
-        // If no match is found, return nil
-        return nil
-    }
-
-    // Helper function to convert Date to String
-    func parseDateToString(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.string(from: date)
+        let isoFormatter = ISO8601DateFormatter()
+        return isoFormatter.date(from: dateMatch)
     }
 
     init(_ clientAPI: ClientAPI) {
         self.clientAPI = clientAPI
         self.isExpired = false
     }
-    
+
     private let clientAPI: ClientAPI
 }
 
 public class PicIDRecognizer {
+
     func recognizeID(from ciImage: CIImage, clientAPI: ClientAPI,
                      completion: @escaping (Result<IDInformation, Error>) -> Void) {
         let request = VNRecognizeTextRequest { request, error in
-            guard error == nil else {
-                completion(.failure(error!))
+            if let error = error {
+                completion(.failure(error))
                 return
             }
 
             let idInfo = IDInformation(clientAPI)
             if let results = request.results as? [VNRecognizedTextObservation] {
                 let firstFewLines = results.prefix(5).compactMap { $0.topCandidates(1).first?.string.uppercased() }
-                if firstFewLines.contains(where: { $0.contains("LICENSE") }) {
+
+                if firstFewLines.contains(where: { $0.contains("LICENSE") || $0.contains("FÜHRERSCHEIN") || $0.contains("CARTÃO") || $0.contains("LICENÇA") }) {
                     self.extractFieldsFromLic(results: results, idInfo: idInfo)
-                } else if firstFewLines.contains(where: { $0.contains("PASSPORT") || $0.contains("PASAPORTE") || $0.contains("SURNAME") || $0.contains("PASSEPORT") }) {
+                } else if firstFewLines.contains(where: {
+                    $0.contains("PASSPORT") || $0.contains("PASAPORTE") || $0.contains("SURNAME") || $0.contains("PASSEPORT") || $0.contains("パスポート") || $0.contains("护照") || $0.contains("هوية")
+                }) {
                     self.extractFieldsFromPassport(results: results, idInfo: idInfo)
                 }
-                // Call the new method to fill in any empty idInfo fields
                 self.extractUnknownFields(results: results, idInfo: idInfo)
             }
 
@@ -131,14 +161,14 @@ public class PicIDRecognizer {
             completion(.success(idInfo))
         }
 
-        // Configure the request
         request.recognitionLevel = .accurate
-        request.recognitionLanguages = ["en-US"]
+        request.recognitionLanguages = ["en-US", "de-DE", "ja-JP", "pt-BR", "en-GB", "en-SG", "zh-CN", "ar-AE", "ar-SA"]
         request.usesLanguageCorrection = true
         request.customWords = [
-            "FN", "LN", "DOB", "DL", "EXP", "ISS", "PASSPORT", "PASAPORTE", "PASSEPORT", "SURNAME",
-            "GIVEN NAMES", "DATE OF BIRTH", "DATE OF EXPIRATION", "APELLIDOS", "NOMBRES",
-            "FECHA DE NACIMIENTO", "FECHA DE CADUCIDAD", "PASSPORT NO", "PASAPORT NO", "DATE OF EXP"
+            "FN", "LN", "DOB", "DL", "EXP", "ISS", "PASSPORT", "PASAPORTE", "PASSEPORT",
+            "SURNAME", "GIVEN NAMES", "DATE OF BIRTH", "DATE OF EXPIRATION", "APELLIDOS",
+            "NOMBRES", "FECHA DE NACIMIENTO", "FECHA DE CADUCIDAD", "PASSPORT NO", "PASAPORT NO",
+            "DATE OF EXP", "パスポート", "FÜHRERSCHEIN", "CARTÃO", "LICENÇA", "护照", "هوية"
         ]
 
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
@@ -152,38 +182,25 @@ public class PicIDRecognizer {
     }
 
     private func extractFieldsFromLic(results: [VNRecognizedTextObservation], idInfo: IDInformation) {
-        // Extract all text observations
         let allTexts = results.compactMap { $0.topCandidates(1).first?.string }
         let splitTexts = allTexts.flatMap { splitTextWithMultipleColons($0) }
         for text in splitTexts {
             print("Extracted field from ID: \(text)")
-
-            // Define the keys to look for
             let keys = ["FN", "LN", "DOB", "DL", "ĐL", "EXP", "ISS", "ров"]
 
             for key in keys {
                 if let range = text.range(of: key, options: .caseInsensitive) {
-                    // Find the colon after the key
                     if let colonRange = text.range(of: ":", options: .caseInsensitive, range: range.upperBound..<text.endIndex) {
-                        // Extract the value after the colon, trimming any leading or trailing whitespace
                         let value = text[colonRange.upperBound...].trimmingCharacters(in: .whitespaces)
                         switch key.uppercased() {
-                        case "FN":
-                            idInfo.firstName = value
-                        case "LN":
-                            idInfo.lastName = value
+                        case "FN": idInfo.firstName = value
+                        case "LN": idInfo.lastName = value
                         case "DOB", "ров":
-                            if let date = idInfo.parseDate(value) {
-                                idInfo.dateOfBirth = date
-                            }
-                        case "DL", "ĐL":
-                            idInfo.idNumber = value
+                            if let date = idInfo.parseDate(value) { idInfo.dateOfBirth = date }
+                        case "DL", "ĐL": idInfo.idNumber = value
                         case "EXP":
-                            if let date = idInfo.parseDate(value) {
-                                idInfo.expirationDate = date
-                            }
-                        default:
-                            break
+                            if let date = idInfo.parseDate(value) { idInfo.expirationDate = date }
+                        default: break
                         }
                     }
                 }
@@ -212,28 +229,20 @@ public class PicIDRecognizer {
                 mrz = text
             } else if !currentField.isEmpty && !text.contains("/") {
                 switch currentField {
-                case "lastName":
-                    idInfo.lastName = text
-                case "firstName":
-                    idInfo.firstName = text
+                case "lastName": idInfo.lastName = text
+                case "firstName": idInfo.firstName = text
                 case "dateOfBirth":
-                    if let date = idInfo.parseDate(text) {
-                        idInfo.dateOfBirth = date
-                    }
+                    if let date = idInfo.parseDate(text) { idInfo.dateOfBirth = date }
                 case "expirationDate":
-                    if let date = idInfo.parseDate(text) {
-                        idInfo.expirationDate = date
-                    }
-                case "idNumber":
-                    idInfo.idNumber = text
-                default:
-                    break
+                    if let date = idInfo.parseDate(text) { idInfo.expirationDate = date }
+                case "idNumber": idInfo.idNumber = text
+                default: break
                 }
                 currentField = ""
             }
         }
-
-        // Extract passport number from MRZ if not already extracted
+        
+        // Extract passport number from MRZ if not set
         if idInfo.idNumber == nil && !mrz.isEmpty {
             if mrz.starts(with: "P<") {
                 let components = mrz.components(separatedBy: "USA")
@@ -241,13 +250,30 @@ public class PicIDRecognizer {
                     idInfo.idNumber = String(components[0].suffix(9))
                 }
             } else {
-                // Handle the case where MRZ doesn't start with "P<"
                 let mrzComponents = mrz.components(separatedBy: "USA")
                 if mrzComponents.count > 0 {
                     idInfo.idNumber = String(mrzComponents[0].prefix(9))
                 }
             }
         }
+    }
+
+    private func splitTextWithMultipleColons(_ text: String) -> [String] {
+        var segments: [String] = []
+        var currentSegment = ""
+        let parts = text.components(separatedBy: " ")
+        for part in parts {
+            if part.contains(":") && !currentSegment.isEmpty {
+                segments.append(currentSegment.trimmingCharacters(in: .whitespaces))
+                currentSegment = part
+            } else {
+                currentSegment += " \(part)"
+            }
+        }
+        if !currentSegment.isEmpty {
+            segments.append(currentSegment.trimmingCharacters(in: .whitespaces))
+        }
+        return segments
     }
 
     private func extractUnknownFields(results: [VNRecognizedTextObservation], idInfo: IDInformation) {
@@ -353,17 +379,32 @@ public class PicIDRecognizer {
         if idInfo.dateOfBirth == nil || idInfo.expirationDate == nil {
             var dateFields: [Date] = []
             for text in cleanedTexts {
-                // Regular expression to match common date formats
-                let dateRegex = try! NSRegularExpression(pattern: "(?:\\d{1,2}/\\d{1,2}/\\d{4}|\\d{4}-\\d{1,2}-\\d{1,2}|\\d{1,2}-\\d{1,2}-\\d{4}|\\d{1,2} [A-Za-z]{3} \\d{4}|\\d{1} [A-Za-z]{3} \\d{4})", options: [])
+                // Regular expression pattern to capture common date formats embedded in text
+                let dateRegex = try! NSRegularExpression(pattern:
+                    #"""
+                    \b(\d{1,2}[./-]\d{1,2}[./-]\d{4})\b   # Matches dd.MM.yyyy or dd/MM/yyyy or dd-MM-yyyy inside word boundaries
+                    |
+                    \b(\d{4}-\d{1,2}-\d{1,2})\b           # Matches yyyy-MM-dd inside word boundaries
+                    |
+                    \b(\d{1,2} [A-Za-z]{3} \d{4})\b       # Matches dd MMM yyyy inside word boundaries
+                    """#, options: [.allowCommentsAndWhitespace])
 
                 // Find all matches of date formats in the text
                 let matches = dateRegex.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
 
-                // Extract and parse each match as a separate date
+                // Extract and parse each matched date substring
                 for match in matches {
-                    let dateMatch = String(text[Range(match.range, in: text)!])
-                    if let date = idInfo.parseDate(dateMatch) {
-                        dateFields.append(date)
+                    // Iterate through capture groups to find the matched date substring for this match
+                    for groupIndex in 1...3 {
+                        let matchRange = match.range(at: groupIndex)
+                        // Check if the group matched and range is valid
+                        if matchRange.location != NSNotFound, let range = Range(matchRange, in: text) {
+                            let dateString = String(text[range])
+                            if let date = idInfo.parseDate(dateString) {
+                                dateFields.append(date)
+                            }
+                            break // only parse first matched group per match
+                        }
                     }
                 }
             }
@@ -386,31 +427,6 @@ public class PicIDRecognizer {
             }
         }
     }
-    
-    private func splitTextWithMultipleColons(_ text: String) -> [String] {
-        var segments: [String] = []
-        var currentSegment = ""
-
-        let parts = text.components(separatedBy: " ")
-        for part in parts {
-            if part.contains(":") && !currentSegment.isEmpty {
-                // If we encounter a new key-value pair, push the current segment to the array
-                segments.append(currentSegment.trimmingCharacters(in: .whitespaces))
-                currentSegment = part
-            } else {
-                // Otherwise, continue building the current segment
-                currentSegment += " \(part)"
-            }
-        }
-        
-        // Add the last segment to the array
-        if !currentSegment.isEmpty {
-            segments.append(currentSegment.trimmingCharacters(in: .whitespaces))
-        }
-        
-        return segments
-    }
-
     
     private func processText(_ text: String, using dateRegex: NSRegularExpression) -> String {
         // Check for a match
