@@ -59,6 +59,22 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // 🔥 CRITICAL FIX: Stop the AVCaptureSession managed by Lumina.
+        // This prevents the camera from streaming frames in the background
+        // and solves the persistent "no face observed" logs and the
+        // instability on subsequent executions.
+        self.pauseCamera()
+        
+        // Ensure the image property used by FaceOverlayView is also cleared,
+        // although pausing the camera should stop new frames.
+        self.latestUIImage = nil
+        
+        print("🛑 [KYC FLOW] Lumina camera paused in HomeScreenViewController.viewWillDisappear.")
+    }
+    
     @objc private func handleQRCodeDismissal() {
         // If KYC successful, store biometrics securely
         if (clientAPI.isSelfieReal && (clientAPI.isUserAbove21 || clientAPI.isUserBelow21)) {
@@ -109,6 +125,9 @@ class HomeScreenViewController: LuminaViewController, LuminaDelegate, UITextFiel
         // viewDidAppear() triggers this method. For some reason scanPromptLabel doesnt appear.
         // So, we force it to reappear by deleting it here. It will be added fresh in
         // createTransparentView()
+        // 🔥 CRITICAL FIX: Ensure the image is NIL before the new FaceOverlayView
+        // is instantiated and starts its timer.
+        self.latestUIImage = nil
         if scanPromptLabel != nil {
             scanPromptLabel.removeFromSuperview()
             scanPromptLabel = nil
