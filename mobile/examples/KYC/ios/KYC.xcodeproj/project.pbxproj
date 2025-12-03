@@ -923,9 +923,14 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
-					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c",
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/**",
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks,
+				);
 				HEADER_SEARCH_PATHS = "/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-objc/objectivec/include";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"/Users/sanjaymk/Desktop/ec2/yella/onnx/Pods/onnxruntime-c/onnxruntime.xcframework/ios-arm64/onnxruntime.framework/Headers",
